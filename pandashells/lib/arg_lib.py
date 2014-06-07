@@ -7,7 +7,7 @@ import inspect
 sys.path.append('../..')
 ##########################################################################
 
-from ptools.lib import config_lib
+from pandashells.lib import config_lib
 
 #=============================================================================
 def addArgs(parser, *args, **kwargs):

@@ -10,7 +10,7 @@ import re
 sys.path.append('../..')
 ##########################################################################
 
-from ptools.lib import arg_lib
+from pandashells.lib import arg_lib
 
 #=============================================================================
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ sys.path.append('../..')
 ##########################################################################
 
 
-from ptools.lib import module_checker_lib, arg_lib
+from pandashells.lib import module_checker_lib, arg_lib
 
 #--- import required dependencies
 modulesOkay = module_checker_lib.check_for_modules(

@@ -7,7 +7,7 @@ import argparse
 sys.path.append('../..')
 ##########################################################################
 
-from ptools.lib import parallel_lib, arg_lib
+from pandashells.lib import parallel_lib, arg_lib
 
 #=============================================================================
 if __name__ == '__main__':
