@@ -1,0 +1,93 @@
+#! /usr/bin/env python
+
+#--- standard library imports
+import os
+import sys
+import argparse
+import re
+
+############# dev only.  Comment out for production ######################
+sys.path.append('../..')
+##########################################################################
+
+from ptools.lib import module_checker_lib, arg_lib, io_lib
+
+#--- import required dependencies
+modulesOkay = module_checker_lib.check_for_modules(
+        [
+            'pandas',
+            'numpy',
+            'scipy',
+            'dateutil',
+            'matplotlib',
+        ])
+if not modulesOkay:
+    sys.exit(1)
+
+import pandas as pd
+import numpy as np
+import scipy as scp
+import pylab as pl
+from dateutil.parser import parse
+import datetime
+
+#=============================================================================
+if __name__ == '__main__':
+    msg = "Bring pandas manipulation to command line.  Input from stdin "
+    msg += "is placed into a dataframe named 'df'.  The output of each "
+    msg += "specified command must evaluate to a dataframe that will "
+    msg += "overwrite 'df'. The output of the final command will be sent "
+    msg += "to stdout.  The namespace in which the commands are executed "
+    msg += "includes pandas as pd, numpy as np, scipy as scp, pylab as pl, "
+    msg += "dateutil.parser.parse as parse, datetime"
+
+    #--- read command line arguments
+    parser = argparse.ArgumentParser(
+            description=msg)
+
+    options = {}
+    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example')
+    parser.add_argument("statement", help="Statement to execute", nargs="+")
+
+    #--- parse arguments
+    args = parser.parse_args()
+
+    #--- get the input dataframe
+    df = io_lib.df_from_input(args)
+
+    #--- define regex to identify if supplied command is for col assignment
+    rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
+
+    #--- define regex to identify plot commands
+    rex_plot_cmd = re.compile(r'.*(plot|hist)\(.*\).*')
+
+    #--- execute the statements in sequence
+    for cmd in args.statement:
+        #--- if this is a column-assignment command, just execute it
+        if rex_col_cmd.match(cmd):
+            exec(cmd)
+            temp = df
+        #--- if this is a plot command, execute it and quit
+        elif rex_plot_cmd.match(cmd):
+            exec(cmd)
+            pl.show()
+            sys.exit(0)
+
+        #--- if instead this is a command on the whole frame
+        else:
+            #--- put results of command in temp var
+            cmd = 'temp = {}'.format(cmd)
+            exec(cmd)
+
+        #--- transform results to dataframe if needed
+        if isinstance(temp, pd.DataFrame):
+            df = temp
+        else:
+            try:
+                df = pd.DataFrame(temp)
+            except pd.core.common.PandasError:
+                print temp
+                sys.exit(0)
+
+    #--- write dataframe to output
+    io_lib.df_to_output(args, df)

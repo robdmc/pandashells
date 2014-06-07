@@ -1,0 +1,7 @@
+__cmd__: this is the command text
+__job__activity, job_num, job_tot,time_stamp, duration_sec, duration_min, duration_hr,  pid , cmd
+__job__start   , 1      , 120    ,hh:mm:ss  ,             ,             ,            ,  1234, cat myFile | myProg > myDest
+__job__end     , 1      , 120    ,hh:mm:ss  , 300         , 5           , 0.0833     ,  1234, cat myFile | myProg > myDest
+
+
+

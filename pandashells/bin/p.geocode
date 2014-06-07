@@ -1,0 +1,81 @@
+#! /usr/bin/env python
+
+#--- standard library imports
+import os
+import sys
+import argparse
+import json
+import urllib
+import csv
+
+############# dev only.  Comment out for production ######################
+sys.path.append('../..')
+##########################################################################
+
+from ptools.lib import module_checker_lib, arg_lib, io_lib, geo_lib
+
+#--- import required dependencies
+modulesOkay = module_checker_lib.check_for_modules(
+            [
+                'pandas',
+            ]
+        )
+if not modulesOkay:
+    sys.exit(1)
+
+import pandas as pd
+
+
+#=============================================================================
+if __name__ == '__main__':
+
+    #--- read command line arguments
+    msg = "Use google public api to geocode addresses. "
+    msg += "Input (stdin) should be one address per line"
+    usage = "cat address_list.txt | p.geocode"
+    parser = argparse.ArgumentParser(description=msg, usage=usage)
+    arg_lib.addArgs(parser, 'io_out')
+
+    parser.add_argument('-n', '--nJobs', nargs=1, type=int,
+            default=[1], dest='nJobs', metavar='N',
+            help="Number of jobs to run in parallel")
+    parser.add_argument('-d', '--dryRun', action='store_true',
+            dest='dry_run',
+            help="Don't actually geocode, just print requests")
+    arg_lib.addArgs(parser, 'example')
+
+    #--- parse arguments
+    args = parser.parse_args()
+
+    #--- read input from stdin
+    ad_list = [s.strip() for s in sys.stdin.readlines()]
+
+    #--- create the outputlist of geocoded results
+    out_list = [geo_lib.geocode(ad, args.dry_run) for ad in ad_list]
+    if args.dry_run:
+        for out in out_list:
+            print out
+        sys.exit(0)
+    df = pd.DataFrame(out_list)
+    f_list = [
+            "input_address",
+            'formatted_address',
+            "clean_address",
+            "clean_street",
+            "clean_city",
+            "clean_state",
+            "clean_zip",
+            "county",
+            "lat",
+            "lon",
+            'lat_min',
+            'lat_max',
+            'lon_min',
+            'lon_max',
+            'status'
+        ]
+    f_list = [f for f in f_list if f in df.keys()]
+    df = df[f_list]
+
+    #--- write the output
+    io_lib.df_to_output(args, df)

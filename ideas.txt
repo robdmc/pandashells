@@ -1,0 +1,43 @@
+p.regress - statmodels linear regression with full summary output
+p.learn.regress_linear
+p.learn.regress_ridge
+p.learn.regress_tree
+p.learn.regress_forest
+p.learn.classify.logistic
+p.learn.classify.tree
+p.learn.classify.forest
+p.learn.classify.svm
+
+Always use patsy language
+
+the model.pkl files (which can be user-def names) hold the model as well
+as the string used to do the fit
+
+with --fit model.pkl
+saves model in model.pkl and displays rms R^2 and cross_val scores
+as well as the original string used to do the fit and the type of model
+
+
+with --predict model.pkl
+loads model, input and shows _fit variable to the dataframe
+with --stats, does same thing, but displays rms and R2
+with --hist shows hist of residuals
+with --plot shows fit vs residual
+
+of course classifiers have their own metrics and maybe have a
+--roc that plots the roc curve
+
+with
+--info model.pkl, just shows the model
+
+with --desc 'my desc'  allows you to store a description that will be
+                       displayed with the --info flag
+
+
+
+
+
+
+
+
+

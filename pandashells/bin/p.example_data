@@ -1,0 +1,39 @@
+#! /usr/bin/env python
+
+#--- standard library imports
+import os
+import sys
+import argparse
+
+#--- create a dict of data-set names and corresponding files
+file_dir = os.path.dirname(os.path.realpath(__file__))
+sameple_data_dir = os.path.realpath(
+        os.path.join(file_dir,'..','example_data'))
+f_dict = {}
+for f in os.listdir(sameple_data_dir):
+    f_dict[f.replace('.csv','')] = os.path.join(sameple_data_dir,f)
+
+
+if __name__ == '__main__':
+
+
+    msg = "Print sample data set to stdout"
+
+    #--- populate the arg parser with current configuration
+    parser = argparse.ArgumentParser(
+            description=msg)
+
+    parser.add_argument('-d', '--dataset',  nargs=1, type=str,
+            dest='dataset', choices=sorted(f_dict.keys()), required=True,
+                help='The name of the sample dataset')
+
+    #--- parse arguments
+    args = parser.parse_args()
+
+    f_name = f_dict[args.dataset[0]]
+
+    with open(f_name) as in_file:
+        sys.stdout.write(in_file.read())
+
+
+
