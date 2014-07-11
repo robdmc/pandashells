@@ -89,8 +89,8 @@ if __name__ == '__main__':
         sys.stderr.write(msg+'\n')
         sys.exit(1)
 
-    ##--- set the appropriate theme
-    plot_lib.set_theme(args)
+    #--- set the appropriate theme
+    plot_lib.set_plot_styling(args)
 
 
     df.hist(cols, bins=nbins, range=range_tup,
@@ -99,10 +99,3 @@ if __name__ == '__main__':
 
     plot_lib.refine_plot(args)
     pl.show()
-
-    sys.exit()
-
-
-
-    ##--- draw the plot
-    #plot_lib.draw_xy_plot(args, df)

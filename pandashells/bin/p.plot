@@ -37,6 +37,10 @@ if __name__ == '__main__':
     arg_lib.addArgs(parser, 'io_in', 'xy_plotting', 'decorating', 'example',
             io_no_col_spec_allowed=True)
 
+    parser.add_argument("-a", "--alpha", help="Set opacity",
+            nargs=1, default=[1.], type=float)
+
+
     #--- parse arguments
     args = parser.parse_args()
 
@@ -44,7 +48,7 @@ if __name__ == '__main__':
     df = io_lib.df_from_input(args)
 
     #--- set the appropriate theme
-    plot_lib.set_theme(args)
+    plot_lib.set_plot_styling(args)
 
     #--- draw the plot
     plot_lib.draw_xy_plot(args, df)

@@ -5,14 +5,18 @@ import json
 
 CONFIG_FILE_NAME = '.pandashells'
 
+
+#"notebook", and the other contexts are "paper", "talk", and "poster"
+
 CONFIG_OPTS = sorted([
         ('io_input_type', ['csv','table',]),
         ('io_output_type', ['csv','table','html']),
         ('io_input_header', ['header','noheader',]),
         ('io_output_header', ['header','noheader',]),
         ('io_output_index', ['noindex','index',]),
-        ('plot_theme', ['mpl','gray','grey']),
-        ('plot_page', ['slideFull', 'slideBumper','landscape','portrait']),
+        ('plot_context', ['talk','poster','paper','notebook']),
+        ('plot_theme', ['darkgrid', 'whitegrid', 'dark', 'white']),
+        ('plot_palette', ['muted', 'deep', 'dark', 'colorblind', 'pastel']),
         ])
 DEFAULT_DICT = {t[0]:t[1][0] for t in CONFIG_OPTS}
 
