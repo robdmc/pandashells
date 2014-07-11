@@ -12,7 +12,7 @@ sys.path.append('../..')
 ##########################################################################
 
 
-from pandashells.lib import module_checker_lib
+from pandashells.lib import module_checker_lib, config_lib
 
 #--- import required dependencies
 modulesOkay = module_checker_lib.check_for_modules(
@@ -29,16 +29,23 @@ def df_from_input(args, in_file=None):
     if in_file is None:
         in_file = sys.stdin
     #--- set default read options
-    sep = ','
+    config_dict = config_lib.get_config()
     header = 'infer'
     names = None
     encoding='utf-8'
+    sep_dict = {
+                'csv': ',',
+                'table': r'\s+'
+               }
 
     #--- overwrite read options based on supplied arguments
     if 'csv' in args.input_options[0]:
-        sep = ','
-    if 'table' in args.input_options[0]:
-        sep = r'\s+'
+        sep = sep_dict['csv']
+    elif 'table' in args.input_options[0]:
+        sep = sep_dict['table']
+    else:
+        sep = sep_dict[config_dict['io_input_type']]
+
     if 'noheader' in args.input_options[0]:
         header = None
 

@@ -36,7 +36,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
             description=msg)
 
-    arg_lib.addArgs(parser, 'io_in', 'example','decorating',
+    arg_lib.addArgs(parser, 'io_in', 'example', 'decorating',
             io_no_col_spec_allowed=True)
 
     #--- specify columns to histogram
@@ -63,6 +63,7 @@ if __name__ == '__main__':
 
     #--- parse arguments
     args = parser.parse_args()
+
 
     #--- get the input dataframe
     df = io_lib.df_from_input(args)

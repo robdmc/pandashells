@@ -38,7 +38,7 @@ def addArgs(parser, *args, **kwargs):
         #--- allow the option of supplying input column names
         if not kwargs.get( 'io_no_col_spec_allowed', False):
             msg = 'Overwrite column names with this comma-delimited list'
-            parser.add_argument('--columns', nargs=1, type=str, 
+            parser.add_argument('--columns', nargs=1, type=str,
                     dest='columns', metavar="'col1Name,col2Name,...'",
                     help=msg)
 
