@@ -162,9 +162,14 @@ def set_theme_and_page(theme_name, page_name):
 
 #=============================================================================
 def set_theme(args):
-    theme_name = list(set(args.theme[0].split(',')).intersection(
-        set(THEME_DICT.keys())))[0]
-    page_name = list(set(args.theme[0].split(',')).intersection( PAGE_SET))[0]
+    if hasattr(args, 'theme'):
+        theme_name = list(set(args.theme[0].split(',')).intersection(
+            set(THEME_DICT.keys())))[0]
+        page_name = list(
+                set(args.theme[0].split(',')).intersection( PAGE_SET))[0]
+    else:
+        theme_name = 'gray'
+        page_name = 'slideFull'
     set_theme_and_page(theme_name, page_name)
 
 

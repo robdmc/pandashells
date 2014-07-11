@@ -29,7 +29,7 @@ def df_from_input(args, in_file=None):
     if in_file is None:
         in_file = sys.stdin
     #--- set default read options
-    sep = None
+    sep = ','
     header = 'infer'
     names = None
     encoding='utf-8'
