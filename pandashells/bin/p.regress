@@ -1,0 +1,93 @@
+#! /usr/bin/env python
+
+#--- standard library imports
+import os
+import sys
+import argparse
+import re
+
+############# dev only.  Comment out for production ######################
+sys.path.append('../..')
+##########################################################################
+
+from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
+
+#--- import required dependencies
+modulesOkay = module_checker_lib.check_for_modules(
+        [
+            'pandas',
+            'matplotlib',
+            'statsmodels',
+            'seaborn'
+        ])
+if not modulesOkay:
+    sys.exit(1)
+
+import pandas as pd
+import matplotlib as mpl
+import pylab as pl
+import statsmodels.formula.api as sm
+import seaborn as sns
+
+sns.set_context('talk')
+mpl.rcParams['figure.facecolor'] =  (.98,.98,.98)
+mpl.rcParams['figure.edgecolor'] = (.98,.98,.98)
+
+#=============================================================================
+if __name__ == '__main__':
+    msg = "Performs (multivariable) linear regression.  Fitting model "
+    msg += "is specified using the patsy language.  Input is from stdin "
+    msg += "and output is either fitting information or the input data "
+    msg += "with a column containing fit results and residuals appended."
+
+    #--- read command line arguments
+    parser = argparse.ArgumentParser(
+            description=msg)
+
+    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example',
+            io_no_col_spec_allowed=True)
+
+    #--- specify columns to histogram
+    parser.add_argument("-m", "--model", type=str, nargs=1, required=True,
+            help="The model expressed in patsy syntax")
+
+    parser.add_argument("--return", action="store_true", dest='retfit',
+            default=False, help="Return input with fit and residual appended")
+
+    parser.add_argument("--plot", action="store_true",
+            default=False, help="Make residual plots")
+
+    #--- parse arguments
+    args = parser.parse_args()
+
+    #--- get the input dataframe
+    df = io_lib.df_from_input(args)
+
+    #--- fit the model and add fit, resid columns
+    result = sm.ols(formula=args.model[0], data=df).fit()
+    df['_fit'] = result.fittedvalues
+    df['_resid'] = result.resid
+
+    #--- add and output the fit results if requested
+    if args.retfit:
+        io_lib.df_to_output(args, df)
+        sys.exit(0)
+
+    #--- print the fit summary
+    print result.summary()
+    sys.stdout.flush()
+
+    #--- do plots if requested
+    if args.plot:
+        pl.figure()
+        pl.plot(df._fit, df._resid, '.')
+        pl.xlabel('Fit Value with $R^2 = {:0.4f}$'.format(result.rsquared))
+        pl.ylabel('Residual')
+        pl.title(args.model[0])
+
+        pl.figure()
+        sns.distplot(df._resid, bins=50)
+        pl.xlabel('Residual with $R^2 = {:0.4f}$'.format(result.rsquared))
+        pl.ylabel('Counts')
+        pl.title(args.model[0])
+        pl.show()
