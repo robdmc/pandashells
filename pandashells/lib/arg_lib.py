@@ -81,15 +81,6 @@ def addArgs(parser, *args, **kwargs):
         palette_list = [t for t in config_lib.CONFIG_OPTS if
                 t[0]=='plot_palette'][0][1]
 
-
-
-
-        #plot_theme_list = ['mpl', 'gray', 'grey']
-        #plot_page_list = ['landscape', 'portrait', 'slideFull', 'slideBumper']
-        ##--- 
-        #default_for_plotting = "{},{}".format(
-        #      config_dict['plot_theme'], config_dict['plot_page'])
-
         #--- 
         msg = "Set the x-limits for the plot"
         parser.add_argument('--xlim', nargs=2, type=float, dest='xlim',
@@ -119,44 +110,47 @@ def addArgs(parser, *args, **kwargs):
         parser.add_argument('--nogrid',  action='store_true', dest='no_grid',
                 default=False,  help=msg)
 
+        #--- 
         msg = "Specify plot context. Default = '{}' ".format(context_list[0])
         parser.add_argument( '--context', nargs=1,
                  type=str, dest='plot_context',
                  default=[context_list[0]], choices=context_list,
                  help=msg)
-
+        #--- 
         msg = "Specify plot theme. Default = '{}' ".format(theme_list[0])
         parser.add_argument( '--theme', nargs=1,
                  type=str, dest='plot_theme',
                  default=[theme_list[0]], choices=theme_list,
                  help=msg)
+        #--- 
         msg = "Specify plot palette. Default = '{}' ".format(palette_list[0])
         parser.add_argument( '--palette', nargs=1,
                  type=str, dest='plot_palette',
                  default=[palette_list[0]], choices=palette_list,
                  help=msg)
-
+        #--- 
+        msg = "Save the figure to this file"
+        parser.add_argument('--savefig', nargs=1, type=str,
+                 help=msg)
 
     #-------------------------------------------------------------------------
     if 'xy_plotting' in inArgSet:
 
         #--- 
         msg = 'Column to plot on x-axis'
-        parser.add_argument('-x', nargs=1, type=str, dest='x', 
+        parser.add_argument('-x', nargs=1, type=str, dest='x',
                 help=msg)
         #--- 
         msg = 'Comma-delimited list of columns to plot on y-axis'
-        parser.add_argument('-y', nargs=1, type=str, dest='y', 
+        parser.add_argument('-y', nargs=1, type=str, dest='y',
                 help=msg)
         #--- 
         msg = "Plot style defaults to .-"
         parser.add_argument('-s', '--style', nargs=1, type=str, dest='style',
                 default=['.-'], help=msg)
 
-
     #-------------------------------------------------------------------------
     if 'example' in inArgSet:
         msg = "Show a usage example and exit"
         parser.add_argument('--example', action='store_true', dest='example',
                 default=False,  help=msg)
-

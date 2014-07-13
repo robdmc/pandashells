@@ -44,7 +44,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
             description=msg)
 
-    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example',
+    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example', 'decorating',
             io_no_col_spec_allowed=True)
 
     #--- specify columns to histogram
@@ -79,15 +79,17 @@ if __name__ == '__main__':
 
     #--- do plots if requested
     if args.plot:
-        pl.figure()
+        pl.subplot(211)
+        #pl.figure()
         pl.plot(df._fit, df._resid, '.')
-        pl.xlabel('Fit Value with $R^2 = {:0.4f}$'.format(result.rsquared))
+        #pl.xlabel('Fit Value with $R^2 = {:0.4f}$'.format(result.rsquared))
         pl.ylabel('Residual')
         pl.title(args.model[0])
 
-        pl.figure()
+        #pl.figure()
+        pl.subplot(212)
         sns.distplot(df._resid, bins=50)
         pl.xlabel('Residual with $R^2 = {:0.4f}$'.format(result.rsquared))
         pl.ylabel('Counts')
-        pl.title(args.model[0])
-        pl.show()
+        #pl.title(args.model[0])
+        plot_lib.show(args)

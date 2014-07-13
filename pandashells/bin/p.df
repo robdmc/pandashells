@@ -10,7 +10,7 @@ import re
 sys.path.append('../..')
 ##########################################################################
 
-from pandashells.lib import module_checker_lib, arg_lib, io_lib
+from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
 
 #--- import required dependencies
 modulesOkay = module_checker_lib.check_for_modules(
@@ -39,18 +39,23 @@ if __name__ == '__main__':
     msg += "overwrite 'df'. The output of the final command will be sent "
     msg += "to stdout.  The namespace in which the commands are executed "
     msg += "includes pandas as pd, numpy as np, scipy as scp, pylab as pl, "
-    msg += "dateutil.parser.parse as parse, datetime"
+    msg += "dateutil.parser.parse as parse, datetime.  Plot-specific "
+    msg += "commands will be ignored unless a supplied command creates "
+    msg += "a plot. "
 
     #--- read command line arguments
     parser = argparse.ArgumentParser(
             description=msg)
 
     options = {}
-    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example')
+    arg_lib.addArgs(parser, 'io_in', 'io_out', 'decorating', 'example')
     parser.add_argument("statement", help="Statement to execute", nargs="+")
 
     #--- parse arguments
     args = parser.parse_args()
+
+    #--- set up plot styling in case it's needed
+    plot_lib.set_plot_styling(args)
 
     #--- get the input dataframe
     df = io_lib.df_from_input(args)
@@ -59,7 +64,28 @@ if __name__ == '__main__':
     rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
 
     #--- define regex to identify plot commands
-    rex_plot_cmd = re.compile(r'.*(plot|hist)\(.*\).*')
+    plot_command_list = [
+            'plot',
+            'hist',
+            'scatter',
+            'figure',
+            'subplot',
+            'xlabel',
+            'ylabel',
+            'set_xlabel',
+            'set_ylabel',
+            'title',
+            'set_xlim',
+            'set_ylim',
+            'legend',
+            'twinx',
+            'gca',
+            'gcf'
+            ]
+    pstring = '|'.join(plot_command_list)
+    rex_plot_str = r'.*({})\(.*\).*'.format(pstring)
+    rex_plot_cmd = re.compile(rex_plot_str)
+    needs_show = False
 
     #--- execute the statements in sequence
     for cmd in args.statement:
@@ -70,8 +96,7 @@ if __name__ == '__main__':
         #--- if this is a plot command, execute it and quit
         elif rex_plot_cmd.match(cmd):
             exec(cmd)
-            pl.show()
-            sys.exit(0)
+            needs_show = True
 
         #--- if instead this is a command on the whole frame
         else:
@@ -80,14 +105,21 @@ if __name__ == '__main__':
             exec(cmd)
 
         #--- transform results to dataframe if needed
-        if isinstance(temp, pd.DataFrame):
-            df = temp
-        else:
-            try:
-                df = pd.DataFrame(temp)
-            except pd.core.common.PandasError:
-                print temp
-                sys.exit(0)
+        if not rex_plot_cmd.match(cmd):
+            if isinstance(temp, pd.DataFrame):
+                df = temp
+            else:
+                try:
+                    df = pd.DataFrame(temp)
+                except pd.core.common.PandasError:
+                    print temp
+                    sys.exit(0)
 
-    #--- write dataframe to output
-    io_lib.df_to_output(args, df)
+    #--- show plots if requested
+    if needs_show:
+        plot_lib.refine_plot(args)
+        plot_lib.show(args)
+    #--- otherwise print results
+    else:
+        io_lib.df_to_output(args, df)
+

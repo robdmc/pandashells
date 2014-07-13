@@ -98,4 +98,4 @@ if __name__ == '__main__':
             normed=do_density)
 
     plot_lib.refine_plot(args)
-    pl.show()
+    plot_lib.show(args)

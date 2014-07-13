@@ -17,14 +17,35 @@ from pandashells.lib import module_checker_lib
 modulesOkay = module_checker_lib.check_for_modules(
         [
             'matplotlib',
+            'mpld3',
             'seaborn',
         ])
 if not modulesOkay:
     sys.exit(1)
 
+import re
 import matplotlib as mpl
 import pylab as pl
 import seaborn as sns
+import mpld3
+
+#=============================================================================
+def show(args):
+    #--- if figure saving requested
+    if hasattr(args, 'savefig') and args.savefig:
+        #--- save html if requested
+        rex_html = re.compile('.*?\.html$')
+        if rex_html.match(args.savefig[0]):
+            fig = pl.gcf()
+            html = mpld3.fig_to_html(fig)
+            with open(args.savefig[0], 'w') as outfile:
+                outfile.write(html)
+            return
+        #--- save image types
+        pl.savefig(args.savefig[0])
+    #--- otherwise show to screen
+    else:
+        pl.show()
 
 #=============================================================================
 def set_plot_styling(args):

@@ -15,7 +15,8 @@ CMD_DICT = {
         'statsmodels': 'pip install statsmodels',
         'seaborns': 'pip install seaborn',
         'requests': 'pip install requests',
-        'toolz': 'pip install toolz'
+        'toolz': 'pip install toolz',
+        'mpld3': 'mpld3',
         }
 
 #=============================================================================
