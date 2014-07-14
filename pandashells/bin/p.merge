@@ -39,25 +39,25 @@ if __name__ == '__main__':
             dest='how',  default=['inner'], nargs=1,
             help="Type of join.  Default='inner'")
 
-    msg = 'Comma delimited list of of columns on which to join'
-    parser.add_argument( '--on', nargs=1, metavar='col1,col2,...',
+    msg = 'List of of columns on which to join'
+    parser.add_argument( '--on', nargs='+', metavar='col',
             type=str, dest='on', help=msg)
 
-    msg = 'Comma delimited list of of columns from left file to join on. '
-    parser.add_argument( '--left_on', nargs=1, metavar='col1,col2,...',
+    msg = 'List of of columns from left file to join on. '
+    parser.add_argument( '--left_on', nargs='+', metavar='col',
             type=str, dest='left_on', help=msg)
 
-    msg = 'Comma delimited list of of columns from right file to join on. '
-    parser.add_argument( '--right_on', nargs=1, metavar='col1,col2,...',
+    msg = 'List of of columns from right file to join on. '
+    parser.add_argument( '--right_on', nargs='+', metavar='col',
             type=str, dest='right_on', help=msg)
 
-    msg = 'Comma delimited list of suffixes appended to identically '
+    msg = 'List of suffixes appended to identically '
     msg += 'named columns'
-    parser.add_argument( '--suffixes', nargs=1, metavar='_x,_y',
-            type=str, dest='suffixes', default=['_x,_y'], help=msg)
+    parser.add_argument( '--suffixes', nargs=2, metavar='_x _y',
+            type=str, dest='suffixes', default=['_x', '_y'], help=msg)
 
     parser.add_argument("file", help="Files to join", nargs=2,
-            metavar='LEFTFILE RIGHTFILE')
+            metavar='FILE')
 
     #--- parse arguments
     args = parser.parse_args()
@@ -94,12 +94,12 @@ if __name__ == '__main__':
 
     #--- set merge options for cli
     if args.on:
-        on = [s.strip() for s in args.on[0].split(',')]
+        on = args.on
     if args.left_on:
-        left_on = [s.strip() for s in args.left_on[0].split(',')]
+        left_on = args.left_on
     if args.right_on:
-        right_on = [s.strip() for s in args.right_on[0].split(',')]
-    suffixes = [s.strip() for s in args.suffixes[0].split(',')]
+        right_on = args.right_on
+    suffixes = args.suffixes
 
     #--- perform the merge
     dfj = pd.merge(df_left, df_right, how=how, on=on, left_on=left_on,

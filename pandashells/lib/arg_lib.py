@@ -33,26 +33,26 @@ def addArgs(parser, *args, **kwargs):
     #-------------------------------------------------------------------------
     if 'io_in' in inArgSet:
         #--- define the valid components
-        io_opt_list = ['csv', 'table','header','noheader', 'index','noindex']
+        io_opt_list = ['csv', 'table','header','noheader']
 
         #--- allow the option of supplying input column names
         if not kwargs.get( 'io_no_col_spec_allowed', False):
-            msg = 'Overwrite column names with this comma-delimited list'
-            parser.add_argument('--columns', nargs=1, type=str,
-                    dest='columns', metavar="'col1Name,col2Name,...'",
+            msg = 'Overwrite column names with list of names'
+            parser.add_argument('--columns', nargs='+', type=str,
+                    dest='columns', metavar="col",
                     help=msg)
 
         #--- define the current defaults
-        default_for_input = "'{},{}'".format(config_dict['io_input_type'],
-                config_dict['io_input_header'])
+        default_for_input =[config_dict['io_input_type'],
+                config_dict['io_input_header']]
 
         #--- show the current defaults in the arg parser
-        msg = 'Comma delimited options taken from {}'.format(
+        msg = 'Options taken from {}'.format(
                 repr(io_opt_list))
 
-        parser.add_argument('-i', '--input_options', nargs=1,
-                 type=str, dest='input_options', metavar=default_for_input,
-                 default=[default_for_input], help=msg)
+        parser.add_argument('-i', '--input_options', nargs='+',
+                 type=str, dest='input_options', metavar='option',
+                 default=default_for_input, help=msg)
 
     #-------------------------------------------------------------------------
     if 'io_out' in inArgSet:
@@ -61,15 +61,14 @@ def addArgs(parser, *args, **kwargs):
                 'header','noheader', 'index', 'noindex']
 
         #--- define the current defaults
-        default_for_output = "'{},{},{}'".format(
-              config_dict['io_output_type'],
-              config_dict['io_output_header'],config_dict['io_output_index'])
+        default_for_output = [config_dict['io_output_type'],
+              config_dict['io_output_header'], config_dict['io_output_index']]
 
         #--- show the current defaults in the arg parser
-        msg = 'Comma delimited options taken from {}'.format(repr(io_opt_list))
-        parser.add_argument('-o', '--output_options', nargs=1,
-                 type=str, dest='output_options', metavar=default_for_output,
-                 default=[default_for_output], help=msg)
+        msg = 'Options taken from {}'.format(repr(io_opt_list))
+        parser.add_argument('-o', '--output_options', nargs='+',
+                 type=str, dest='output_options', metavar='option',
+                 default=default_for_output, help=msg)
 
     #-------------------------------------------------------------------------
     if 'decorating' in inArgSet:
@@ -138,12 +137,12 @@ def addArgs(parser, *args, **kwargs):
 
         #--- 
         msg = 'Column to plot on x-axis'
-        parser.add_argument('-x', nargs=1, type=str, dest='x',
+        parser.add_argument('-x', nargs=1, type=str, dest='x', metavar='col',
                 help=msg)
         #--- 
-        msg = 'Comma-delimited list of columns to plot on y-axis'
-        parser.add_argument('-y', nargs=1, type=str, dest='y',
-                help=msg)
+        msg = 'List of columns to plot on y-axis'
+        parser.add_argument('-y', nargs='+', type=str, dest='y',
+                metavar='col', help=msg)
         #--- 
         msg = "Plot style defaults to .-"
         parser.add_argument('-s', '--style', nargs=1, type=str, dest='style',

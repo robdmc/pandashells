@@ -131,21 +131,22 @@ Existing Tool | Purpose
 --- | ---
 p.crypt | Encrypt/Decrypt files using open-ssl tools.
 p.df |       Pandas dataframe manipulation of csv files
-p.geoCode | Use google to geocode addresses
+p.geocode | Use google to geocode addresses
 p.parallel | Run shell command in parallel
 p.plot | Plot data
 p.rand | Generate samples from random distributions
 p.sig_edit | Perform recursive sigma editing for outlier removal
+p.hist | Create a histogram of input data
 
 
 Planned Tool | Purpose
 --- | ---
+p.scatter_matrix | plot a pandas scatter matrix of input columns
 p.cov | Create a table of covariances between collumns
-p.bar | Create a bar chart
+p.bar | Create a bar chart using seaborn
 p.cdf | Compute cumulative distributions of input data
 p.fft | Compute fft of input data
 p.lombscargle | Compute lombscargle spectra of intput data
-p.hist | Create a histogram of input data
 p.interp | Interpolate input data
 p.linspace | Create a linearly spaced set of numbers
 p.map | Plot geometry on maps using basemap
@@ -155,6 +156,12 @@ p.mongoDump | Dump mongodb records to csv
 p.normalize | Normalize a column of numbers
 p.pgsql2csv | Dump a postgres database using sql
 p.smooth | Smooth input data
+p.lowess | Do Lowess smoothing
+p.distplot | seaborn distplot
+p.kdeplot | do 1d and 2d kde plots using seaborn
+p.facetgrid | make facet grid plots using seaborn
+p.boxplot | either using pandas or seaborn
+
 p.sshKeyPush | Push an ssh key to a remote server
 p.template | Use the jinja2 package to render templates
 p.timezone | Change timestamps between time zones

@@ -105,13 +105,14 @@ def draw_xy_plot(args, df):
     if args.xlabel is None:
         args.xlabel = args.x
     if args.ylabel is None:
-        args.ylabel = args.y
+        if len(args.y) == 1:
+            args.ylabel = [args.y[0]]
 
-    y_field_list = args.y[0].split(',')
+    y_field_list = args.y
     x = df[args.x]
     for y_field in y_field_list:
         y = df[y_field]
         pl.plot(x, y, args.style[0], label=y_field, alpha=args.alpha[0])
 
     refine_plot(args)
-    pl.show()
+    show(args)

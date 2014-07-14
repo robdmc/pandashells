@@ -77,9 +77,7 @@ if __name__ == '__main__':
         ser = df[col_name]
         while needs_another_pass:
             needs_another_pass, ser = single_pass(ser, args.sigma_thresh[0])
-        sys.stderr.write( 'filling\n')
         df[col_name] = ser
-
 
     #--- write dataframe to output
     io_lib.df_to_output(args, df)

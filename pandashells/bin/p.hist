@@ -37,7 +37,7 @@ if __name__ == '__main__':
             description=msg)
 
     arg_lib.addArgs(parser, 'io_in', 'example', 'decorating',
-            io_no_col_spec_allowed=True)
+            io_no_col_spec_allowed=False)
 
     #--- specify columns to histogram
     parser.add_argument("-c", "--cols",
