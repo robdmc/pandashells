@@ -7,7 +7,8 @@ import unittest
 fileDir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(fileDir, '../..'))
 
-from  ptools.lib import module_checker_lib as mod
+from ptools.lib import module_checker_lib as mod
+
 
 class module_checker_tests(unittest.TestCase):
 

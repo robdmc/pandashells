@@ -56,8 +56,8 @@ if __name__ == '__main__':
     parser.add_argument( '--suffixes', nargs=2, metavar='_x _y',
             type=str, dest='suffixes', default=['_x', '_y'], help=msg)
 
-    parser.add_argument("file", help="Files to join", nargs=2,
-            metavar='FILE')
+    parser.add_argument("file", help="Files to join", nargs=2, type=str,
+            metavar='file file')
 
     #--- parse arguments
     args = parser.parse_args()
