@@ -137,6 +137,8 @@ p.plot | Plot data
 p.rand | Generate samples from random distributions
 p.sig_edit | Perform recursive sigma editing for outlier removal
 p.hist | Create a histogram of input data
+p.linspace | Create a linearly spaced set of numbers
+p.cdf | Compute cumulative distributions of input data
 
 
 Planned Tool | Purpose
@@ -144,11 +146,9 @@ Planned Tool | Purpose
 p.scatter_matrix | plot a pandas scatter matrix of input columns
 p.cov | Create a table of covariances between collumns
 p.bar | Create a bar chart using seaborn
-p.cdf | Compute cumulative distributions of input data
 p.fft | Compute fft of input data
 p.lombscargle | Compute lombscargle spectra of intput data
 p.interp | Interpolate input data
-p.linspace | Create a linearly spaced set of numbers
 p.map | Plot geometry on maps using basemap
 p.mapDots2html | Plot points on a google map
 p.mapPoly2html | Plot polygons on a google map
