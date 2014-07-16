@@ -162,11 +162,11 @@ p.hist | Create a histogram of input data
 p.linspace | Create a linearly spaced set of numbers
 p.cdf | Compute cumulative distributions of input data
 p.regress | Perform (multi-variable) linear regression
+p.scatter_matrix | plot a pandas scatter matrix of input columns
 
 
 Planned Tool | Purpose
 --- | ---
-p.scatter_matrix | plot a pandas scatter matrix of input columns
 p.cov | Create a table of covariances between collumns
 p.bar | Create a bar chart using seaborn
 p.fft | Compute fft of input data
