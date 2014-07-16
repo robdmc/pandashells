@@ -1,6 +1,24 @@
 PandaShells                           
 ===
 
+What is PandaShells?
+----
+* A set of command-line tools for working with tabular data
+* Easily read/write data in CSV, or space delimited formats
+* Quickly aggregate, join, and summarize tabular data 
+* Compute descriptive statistics
+* Perform regression and classification 
+* Create data visualizations that can be saved to images or rendered interactively using 
+  either a native backend or html.
+* Designed to be used with unix pipes for easy integration with awk, grep, sed, etc.
+
+What's with the name?
+----
+PandaShells is a riff on Pandas, the library created by Wes McKinney
+that has become the go-to tool for working with data in python.
+
+Description
+----
 If you work with data using Python, you have almost certainly encountered 
 <a href="http://pandas.pydata.org/">Pandas</a>,
 <a href="http://www.scipy.org/">SciPy</a>, 
@@ -19,8 +37,9 @@ awk, grep, sed, and even the dreaded perl-one-liner don't have the power or
 expressiveness that the python data stack provides.
 
 PandaShells is an effort to bring the power of the python data stack to the 
-shell prompt.  You can think of pandaShells as a set of convenient argparse
-wrappers around python's amazing data libraries.
+shell prompt.  It essentially exposes a command-line API to the incredibly
+powerful suite of data tools that exist in the python community.  The authors
+of these amazing tools (see dependencies below) are greatfully acknowledged.
 
 <strong>PandaShells is still very much in alpha.
 The commands and syntax are rapidly evolving and tests/documentation are
@@ -46,6 +65,9 @@ comprehensive list of the packages used in the tool set.
 * scipy
 * matplotlib
 * pandas
+* statsmodels
+* seaborn
+* mpld3
 * requests
 * toolz
 
@@ -139,6 +161,7 @@ p.sig_edit | Perform recursive sigma editing for outlier removal
 p.hist | Create a histogram of input data
 p.linspace | Create a linearly spaced set of numbers
 p.cdf | Compute cumulative distributions of input data
+p.regress | Perform (multi-variable) linear regression
 
 
 Planned Tool | Purpose
@@ -203,4 +226,4 @@ Here are some half-baked ideas for tool syntax that I'm still think about how to
 * with --desc 'my desc'  allows you to store a description that will be displayed with the --info flag
 
 * It would be nice to create a scikit.learn model/pipeline, save it to a pickle file and then
-  have a pandashells command that would run predictions based on that model for inputs from stdin.
+  have a pandaShells command that would run predictions based on that model for inputs from stdin.

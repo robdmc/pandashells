@@ -13,7 +13,7 @@ CMD_DICT = {
     'matplotlib': 'conda install matplotlib',
     'pandas': 'pip install pandas',
     'statsmodels': 'pip install statsmodels',
-    'seaborns': 'pip install seaborn',
+    'seaborn': 'pip install seaborn',
     'requests': 'pip install requests',
     'toolz': 'pip install toolz',
     'mpld3': 'mpld3'}
