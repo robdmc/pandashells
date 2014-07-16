@@ -105,7 +105,7 @@ If the syntax is unfamiliar to you, you are encouraged to review the
     </code></pre>
 
 * Compute statistics for numerical fields in the data set.
-  <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.describe().T' -o table,index </strong>
+  <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.describe().T' -o table index </strong>
               count       mean       std   min      25%     50%      75%    max
   total_bill    244  19.785943  8.902412  3.07  13.3475  17.795  24.1275  50.81
   tip           244   2.998279  1.383638  1.00   2.0000   2.900   3.5625  10.00
@@ -120,7 +120,7 @@ If the syntax is unfamiliar to you, you are encouraged to review the
   </code></pre>
 
 * Find the mean tip broken down by gender and day
-  <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.groupby(by=["sex","day"]).tip.mean()' -o table,index</strong>
+  <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.groupby(by=["sex","day"]).tip.mean()' -o table index</strong>
                     tip
   sex    day
   Female Fri   2.781111
