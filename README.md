@@ -163,6 +163,7 @@ p.linspace | Create a linearly spaced set of numbers
 p.cdf | Compute cumulative distributions of input data
 p.regress | Perform (multi-variable) linear regression
 p.scatter_matrix | plot a pandas scatter matrix of input columns
+p.regplot | plot results of single variable polynomial regression
 
 
 Planned Tool | Purpose
