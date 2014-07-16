@@ -52,6 +52,9 @@ if __name__ == '__main__':
 
     x = df[args.col[0]].values
 
+    # --- set the appropriate theme
+    plot_lib.set_plot_styling(args)
+
     # --- compute and plot the cdf
     osm, osr = scp.stats.probplot(x, dist='uniform', fit=False)
     pl.plot(osr,osm, label='P({} < x)'.format(args.col[0]))
