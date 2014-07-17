@@ -55,6 +55,9 @@ if __name__ == '__main__':
     msg = "The order of the polynomial to fit (default = 1)"
     parser.add_argument("--order", help=msg, nargs=1, default=[1], type=int)
 
+    parser.add_argument("-a", "--alpha", help="Set opacity",
+            nargs=1, default=[0.5], type=float)
+
     #--- parse arguments
     args = parser.parse_args()
 
@@ -85,7 +88,9 @@ if __name__ == '__main__':
         if re.compile(r'.*?\.html$').match(args.savefig[0]):
             label = label_plain
 
-    sns.regplot(x,y, order=args.order[0], label=label)
+    sns.regplot(x,y, order=args.order[0], label=label,
+                scatter_kws={'alpha':args.alpha[0]})
+
     pl.legend(loc='best')
     pl.xlabel(args.x[0])
     pl.ylabel(args.y[0])

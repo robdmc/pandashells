@@ -18,12 +18,16 @@ modulesOkay = module_checker_lib.check_for_modules(
             'pandas',
             'matplotlib',
             'statsmodels',
-            'seaborn'
+            'seaborn',
+            'numpy',
+            'scipy',
         ])
 if not modulesOkay:
     sys.exit(1)
 
 import pandas as pd
+import numpy as np
+import scipy as scp
 import matplotlib as mpl
 import pylab as pl
 import statsmodels.formula.api as sm
@@ -57,6 +61,9 @@ if __name__ == '__main__':
     parser.add_argument("--plot", action="store_true",
             default=False, help="Make residual plots")
 
+    parser.add_argument("-a", "--alpha", help="Set opacity",
+            nargs=1, default=[0.5], type=float)
+
     #--- parse arguments
     args = parser.parse_args()
 
@@ -81,7 +88,7 @@ if __name__ == '__main__':
     if args.plot:
         pl.subplot(211)
         #pl.figure()
-        pl.plot(df._fit, df._resid, '.')
+        pl.plot(df._fit, df._resid, '.', alpha=args.alpha[0])
         #pl.xlabel('Fit Value with $R^2 = {:0.4f}$'.format(result.rsquared))
         pl.ylabel('Residual')
         pl.title(args.model[0])
