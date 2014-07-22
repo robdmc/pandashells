@@ -13,12 +13,11 @@ sys.path.append('../..')
 from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
 
 # --- import required dependencies
-modulesOkay = module_checker_lib.check_for_modules(
-        [
-            'pandas',
-            'matplotlib',
-            'scipy'
-        ])
+modulesOkay = module_checker_lib.check_for_modules([
+    'pandas',
+    'matplotlib',
+    'scipy'
+])
 if not modulesOkay:
     sys.exit(1)
 
@@ -32,8 +31,7 @@ if __name__ == '__main__':
     msg = "Plot cumulative distribution of input column."
 
     # --- read command line arguments
-    parser = argparse.ArgumentParser(
-            description=msg)
+    parser = argparse.ArgumentParser(description=msg)
 
     arg_lib.addArgs(parser, 'io_in', 'example', 'decorating',
                     io_no_col_spec_allowed=False)
@@ -57,8 +55,8 @@ if __name__ == '__main__':
 
     # --- compute and plot the cdf
     osm, osr = scp.stats.probplot(x, dist='uniform', fit=False)
-    pl.plot(osr,osm, label='P({} < x)'.format(args.col[0]))
-    pl.plot(osr,1 - osm, label='P({} > x)'.format(args.col[0]))
+    pl.plot(osr, osm, label='P({} < x)'.format(args.col[0]))
+    pl.plot(osr, 1 - osm, label='P({} > x)'.format(args.col[0]))
     pl.xlabel('x')
     pl.legend(loc='best')
 
