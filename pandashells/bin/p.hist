@@ -6,10 +6,6 @@ import sys
 import argparse
 import re
 
-# ############ dev only.  Comment out for production ######################
-sys.path.append('../..')
-# #########################################################################
-
 from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
 
 # --- import required dependencies

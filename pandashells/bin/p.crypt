@@ -6,10 +6,6 @@ import sys
 import argparse
 import re
 
-# ############ dev only.  Comment out for production ######################
-sys.path.append('../..')
-# #########################################################################
-
 from pandashells.lib import arg_lib
 
 # =============================================================================

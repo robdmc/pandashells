@@ -5,10 +5,6 @@ import os
 import sys
 import argparse
 
-# ############ dev only.  Comment out for production ######################
-sys.path.append('../..')
-# #########################################################################
-
 import pandashells
 
 # --- create a dict of data-set names and corresponding files
