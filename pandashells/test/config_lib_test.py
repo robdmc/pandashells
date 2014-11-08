@@ -1,27 +1,47 @@
 #! /usr/bin/env python
-
 import os
-import sys
 import unittest
+from pandashells.lib import config_lib
 
-fileDir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(fileDir, '../..'))
+class GlobalArgTests(unittest.TestCase):
+    def test_home_path_looks_right(self):
+        """
+        The path to the users home directory looks right
+        """
+        home = os.path.expanduser('~')
+        self.assertEqual(config_lib.HOME, home)
 
-from ptools.lib import module_checker_lib as mod
+    def test_default_opt_dict_exists(self):
+        """
+        The dictionary of default options exists
+        """
+        self.assertTrue(len(config_lib.DEFAULT_DICT) > 0)
 
 
-class module_checker_tests(unittest.TestCase):
 
+class GetConfigTests(unittest.TestCase):
     def setUp(self):
-        mod.CMD_DICT.update({'fakemodule': 'pip install fakemodule'})
+        #self.orig_file_name = config_lib.CONFIG_FILE_NAME
+        config_lib.CONFIG_FILE_NAME = 'silly_test_name'
+        self.test_file = os.path.join(os.path.expanduser('~'), config_lib.CONFIG_FILE_NAME)
 
     def tearDown(self):
-        pass
+        #config_lib.CONFIG_FILE_NAME = self.orig_file_name
+        if os.path.isfile(self.test_file):
+            os.system('rm {}'.format(self.test_file))
 
-    def test_check_for_existing_module(self):
-        importsOkay = mod.check_for_modules(['os'])
-        self.assertEqual(importsOkay, True)
+    def test_set_config_creates_file(self):
+        """
+        testing nothing
+        """
+        expected_dict = {'name': 'John'}
+        config_lib.set_config(expected_dict)
+        print
+        print '?-'*80
+        print self.test_file
+        self.assertTrue(os.path.isfile(self.test_file))
 
-    def test_check_for_missing_module(self):
-        importsOkay = mod.check_for_modules(['fakemodule'])
-        self.assertEqual(importsOkay, False)
+
+
+
+

@@ -25,19 +25,31 @@ HOME = os.path.expanduser('~')
 CONFIG_FILE_NAME = os.path.join(HOME, CONFIG_FILE_NAME)
 
 
-def set_config(configDict):
-    with open(CONFIG_FILE_NAME, 'w') as configFile:
-        configFile.write(json.dumps(configDict, indent=2))
+def set_config(config_dict):
+    """Persists the supplied configuration dictionary to disk
+
+    :type config_dict: dict
+    :param config_dict: A dictionary of configuration options
+    """
+    with open(CONFIG_FILE_NAME, 'w') as config_file:
+        config_file.write(json.dumps(config_dict, indent=2))
 
 
 def get_config():
+    """Get the current configuration options
+
+    Will create and persist a set of default options if they don't exist.
+
+    :rtype: dict
+    :returns: A dictionary of configuration options
+    """
     if os.path.isfile(CONFIG_FILE_NAME):
-        with open(CONFIG_FILE_NAME, 'r') as configFile:
-            configDict = json.loads(configFile.read())
+        with open(CONFIG_FILE_NAME, 'r') as config_file:
+            config_dict = json.loads(config_file.read())
     else:
-        configDict = DEFAULT_DICT
-        set_config(configDict)
-    return configDict
+        config_dict = DEFAULT_DICT
+        set_config(config_dict)
+    return config_dict
 
 
 if __name__ == '__main__':
