@@ -52,18 +52,14 @@ class ArgLibTests(TestCase):
         # --- create a list of expected call signatures
         calls = []
         msg = 'Overwrite column names with list of names'
-        calls.append(
-            call('--names', nargs='+', type=str, dest='names', metavar="name",
-            help=msg)
-        )
-
+        calls.append(call('--names', nargs='+', type=str,
+                          dest='names', metavar="name", help=msg))
         default_for_input = ['csv', 'header']
         io_opt_list = ['csv', 'table', 'header', 'noheader']
         calls.append(call('-i', '--input_options', nargs='+',
-            type=str, dest='input_options', metavar='option',
-            default=default_for_input, choices=io_opt_list,
-            help='Input Options')
-        )
+                          type=str, dest='input_options', metavar='option',
+                          default=default_for_input, choices=io_opt_list,
+                          help='Input Options'))
 
         # --- run the code under test
         args = ['io_in']
@@ -98,20 +94,21 @@ class ArgLibTests(TestCase):
         default_for_output = ['csv', 'header', 'noindex']
         msg = 'Options taken from {}'.format(repr(io_opt_list))
         call_obj = call('-o', '--output_options', nargs='+',
-                            type=str, dest='output_options', metavar='option',
-                            default=default_for_output, help=msg)
+                        type=str, dest='output_options', metavar='option',
+                        default=default_for_output, help=msg)
 
         # --- run the code under test
         args = ['io_out']
         config_dict = {
             'io_output_type': 'csv',
             'io_output_header': 'header',
-            'io_output_index': 'index'
+            'io_output_index': 'noindex'
         }
         arg_lib._io_out_adder(parser, config_dict, *args)
 
         # --- make sure proper calls were made
-        parser.add_argument.assertCalledWith(call_obj)
+        self.assertEqual(parser.add_argument.call_args_list, [call_obj])
+        #parser.add_argument.assertCalledWith(call_obj)
 
     def test_decorating_adder_inactive(self):
         """
@@ -160,7 +157,6 @@ class ArgLibTests(TestCase):
         msg = "Set the title for the plot"
         calls.append(call('--title', nargs=1, type=str, dest='title', help=msg))
 
-
         msg = "Specify legend location"
         calls.append(call('--legend', nargs=1, type=str, dest='legend',
                           choices=['1', '2', '3', '4', 'best'], help=msg))
@@ -168,7 +164,6 @@ class ArgLibTests(TestCase):
         msg = "Specify whether hide the grid or not"
         calls.append(call('--nogrid',  action='store_true', dest='no_grid',
                           default=False,  help=msg))
-
 
         msg = "Specify plot context. Default = '{}' ".format(context_list[0])
         calls.append(call('--context', nargs=1, type=str, dest='plot_context',
@@ -194,3 +189,105 @@ class ArgLibTests(TestCase):
 
         # --- make sure proper calls were made
         self.assertEqual(parser.add_argument.call_args_list, calls)
+
+    def test_xy_adder_inactive(self):
+        """
+        _xy_adder doesn't do anything when xy_plotting not specified
+        """
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
+        args = []
+        arg_lib._xy_adder(parser, *args)
+        self.assertFalse(parser.add_argument.called)
+
+    def test_xy_adder_active(self):
+        """
+        _xy_adder adds proper arguments
+        """
+        # --- set up mock parser
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
+
+        # --- create a list of expected call signatures
+        calls = []
+        msg = 'Column to plot on x-axis'
+        calls.append(call('-x', nargs=1, type=str, dest='x', metavar='col',
+                            help=msg))
+
+        msg = 'List of columns to plot on y-axis'
+        calls.append(call('-y', nargs='+', type=str, dest='y',
+                            metavar='col', help=msg))
+
+        msg = "Plot style defaults to .-"
+        calls.append(call('-s', '--style', nargs=1, type=str, dest='style',
+                            default=['.-'], help=msg))
+
+        # --- run the code under test
+        args = ['xy_plotting']
+        arg_lib._xy_adder(parser, *args)
+
+        # --- make sure proper calls were made
+        self.assertEqual(parser.add_argument.call_args_list, calls)
+
+    def test_example_adder_inactive(self):
+        """
+        _example_adder doesn't do anything when example not specified
+        """
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
+        args = []
+        arg_lib._example_adder(parser, *args)
+        self.assertFalse(parser.add_argument.called)
+
+    def test_example_adder_active(self):
+        """
+        _example_adder adds proper arguments
+        """
+        # --- set up mock parser
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
+
+        msg = "Show a usage example and exit"
+        call_obj = call('--example', action='store_true', dest='example',
+                            default=False,  help=msg)
+
+        args = ['example']
+        arg_lib._example_adder(parser, *args)
+
+        # --- make sure proper calls were made
+        self.assertEqual(parser.add_argument.call_args_list, [call_obj])
+
+    @patch('pandashells.lib.arg_lib._example_adder')
+    @patch('pandashells.lib.arg_lib._xy_adder')
+    @patch('pandashells.lib.arg_lib._decorating_adder')
+    @patch('pandashells.lib.arg_lib._io_out_adder')
+    @patch('pandashells.lib.arg_lib._io_in_adder')
+    @patch('pandashells.lib.arg_lib._check_for_recognized_args')
+    @patch('pandashells.lib.arg_lib.config_lib.get_config')
+    def test_add_args(self,
+                      get_config_mock,
+                      _check_for_recognized_args_mock,
+                      _io_in_adder_mock,
+                      _io_out_adder_mock,
+                      _decorating_adder_mock,
+                      _xy_adder_mock,
+                      _example_adder_mock):
+        # --- set up the mocks
+        parser = MagicMock()
+        get_config_mock.return_value = {}
+
+        # --- define expected call signatures
+        plain_call_list = [call(parser)]
+        config_call_list = [call(parser, {})]
+
+        # --- call the code under test
+        arg_lib.add_args(parser)
+
+        # --- assert the proper call signatures
+        self.assertEqual(get_config_mock.call_args_list, [call()])
+        self.assertEqual(_check_for_recognized_args_mock.call_args_list,
+                         [call()])
+        self.assertEqual(_io_in_adder_mock, config_call_list)
+
+
+

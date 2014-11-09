@@ -4,6 +4,7 @@ import inspect
 
 from pandashells.lib import config_lib
 
+
 def _check_for_recognized_args(*args):
     """
     Raise an error if unrecognized argset is specified
@@ -47,6 +48,7 @@ def _io_in_adder(parser, config_dict, *args):
                             default=default_for_input, choices=io_opt_list,
                             help='Input Options')
 
+
 def _io_out_adder(parser, config_dict, *args):
     """
     Add output options to the parser
@@ -67,6 +69,7 @@ def _io_out_adder(parser, config_dict, *args):
         parser.add_argument('-o', '--output_options', nargs='+',
                             type=str, dest='output_options', metavar='option',
                             default=default_for_output, help=msg)
+
 
 def _decorating_adder(parser, *args):
     in_arg_set = set(args)
@@ -132,33 +135,42 @@ def _decorating_adder(parser, *args):
                             help=msg)
 
 
-def add_args(parser, *args, **kwargs):
-    """
+def _xy_adder(parser, *args):
+    in_arg_set = set(args)
+    if 'xy_plotting' in in_arg_set:
+
+        msg = 'Column to plot on x-axis'
+        parser.add_argument('-x', nargs=1, type=str, dest='x', metavar='col',
+                            help=msg)
+
+        msg = 'List of columns to plot on y-axis'
+        parser.add_argument('-y', nargs='+', type=str, dest='y',
+                            metavar='col', help=msg)
+
+        msg = "Plot style defaults to .-"
+        parser.add_argument('-s', '--style', nargs=1, type=str, dest='style',
+                            default=['.-'], help=msg)
+
+def _example_adder(parser, *args):
+    in_arg_set = set(args)
+    if 'example' in in_arg_set:
+        msg = "Show a usage example and exit"
+        parser.add_argument('--example', action='store_true', dest='example',
+                            default=False,  help=msg)
+
+def add_args(parser, *args):
+    """Adds argument blocks to the arg parser
+
+    :type parser: argparse instance
+    :param parser: The argarse instance to use in adding arguments
+
+    Additinional arguments are the names of argument blocks to add
     """
     config_dict = config_lib.get_config()
     _check_for_recognized_args(*args)
     _io_in_adder(parser, config_dict, *args)
     _io_out_adder(parser, config_dict, *args)
     _decorating_adder(parser, *args)
+    _xy_adder(parser, *args)
+    _example_adder(parser, *args)
 
-    # ------------------------------------------------------------------------
-    if 'xy_plotting' in in_arg_set:
-
-        # ---
-        msg = 'Column to plot on x-axis'
-        parser.add_argument('-x', nargs=1, type=str, dest='x', metavar='col',
-                            help=msg)
-        # ---
-        msg = 'List of columns to plot on y-axis'
-        parser.add_argument('-y', nargs='+', type=str, dest='y',
-                            metavar='col', help=msg)
-        # ---
-        msg = "Plot style defaults to .-"
-        parser.add_argument('-s', '--style', nargs=1, type=str, dest='style',
-                            default=['.-'], help=msg)
-
-    # ------------------------------------------------------------------------
-    if 'example' in in_arg_set:
-        msg = "Show a usage example and exit"
-        parser.add_argument('--example', action='store_true', dest='example',
-                            default=False,  help=msg)
