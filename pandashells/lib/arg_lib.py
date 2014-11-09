@@ -2,37 +2,32 @@ import os
 import sys
 import inspect
 
-
-# ############ dev only.  Comment out for production ######################
-sys.path.append('../..')
-# #########################################################################
-
 from pandashells.lib import config_lib
 
-
-# ============================================================================
-def addArgs(parser, *args, **kwargs):
+def _check_for_recognized_args(*args):
     """
-    kwargs: 'io.no_col_spec_allowed'
+    Raise an error if unrecognized argset is specified
     """
+    allowed_arg_set = set([
+        'io_in',
+        'io_out',
+        'example',
+        'xy_plotting',
+        'decorating',
+    ])
 
-    config_dict = config_lib.get_config()
-    allowedArgSet = set(
-        [
-            'io_in',
-            'io_out',
-            'example',
-            'xy_plotting',
-            'decorating',
-        ])
+    in_arg_set = set(args)
+    unrecognized_set = in_arg_set - allowed_arg_set
+    if unrecognized_set:
+        msg = '{} not in allowed set {}'.format(unrecognized_set,
+                                                allowed_arg_set)
+        raise ValueError(msg)
 
-    inArgSet = set(args)
-    unrecognizedSet = inArgSet - allowedArgSet
-    if unrecognizedSet:
-        raise Exception('Unrecognized set in addArgs')
 
-    # ------------------------------------------------------------------------
-    if 'io_in' in inArgSet:
+def _io_in_adder(parser, *args):
+    in_arg_set = set(args)
+
+    if 'io_in' in in_arg_set:
         # --- define the valid components
         io_opt_list = ['csv', 'table', 'header', 'noheader']
 
@@ -54,8 +49,38 @@ def addArgs(parser, *args, **kwargs):
                             type=str, dest='input_options', metavar='option',
                             default=default_for_input, help=msg)
 
+
+def add_args(parser, *args, **kwargs):
+    """
+    """
+    config_dict = config_lib.get_config()
+    _check_for_recognized_args(*args)
+
+    ## ------------------------------------------------------------------------
+    #if 'io_in' in in_arg_set:
+    #    # --- define the valid components
+    #    io_opt_list = ['csv', 'table', 'header', 'noheader']
+
+    #    # --- allow the option of supplying input column names
+    #    if not kwargs.get('io_no_col_spec_allowed', False):
+    #        msg = 'Overwrite column names with list of names'
+    #        parser.add_argument('--columns', nargs='+', type=str,
+    #                            dest='columns', metavar="col",
+    #                            help=msg)
+
+    #    # --- define the current defaults
+    #    default_for_input = [config_dict['io_input_type'],
+    #                         config_dict['io_input_header']]
+
+    #    # --- show the current defaults in the arg parser
+    #    msg = 'Options taken from {}'.format(repr(io_opt_list))
+
+    #    parser.add_argument('-i', '--input_options', nargs='+',
+    #                        type=str, dest='input_options', metavar='option',
+    #                        default=default_for_input, help=msg)
+
     # ------------------------------------------------------------------------
-    if 'io_out' in inArgSet:
+    if 'io_out' in in_arg_set:
         # --- define the valid components
         io_opt_list = ['csv', 'table', 'html',
                        'header', 'noheader', 'index', 'noindex']
@@ -72,7 +97,7 @@ def addArgs(parser, *args, **kwargs):
                             default=default_for_output, help=msg)
 
     # ------------------------------------------------------------------------
-    if 'decorating' in inArgSet:
+    if 'decorating' in in_arg_set:
         # --- get a list of valid plot styling info
         context_list = [t for t in config_lib.CONFIG_OPTS if
                         t[0] == 'plot_context'][0][1]
@@ -134,7 +159,7 @@ def addArgs(parser, *args, **kwargs):
                             help=msg)
 
     # ------------------------------------------------------------------------
-    if 'xy_plotting' in inArgSet:
+    if 'xy_plotting' in in_arg_set:
 
         # ---
         msg = 'Column to plot on x-axis'
@@ -150,7 +175,7 @@ def addArgs(parser, *args, **kwargs):
                             default=['.-'], help=msg)
 
     # ------------------------------------------------------------------------
-    if 'example' in inArgSet:
+    if 'example' in in_arg_set:
         msg = "Show a usage example and exit"
         parser.add_argument('--example', action='store_true', dest='example',
                             default=False,  help=msg)

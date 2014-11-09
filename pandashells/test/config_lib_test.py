@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 import os
 import json
-import unittest
+from unittest import TestCase
 from pandashells.lib import config_lib
 
-class GlobalArgTests(unittest.TestCase):
+class GlobalArgTests(TestCase):
     def test_home_path_looks_right(self):
         """
         The path to the users home directory looks right
@@ -20,7 +20,7 @@ class GlobalArgTests(unittest.TestCase):
 
 
 
-class GetConfigTests(unittest.TestCase):
+class GetConfigTests(TestCase):
     def setUp(self):
         #self.orig_file_name = config_lib.CONFIG_FILE_NAME
         if os.path.isfile(config_lib.CONFIG_FILE_NAME):
