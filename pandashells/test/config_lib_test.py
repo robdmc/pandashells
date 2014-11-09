@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import os
+import json
 import unittest
 from pandashells.lib import config_lib
 
@@ -22,26 +23,42 @@ class GlobalArgTests(unittest.TestCase):
 class GetConfigTests(unittest.TestCase):
     def setUp(self):
         #self.orig_file_name = config_lib.CONFIG_FILE_NAME
-        config_lib.CONFIG_FILE_NAME = 'silly_test_name'
-        self.test_file = os.path.join(os.path.expanduser('~'), config_lib.CONFIG_FILE_NAME)
+        if os.path.isfile(config_lib.CONFIG_FILE_NAME):
+            os.system('cp {f} {f}_orig'.format(f=config_lib.CONFIG_FILE_NAME))
 
     def tearDown(self):
-        #config_lib.CONFIG_FILE_NAME = self.orig_file_name
-        if os.path.isfile(self.test_file):
-            os.system('rm {}'.format(self.test_file))
+        if os.path.isfile(config_lib.CONFIG_FILE_NAME + '_orig'):
+            os.system('mv {f}_orig {f}'.format(f=config_lib.CONFIG_FILE_NAME))
+        else:
+            os.system('rm  {f}'.format(f=config_lib.CONFIG_FILE_NAME))
 
     def test_set_config_creates_file(self):
         """
-        testing nothing
+        set_config() function writes to file
         """
         expected_dict = {'name': 'John'}
         config_lib.set_config(expected_dict)
-        print
-        print '?-'*80
-        print self.test_file
-        self.assertTrue(os.path.isfile(self.test_file))
+        saved_dict = json.loads(open(config_lib.CONFIG_FILE_NAME).read())
+        self.assertEqual(expected_dict, saved_dict)
 
+    def test_get_config_non_existent_file(self):
+        """
+        get_config() creates config file when it doesn't exist
+        """
+        if os.path.isfile(config_lib.CONFIG_FILE_NAME):
+            os.system('rm {}'.format(config_lib.CONFIG_FILE_NAME))
+        config = config_lib.get_config()
+        self.assertEqual(config_lib.DEFAULT_DICT, config)
 
+    def test_get_config_existing_file(self):
+        """
+        get_config() reads existing file
+        """
+        if os.path.isfile(config_lib.CONFIG_FILE_NAME):
+            os.system('rm {}'.format(config_lib.CONFIG_FILE_NAME))
 
-
-
+        test_config = {'name': 'Bill'}
+        with open(config_lib.CONFIG_FILE_NAME, 'w') as f:
+            f.write(json.dumps(test_config))
+        config = config_lib.get_config()
+        self.assertEqual(test_config, config)

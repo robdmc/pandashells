@@ -50,7 +50,3 @@ def get_config():
         config_dict = DEFAULT_DICT
         set_config(config_dict)
     return config_dict
-
-
-if __name__ == '__main__':
-    print get_config()
