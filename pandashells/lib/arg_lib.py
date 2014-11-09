@@ -25,6 +25,9 @@ def _check_for_recognized_args(*args):
 
 
 def _io_in_adder(parser, config_dict, *args):
+    """
+    Add input options to the parser
+    """
     in_arg_set = set(args)
     if 'io_in' in in_arg_set:
         # --- define the valid components
@@ -45,6 +48,9 @@ def _io_in_adder(parser, config_dict, *args):
                             help='Input Options')
 
 def _io_out_adder(parser, config_dict, *args):
+    """
+    Add output options to the parser
+    """
     in_arg_set = set(args)
     if 'io_out' in in_arg_set:
         # --- define the valid components
@@ -62,32 +68,8 @@ def _io_out_adder(parser, config_dict, *args):
                             type=str, dest='output_options', metavar='option',
                             default=default_for_output, help=msg)
 
-def add_args(parser, *args, **kwargs):
-    """
-    """
-    config_dict = config_lib.get_config()
-    _check_for_recognized_args(*args)
-    _io_in_adder(parser, config_dict, *args)
-
-
-    ## ------------------------------------------------------------------------
-    #if 'io_out' in in_arg_set:
-    #    # --- define the valid components
-    #    io_opt_list = ['csv', 'table', 'html',
-    #                   'header', 'noheader', 'index', 'noindex']
-
-    #    # --- define the current defaults
-    #    default_for_output = [config_dict['io_output_type'],
-    #                          config_dict['io_output_header'],
-    #                          config_dict['io_output_index']]
-
-    #    # --- show the current defaults in the arg parser
-    #    msg = 'Options taken from {}'.format(repr(io_opt_list))
-    #    parser.add_argument('-o', '--output_options', nargs='+',
-    #                        type=str, dest='output_options', metavar='option',
-    #                        default=default_for_output, help=msg)
-
-    # ------------------------------------------------------------------------
+def _decorating_adder(parser, *args):
+    in_arg_set = set(args)
     if 'decorating' in in_arg_set:
         # --- get a list of valid plot styling info
         context_list = [t for t in config_lib.CONFIG_OPTS if
@@ -148,6 +130,16 @@ def add_args(parser, *args, **kwargs):
         msg = "Save the figure to this file"
         parser.add_argument('--savefig', nargs=1, type=str,
                             help=msg)
+
+
+def add_args(parser, *args, **kwargs):
+    """
+    """
+    config_dict = config_lib.get_config()
+    _check_for_recognized_args(*args)
+    _io_in_adder(parser, config_dict, *args)
+    _io_out_adder(parser, config_dict, *args)
+    _decorating_adder(parser, *args)
 
     # ------------------------------------------------------------------------
     if 'xy_plotting' in in_arg_set:
