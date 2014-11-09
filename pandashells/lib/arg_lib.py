@@ -24,62 +24,28 @@ def _check_for_recognized_args(*args):
         raise ValueError(msg)
 
 
-def _io_in_adder(parser, *args):
+def _io_in_adder(parser, config_dict, *args):
     in_arg_set = set(args)
-
     if 'io_in' in in_arg_set:
         # --- define the valid components
         io_opt_list = ['csv', 'table', 'header', 'noheader']
 
         # --- allow the option of supplying input column names
-        if not kwargs.get('io_no_col_spec_allowed', False):
-            msg = 'Overwrite column names with list of names'
-            parser.add_argument('--columns', nargs='+', type=str,
-                                dest='columns', metavar="col",
-                                help=msg)
+        msg = 'Overwrite column names with list of names'
+        parser.add_argument('--names', nargs='+', type=str,
+                            dest='names', metavar="name",
+                            help=msg)
 
-        # --- define the current defaults
         default_for_input = [config_dict['io_input_type'],
                              config_dict['io_input_header']]
 
-        # --- show the current defaults in the arg parser
-        msg = 'Options taken from {}'.format(repr(io_opt_list))
-
         parser.add_argument('-i', '--input_options', nargs='+',
                             type=str, dest='input_options', metavar='option',
-                            default=default_for_input, help=msg)
+                            default=default_for_input, choices=io_opt_list,
+                            help='Input Options')
 
-
-def add_args(parser, *args, **kwargs):
-    """
-    """
-    config_dict = config_lib.get_config()
-    _check_for_recognized_args(*args)
-
-    ## ------------------------------------------------------------------------
-    #if 'io_in' in in_arg_set:
-    #    # --- define the valid components
-    #    io_opt_list = ['csv', 'table', 'header', 'noheader']
-
-    #    # --- allow the option of supplying input column names
-    #    if not kwargs.get('io_no_col_spec_allowed', False):
-    #        msg = 'Overwrite column names with list of names'
-    #        parser.add_argument('--columns', nargs='+', type=str,
-    #                            dest='columns', metavar="col",
-    #                            help=msg)
-
-    #    # --- define the current defaults
-    #    default_for_input = [config_dict['io_input_type'],
-    #                         config_dict['io_input_header']]
-
-    #    # --- show the current defaults in the arg parser
-    #    msg = 'Options taken from {}'.format(repr(io_opt_list))
-
-    #    parser.add_argument('-i', '--input_options', nargs='+',
-    #                        type=str, dest='input_options', metavar='option',
-    #                        default=default_for_input, help=msg)
-
-    # ------------------------------------------------------------------------
+def _io_out_adder(parser, config_dict, *args):
+    in_arg_set = set(args)
     if 'io_out' in in_arg_set:
         # --- define the valid components
         io_opt_list = ['csv', 'table', 'html',
@@ -95,6 +61,31 @@ def add_args(parser, *args, **kwargs):
         parser.add_argument('-o', '--output_options', nargs='+',
                             type=str, dest='output_options', metavar='option',
                             default=default_for_output, help=msg)
+
+def add_args(parser, *args, **kwargs):
+    """
+    """
+    config_dict = config_lib.get_config()
+    _check_for_recognized_args(*args)
+    _io_in_adder(parser, config_dict, *args)
+
+
+    ## ------------------------------------------------------------------------
+    #if 'io_out' in in_arg_set:
+    #    # --- define the valid components
+    #    io_opt_list = ['csv', 'table', 'html',
+    #                   'header', 'noheader', 'index', 'noindex']
+
+    #    # --- define the current defaults
+    #    default_for_output = [config_dict['io_output_type'],
+    #                          config_dict['io_output_header'],
+    #                          config_dict['io_output_index']]
+
+    #    # --- show the current defaults in the arg parser
+    #    msg = 'Options taken from {}'.format(repr(io_opt_list))
+    #    parser.add_argument('-o', '--output_options', nargs='+',
+    #                        type=str, dest='output_options', metavar='option',
+    #                        default=default_for_output, help=msg)
 
     # ------------------------------------------------------------------------
     if 'decorating' in in_arg_set:

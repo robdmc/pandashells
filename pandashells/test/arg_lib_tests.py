@@ -4,6 +4,8 @@ import json
 from unittest import TestCase
 from pandashells.lib import arg_lib
 import argparse
+from mock import patch, MagicMock, call
+
 
 class ArgLibTests(TestCase):
     def setUp(self):
@@ -29,70 +31,83 @@ class ArgLibTests(TestCase):
         ]
         arg_lib._check_for_recognized_args(*args)
 
-    def test_io_in_adder_bad_args(self):
+    def test_io_in_inactive(self):
         """
-        _io_in_adder properly recognizes bad arguments
+        _io_in_adder doesn't do anything when io_in not specified
         """
-        parser = argparse.ArgumentParser()
-        arg_lib._io_in_adder
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
+        args = []
+        config_dict = {'io_input_type': 'csv', 'io_input_header': 'header'}
+        arg_lib._io_in_adder(parser, config_dict, *args)
+        self.assertFalse(parser.add_argument.called)
 
+    def test_io_in_active(self):
+        """
+        _io_in_adder adds proper arguments
+        """
+        # --- set up mock parser
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
 
+        # --- create a list of expected call signatures
+        calls = []
+        msg = 'Overwrite column names with list of names'
+        calls.append(
+            call('--names', nargs='+', type=str, dest='names', metavar="name",
+            help=msg)
+        )
 
-#class GlobalArgTests(unittest.TestCase):
-#    def test_home_path_looks_right(self):
-#        """
-#        The path to the users home directory looks right
-#        """
-#        home = os.path.expanduser('~')
-#        self.assertEqual(config_lib.HOME, home)
-#
-#    def test_default_opt_dict_exists(self):
-#        """
-#        The dictionary of default options exists
-#        """
-#        self.assertTrue(len(config_lib.DEFAULT_DICT) > 0)
-#
-#
-#
-#class GetConfigTests(unittest.TestCase):
-#    def setUp(self):
-#        #self.orig_file_name = config_lib.CONFIG_FILE_NAME
-#        if os.path.isfile(config_lib.CONFIG_FILE_NAME):
-#            os.system('cp {f} {f}_orig'.format(f=config_lib.CONFIG_FILE_NAME))
-#
-#    def tearDown(self):
-#        if os.path.isfile(config_lib.CONFIG_FILE_NAME + '_orig'):
-#            os.system('mv {f}_orig {f}'.format(f=config_lib.CONFIG_FILE_NAME))
-#        else:
-#            os.system('rm  {f}'.format(f=config_lib.CONFIG_FILE_NAME))
-#
-#    def test_set_config_creates_file(self):
-#        """
-#        set_config() function writes to file
-#        """
-#        expected_dict = {'name': 'John'}
-#        config_lib.set_config(expected_dict)
-#        saved_dict = json.loads(open(config_lib.CONFIG_FILE_NAME).read())
-#        self.assertEqual(expected_dict, saved_dict)
-#
-#    def test_get_config_non_existent_file(self):
-#        """
-#        get_config() creates config file when it doesn't exist
-#        """
-#        if os.path.isfile(config_lib.CONFIG_FILE_NAME):
-#            os.system('rm {}'.format(config_lib.CONFIG_FILE_NAME))
-#        config = config_lib.get_config()
-#        self.assertEqual(config_lib.DEFAULT_DICT, config)
-#
-#    def test_get_config_existing_file(self):
-#        """
-#        get_config() reads existing file
-#        """
-#        if os.path.isfile(config_lib.CONFIG_FILE_NAME):
-#            os.system('rm {}'.format(config_lib.CONFIG_FILE_NAME))
-#
-#        test_config = {'name': 'Bill'}
-#        with open(config_lib.CONFIG_FILE_NAME, 'w') as f:
-#            f.write(json.dumps(test_config))
-#        config = config_lib.get_config()
-#        self.assertEqual(test_config, config)
+        default_for_input = ['csv', 'header']
+        io_opt_list = ['csv', 'table', 'header', 'noheader']
+        calls.append(call('-i', '--input_options', nargs='+',
+            type=str, dest='input_options', metavar='option',
+            default=default_for_input, choices=io_opt_list,
+            help='Input Options')
+        )
+
+        # --- run the code under test
+        args = ['io_in']
+        config_dict = {'io_input_type': 'csv', 'io_input_header': 'header'}
+        arg_lib._io_in_adder(parser, config_dict, *args)
+
+        # --- make sure proper calls were made
+        self.assertEqual(parser.add_argument.call_args_list, calls)
+
+    def test_io_out_inactive(self):
+        """
+        _io_out_adder doesn't do anything when io_out not specified
+        """
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
+        args = []
+        config_dict = {'io_input_type': 'csv', 'io_input_header': 'header'}
+        arg_lib._io_out_adder(parser, config_dict, *args)
+        self.assertFalse(parser.add_argument.called)
+
+    def test_io_out_active(self):
+        """
+        _io_out_adder adds proper arguments
+        """
+        # --- set up mock parser
+        parser = MagicMock()
+        parser.add_argument = MagicMock()
+
+        # --- create  expected call signature
+        io_opt_list = ['csv', 'table', 'html',
+                       'header', 'noheader', 'index', 'noindex']
+        # --- define the current defaults
+        default_for_output = ['csv', 'header', 'noindex']
+        msg = 'Options taken from {}'.format(repr(io_opt_list))
+        call_obj = call('-o', '--output_options', nargs='+',
+                            type=str, dest='output_options', metavar='option',
+                            default=default_for_output, help=msg)
+
+        # --- run the code under test
+        args = ['io_out']
+        config_dict = {'io_input_type': 'csv', 'io_input_header': 'header'}
+        arg_lib._io_in_adder(parser, config_dict, *args)
+
+        # --- make sure proper calls were made
+        parser.add_argument.assertCalledWith(call_obj)
+
