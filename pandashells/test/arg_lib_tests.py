@@ -287,7 +287,11 @@ class ArgLibTests(TestCase):
         self.assertEqual(get_config_mock.call_args_list, [call()])
         self.assertEqual(_check_for_recognized_args_mock.call_args_list,
                          [call()])
-        self.assertEqual(_io_in_adder_mock, config_call_list)
+        self.assertEqual(_io_in_adder_mock.call_args_list, config_call_list)
+        self.assertEqual(_io_out_adder_mock.call_args_list, config_call_list)
+        self.assertEqual(_decorating_adder_mock.call_args_list, plain_call_list)
+        self.assertEqual(_xy_adder_mock.call_args_list, plain_call_list)
+        self.assertEqual(_example_adder_mock.call_args_list, plain_call_list)
 
 
 
