@@ -7,24 +7,12 @@ import argparse
 import re
 import csv
 
-# ############ dev only.  Comment out for production ######################
-sys.path.append('../..')
-# #########################################################################
-
 from pandashells.lib import module_checker_lib, config_lib
-
-# --- import required dependencies
-modulesOkay = module_checker_lib.check_for_modules(
-    [
-        'pandas',
-    ])
-if not modulesOkay:
-    sys.exit(1)
+module_checker_lib.check_for_modules(['pandas'])
 
 import pandas as pd
 
 
-# ============================================================================
 def df_from_input(args, in_file=None):
     if in_file is None:
         in_file = sys.stdin
