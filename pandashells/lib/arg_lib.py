@@ -151,12 +151,14 @@ def _xy_adder(parser, *args):
         parser.add_argument('-s', '--style', nargs=1, type=str, dest='style',
                             default=['.-'], help=msg)
 
+
 def _example_adder(parser, *args):
     in_arg_set = set(args)
     if 'example' in in_arg_set:
         msg = "Show a usage example and exit"
         parser.add_argument('--example', action='store_true', dest='example',
                             default=False,  help=msg)
+
 
 def add_args(parser, *args):
     """Adds argument blocks to the arg parser
@@ -173,4 +175,3 @@ def add_args(parser, *args):
     _decorating_adder(parser, *args)
     _xy_adder(parser, *args)
     _example_adder(parser, *args)
-

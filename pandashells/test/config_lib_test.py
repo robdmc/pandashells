@@ -4,6 +4,7 @@ import json
 from unittest import TestCase
 from pandashells.lib import config_lib
 
+
 class GlobalArgTests(TestCase):
     def test_home_path_looks_right(self):
         """
@@ -19,10 +20,8 @@ class GlobalArgTests(TestCase):
         self.assertTrue(len(config_lib.DEFAULT_DICT) > 0)
 
 
-
 class GetConfigTests(TestCase):
     def setUp(self):
-        #self.orig_file_name = config_lib.CONFIG_FILE_NAME
         if os.path.isfile(config_lib.CONFIG_FILE_NAME):
             os.system('cp {f} {f}_orig'.format(f=config_lib.CONFIG_FILE_NAME))
 

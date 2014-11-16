@@ -108,7 +108,6 @@ class ArgLibTests(TestCase):
 
         # --- make sure proper calls were made
         self.assertEqual(parser.add_argument.call_args_list, [call_obj])
-        #parser.add_argument.assertCalledWith(call_obj)
 
     def test_decorating_adder_inactive(self):
         """
@@ -212,15 +211,15 @@ class ArgLibTests(TestCase):
         calls = []
         msg = 'Column to plot on x-axis'
         calls.append(call('-x', nargs=1, type=str, dest='x', metavar='col',
-                            help=msg))
+                     help=msg))
 
         msg = 'List of columns to plot on y-axis'
         calls.append(call('-y', nargs='+', type=str, dest='y',
-                            metavar='col', help=msg))
+                     metavar='col', help=msg))
 
         msg = "Plot style defaults to .-"
         calls.append(call('-s', '--style', nargs=1, type=str, dest='style',
-                            default=['.-'], help=msg))
+                     default=['.-'], help=msg))
 
         # --- run the code under test
         args = ['xy_plotting']
@@ -249,7 +248,7 @@ class ArgLibTests(TestCase):
 
         msg = "Show a usage example and exit"
         call_obj = call('--example', action='store_true', dest='example',
-                            default=False,  help=msg)
+                        default=False,  help=msg)
 
         args = ['example']
         arg_lib._example_adder(parser, *args)
@@ -292,6 +291,3 @@ class ArgLibTests(TestCase):
         self.assertEqual(_decorating_adder_mock.call_args_list, plain_call_list)
         self.assertEqual(_xy_adder_mock.call_args_list, plain_call_list)
         self.assertEqual(_example_adder_mock.call_args_list, plain_call_list)
-
-
-
