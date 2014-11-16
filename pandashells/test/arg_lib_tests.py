@@ -13,14 +13,14 @@ class ArgLibTests(TestCase):
 
     def test_check_for_recognized_args_bad_args(self):
         """
-        _check_for_recognized_args properly recognizes bad arguments
+        _check_for_recognized_args() properly recognizes bad arguments
         """
         with self.assertRaises(ValueError):
             arg_lib._check_for_recognized_args('unrecognized', 'args')
 
     def test_check_for_recognized_args_good_args(self):
         """
-        _check_for_recognized_args properly accepts good args
+        _check_for_recognized_args() properly accepts good args
         """
         args = [
             'io_in',
@@ -33,7 +33,7 @@ class ArgLibTests(TestCase):
 
     def test_io_in_adder_inactive(self):
         """
-        _io_in_adder doesn't do anything when io_in not specified
+        _io_in_adder() doesn't do anything when io_in not specified
         """
         parser = MagicMock()
         parser.add_argument = MagicMock()
@@ -43,7 +43,7 @@ class ArgLibTests(TestCase):
 
     def test_io_in_adder_active(self):
         """
-        _io_in_adder adds proper arguments
+        _io_in_adder() adds proper arguments
         """
         # --- set up mock parser
         parser = MagicMock()
@@ -71,7 +71,7 @@ class ArgLibTests(TestCase):
 
     def test_io_out_adder_inactive(self):
         """
-        _io_out_adder doesn't do anything when io_out not specified
+        _io_out_adder() doesn't do anything when io_out not specified
         """
         parser = MagicMock()
         parser.add_argument = MagicMock()
@@ -81,7 +81,7 @@ class ArgLibTests(TestCase):
 
     def test_io_out_adder_active(self):
         """
-        _io_out_adder adds proper arguments
+        _io_out_adder() adds proper arguments
         """
         # --- set up mock parser
         parser = MagicMock()
@@ -111,7 +111,7 @@ class ArgLibTests(TestCase):
 
     def test_decorating_adder_inactive(self):
         """
-        _decorating_adder doesn't do anything when decorating not specified
+        _decorating_adder() doesn't do anything when decorating not specified
         """
         parser = MagicMock()
         parser.add_argument = MagicMock()
@@ -121,7 +121,7 @@ class ArgLibTests(TestCase):
 
     def test_decorating_adder_active(self):
         """
-        _decorating_adder adds proper arguments
+        _decorating_adder() adds proper arguments
         """
         # --- set up mock parser
         parser = MagicMock()
@@ -191,7 +191,7 @@ class ArgLibTests(TestCase):
 
     def test_xy_adder_inactive(self):
         """
-        _xy_adder doesn't do anything when xy_plotting not specified
+        _xy_adder() doesn't do anything when xy_plotting not specified
         """
         parser = MagicMock()
         parser.add_argument = MagicMock()
@@ -201,7 +201,7 @@ class ArgLibTests(TestCase):
 
     def test_xy_adder_active(self):
         """
-        _xy_adder adds proper arguments
+        _xy_adder() adds proper arguments
         """
         # --- set up mock parser
         parser = MagicMock()
@@ -230,7 +230,7 @@ class ArgLibTests(TestCase):
 
     def test_example_adder_inactive(self):
         """
-        _example_adder doesn't do anything when example not specified
+        _example_adder() doesn't do anything when example not specified
         """
         parser = MagicMock()
         parser.add_argument = MagicMock()
@@ -240,7 +240,7 @@ class ArgLibTests(TestCase):
 
     def test_example_adder_active(self):
         """
-        _example_adder adds proper arguments
+        _example_adder() adds proper arguments
         """
         # --- set up mock parser
         parser = MagicMock()
