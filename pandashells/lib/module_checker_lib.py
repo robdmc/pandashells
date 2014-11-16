@@ -15,23 +15,23 @@ CMD_DICT = {
     'statsmodels': 'pip install statsmodels',
     'seaborn': 'pip install seaborn',
     'requests': 'pip install requests',
-    'toolz': 'pip install toolz',
     'mpld3': 'mpld3'}
 
 
 # ============================================================================
-def check_for_modules(moduleList=[]):
-    badModList = []
+def check_for_modules(module_list=None):
+    module_list = module_list if module_list else []
+    bad_mod_list = []
     # --- try importing all the required modules
-    for module in moduleList:
+    for module in module_list:
         try:
             importlib.import_module(module)
         except ImportError:
-            badModList.append(module)
+            bad_mod_list.append(module)
 
-    if badModList:
+    if bad_mod_list:
         sys.stderr.write(HEADER)
-        for mod in badModList:
+        for mod in bad_mod_list:
             msg = '-'*60 + '\n'
             msg += "Missing module '{}'. To install use: \n".format(mod)
             msg += "    {}\n".format(CMD_DICT[mod])
