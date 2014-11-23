@@ -55,16 +55,16 @@ def df_from_input(args, in_file=None):
     return df
 
 
-def csv_writer(header, index):
+def csv_writer(df, header, index):
     df.to_csv(sys.stdout, header=header, encoding=ENCODING,
               quoting=csv.QUOTE_NONNUMERIC, index=index)
 
 
-def table_writer(header, index):
+def table_writer(df, header, index):
     sys.stdout.write(df.to_string(header=header, index=index) + '\n')
 
 
-def html_writer(header, index):
+def html_writer(df, header, index):
     outString = "<style> table.dataframe "
     outString += "{border-width:1px; border-style:solid; "
     outString += "border-collapse:collapse; border-color: "
