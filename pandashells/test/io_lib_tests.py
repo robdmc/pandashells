@@ -3,41 +3,68 @@ import os
 import json
 from unittest import TestCase
 from pandashells.lib.module_checker_lib import check_for_modules
-from pandashells.lib import module_checker_lib
+from pandashells.lib import io_lib
 import argparse
 from mock import patch, MagicMock, call
 
+class IOLibTests(TestCase):
+    def test_get_separator_csv(self):
+        """
+        get_separator() recognizes csv
+        """
+        config_dict = {'io_input_type': 'csv'}
+        args = MagicMock(input_options=['csv'])
+        self.assertEqual(',', io_lib.get_separator(args, config_dict))
 
-class ModuleCheckerTests(TestCase):
-    def setUp(self):
-        module_checker_lib.CMD_DICT['fakemodule1'] = 'pip install fakemodule1'
-        module_checker_lib.CMD_DICT['fakemodule2'] = 'pip install fakemodule2'
-        module_checker_lib.CMD_DICT['os'] = 'part of standard module'
+    def test_get_separator_table(self):
+        """
+        get_separator() recognizes table
+        """
+        config_dict = {'io_input_type': 'csv'}
+        args = MagicMock(input_options=['table'])
+        self.assertEqual(r'\s+', io_lib.get_separator(args, config_dict))
 
-    def test_check_for_modules_unrecognized(self):
+    def test_get_separator_default(self):
         """
-        check_for_modules() raises error when module is unrecognized
+        get_separator() goes to default for unrecognized
         """
-        with self.assertRaises(ValueError):
-            check_for_modules(['not_a_module'])
+        config_dict = {'io_input_type': 'csv'}
+        args = MagicMock(input_options=[])
+        self.assertEqual(',', io_lib.get_separator(args, config_dict))
 
-    @patch('pandashells.lib.module_checker_lib.importlib.import_module')
-    def test_check_for_modules_no_modules(self, import_module_mock):
+    def test_get_header_names_with_names_and_header(self):
         """
-        check_for_modules() does nothing when module list is empty
+        get_header_names() does right thing for names and header
         """
-        check_for_modules([])
-        self.assertFalse(import_module_mock.called)
+        args = MagicMock(names=['a'], input_options=[])
+        header, names = io_lib.get_header_names(args)
+        self.assertEqual(header, 0)
+        self.assertEqual(names, ['a'])
 
-    def test_check_for_modules_existing_module(self):
+    def test_get_header_names_with_names_and_no_header(self):
         """
-        check_for_modules() successfully finds existing module
+        get_header_names() does right thing for names and header
         """
-        check_for_modules(['os'])
+        args = MagicMock(names=['a'], input_options=['noheader'])
+        header, names = io_lib.get_header_names(args)
+        self.assertEqual(header, None)
+        self.assertEqual(names, ['a'])
 
-    def test_check_for_modules_bad(self):
+    def test_get_header_names_with_no_names_and_header(self):
         """
-        check_for_modules() correctly identifies missing modules
+        get_header_names() does right thing for names and header
         """
-        with self.assertRaises(ImportError):
-            check_for_modules(['fakemodule1', 'fakemodule2'])
+        args = MagicMock(names=None, input_options=[])
+        header, names = io_lib.get_header_names(args)
+        self.assertEqual(header, 'infer')
+        self.assertEqual(names, None )
+
+    def test_get_header_names_with_no_names_and_no_header(self):
+        """
+        get_header_names() does right thing for names and header
+        """
+        args = MagicMock(names=None, input_options=['noheader'])
+        header, names = io_lib.get_header_names(args)
+        self.assertEqual(header, None)
+        self.assertEqual(names, None )
+
