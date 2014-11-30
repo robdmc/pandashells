@@ -6,29 +6,17 @@ import sys
 import argparse
 import re
 
-# ############ dev only.  Comment out for production ######################
-sys.path.append('../..')
-# #########################################################################
-
 from pandashells.lib import module_checker_lib
 
 # --- import required dependencies
-modulesOkay = module_checker_lib.check_for_modules([
-    'matplotlib',
-    'mpld3',
-    'seaborn'])
+module_checker_lib.check_for_modules(['matplotlib', 'mpld3', 'seaborn'])
 
-if not modulesOkay:
-    sys.exit(1)
-
-import re
 import matplotlib as mpl
 import pylab as pl
 import seaborn as sns
 import mpld3
 
 
-# ============================================================================
 def show(args):
     # --- if figure saving requested
     if hasattr(args, 'savefig') and args.savefig:
@@ -47,7 +35,6 @@ def show(args):
         pl.show()
 
 
-# ============================================================================
 def set_plot_styling(args):
     # --- set up seaborn context
     sns.set(context=args.plot_context[0],
@@ -60,33 +47,37 @@ def set_plot_styling(args):
         mpl.rcParams['figure.edgecolor'] = 'white'
 
 
-# ============================================================================
-def refine_plot(args):
+def set_limits(args):
     if args.xlim:
         pl.gca().set_xlim(args.xlim)
     if args.ylim:
         pl.gca().set_ylim(args.ylim)
+
+def set_labels_title(args):
     if args.title:
         pl.title(args.title[0])
     if args.xlabel:
         pl.xlabel(args.xlabel[0])
     if args.ylabel:
         pl.ylabel(args.ylabel[0])
+
+def set_legend(args):
     if args.legend:
         loc = args.legend[0]
         rex = re.compile(r'\d')
         m = rex.match(loc)
         if m:
             loc = int(loc)
-
+        else:
+            loc = 'best'
         pl.legend(loc=loc)
+
+def set_grid(args):
     if args.no_grid:
         pl.grid(False)
     else:
         pl.grid(True)
 
-
-# ============================================================================
 def draw_xy_plot(args, df):
     x_is_none = args.x is None
     y_is_none = args.y is None
@@ -116,5 +107,7 @@ def draw_xy_plot(args, df):
         y = df[y_field]
         pl.plot(x, y, args.style[0], label=y_field, alpha=args.alpha[0])
 
-    refine_plot(args)
+    set_limits(args)
+    set_labels_title(args)
+    set_grid(args)
     show(args)
