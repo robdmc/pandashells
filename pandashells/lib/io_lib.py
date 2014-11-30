@@ -19,7 +19,7 @@ def get_separator(args, config_dict):
     sep_dict = {'csv': ',', 'table': r'\s+'}
     input_type_set = set(args.input_options).intersection(set(sep_dict.keys()))
     if input_type_set:
-        input_type = input_type_set[0]
+        input_type = list(input_type_set)[0]
     else:
         input_type = config_dict['io_input_type']
     return sep_dict[input_type]
@@ -89,7 +89,7 @@ def df_to_output(args, df):
     # --- get the output type
     output_type_set = set(args.output_options).intersection(set(valid_outputs))
     if output_type_set:
-        output_type = output_type_set[0]
+        output_type = list(output_type_set)[0]
     else:
         output_type = config_dict['io_output_type']
 
@@ -102,6 +102,6 @@ def df_to_output(args, df):
 
     # --- call writer in try block to gracefully handle closed pipes
     try:
-        write_output_for[output_type](header, index)
+        writer_for[output_type](df, header, index)
     except IOError:
         pass

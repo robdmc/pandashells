@@ -10,6 +10,7 @@ import argparse
 from mock import patch, MagicMock, call
 import StringIO
 
+
 class IOLibTests(TestCase):
     def test_get_separator_csv(self):
         """
@@ -60,7 +61,7 @@ class IOLibTests(TestCase):
         args = MagicMock(names=None, input_options=[])
         header, names = io_lib.get_header_names(args)
         self.assertEqual(header, 'infer')
-        self.assertEqual(names, None )
+        self.assertEqual(names, None)
 
     def test_get_header_names_with_no_names_and_no_header(self):
         """
@@ -69,7 +70,7 @@ class IOLibTests(TestCase):
         args = MagicMock(names=None, input_options=['noheader'])
         header, names = io_lib.get_header_names(args)
         self.assertEqual(header, None)
-        self.assertEqual(names, None )
+        self.assertEqual(names, None)
 
     @patch('pandashells.lib.io_lib.sys.stdin')
     @patch('pandashells.lib.io_lib.pd')
@@ -104,7 +105,7 @@ class IOLibTests(TestCase):
 
     @patch('pandashells.lib.io_lib.sys')
     def test_csv_writer(self, sys_mock):
-        sys_mock.stdout =  StringIO.StringIO()
+        sys_mock.stdout = StringIO.StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.csv_writer(df, header=True, index=False)
         sys.stdout = sys.__stdout__
@@ -112,7 +113,7 @@ class IOLibTests(TestCase):
 
     @patch('pandashells.lib.io_lib.sys')
     def test_table_writer(self, sys_mock):
-        sys_mock.stdout =  StringIO.StringIO()
+        sys_mock.stdout = StringIO.StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.table_writer(df, header=True, index=False)
         sys.stdout = sys.__stdout__
@@ -120,7 +121,7 @@ class IOLibTests(TestCase):
 
     @patch('pandashells.lib.io_lib.sys')
     def test_html_writer(self, sys_mock):
-        sys_mock.stdout =  StringIO.StringIO()
+        sys_mock.stdout = StringIO.StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.html_writer(df, header=True, index=False)
         sys.stdout = sys.__stdout__
@@ -129,15 +130,32 @@ class IOLibTests(TestCase):
         self.assertTrue('<th>b</th>' in html)
         self.assertTrue('<td> 1</td>' in html)
 
-    def test_df_to_output(self):
-        print
-        print '*'*80
-        print 'I need to write this test and then make docstrings for all these tests'
+    @patch('pandashells.lib.io_lib.csv_writer')
+    def test_df_to_output_no_header_no_index(self, csv_writer_mock):
+        args_mock = MagicMock(output_options=['csv', 'noheader'])
+        df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
+        io_lib.df_to_output(args_mock, df)
+        csv_writer_mock.assert_called_with(df, False, False)
 
+    @patch('pandashells.lib.io_lib.csv_writer')
+    def test_df_to_output_csv_type(self, csv_writer_mock):
+        args_mock = MagicMock(output_options=['csv', 'index'])
+        df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
+        io_lib.df_to_output(args_mock, df)
+        csv_writer_mock.assert_called_with(df, True, True)
 
+    @patch('pandashells.lib.io_lib.csv_writer')
+    def test_df_to_output_bad_type(self, csv_writer_mock):
+        args_mock = MagicMock(output_options=['bad'])
+        df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
+        io_lib.df_to_output(args_mock, df)
+        csv_writer_mock.assert_called_with(df, True, False)
 
+    @patch('pandashells.lib.io_lib.sys')
+    def test_df_to_output_broken_stdout(self, sys_mock):
+        args_mock = MagicMock(output_options=['table'])
+        df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
+        sys_mock.stdout.write = MagicMock(side_effect=IOError)
 
-
-
-
-
+        io_lib.df_to_output(args_mock, df)
+        self.assertTrue(sys_mock.stdout.write.called)
