@@ -76,7 +76,7 @@ def set_grid(args):
     else:
         pl.grid(True)
 
-def draw_xy_plot(args, df):
+def ensure_xy_args(args):
     x_is_none = args.x is None
     y_is_none = args.y is None
     if (x_is_none ^ y_is_none):
@@ -84,12 +84,23 @@ def draw_xy_plot(args, df):
         sys.stderr.write(msg)
         sys.exit(1)
 
-    if len(df.columns) != 2:
-        if args.x is None:
-                msg = "\n\n x and y can be ommited only "
-                msg += "for 2-column data-frames\n"
-                sys.stderr.write(msg)
-                sys.exit(1)
+def ensure_xy_omission_state(args, df):
+    if (len(df.columns) != 2) and (args.x is None):
+        msg = "\n\n x and y can be ommited only "
+        msg += "for 2-column data-frames\n"
+        sys.stderr.write(msg)
+        sys.exit(1)
+
+def draw_xy_plot(args, df):
+    self.ensure_xy_args(args)
+    self.ensure_xy_omission_state(args, df)
+
+    #if len(df.columns) != 2:
+    #    if args.x is None:
+    #        msg = "\n\n x and y can be ommited only "
+    #        msg += "for 2-column data-frames\n"
+    #        sys.stderr.write(msg)
+    #        sys.exit(1)
     if (args.x is None) and (len(df.columns) == 2):
         args.x = [df.columns[0]]
         args.y = [df.columns[1]]

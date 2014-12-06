@@ -71,3 +71,99 @@ class PlotLibTests(TestCase):
         self.assertNotEqual(
             rc_pre['axes.titlesize'], rc_post['axes.titlesize'])
 
+    def test_set_plot_limits_no_args(self):
+        """set_limits() properly does nothing when nothing specified
+        """
+        args = MagicMock(savefig='', xlim=[], ylim=[])
+        pl.plot(range(10))
+        plot_lib.set_limits(args)
+        self.assertEqual(pl.gca().get_xlim(), (0.0, 9.0))
+        self.assertEqual(pl.gca().get_ylim(), (0.0, 9.0))
+
+    def test_set_plot_limits(self):
+        """set_limits() properly sets limits
+        """
+        args = MagicMock(savefig='', xlim=[-2, 2], ylim=[-3, 3])
+        pl.plot(range(10))
+        plot_lib.set_limits(args)
+        self.assertEqual(pl.gca().get_xlim(), (-2.0, 2.0))
+        self.assertEqual(pl.gca().get_ylim(), (-3.0, 3.0))
+
+    def test_set_labels_titles_no_args(self):
+        """set_labels_title() properly does nothing when nothing specified
+        """
+        args = MagicMock(savefig='', title=[], xlabel=[], ylabel=[])
+        pl.plot(range(10))
+        plot_lib.set_labels_title(args)
+        self.assertEqual(pl.gca().get_title(), '')
+        self.assertEqual(pl.gca().get_label(), '')
+        self.assertEqual(pl.gca().get_title(), '')
+
+    def test_set_labels_titles(self):
+        """set_labels_title() properly sets labels and titles
+        """
+        args = MagicMock(savefig='', title=['t'], xlabel=['x'], ylabel=['y'])
+        pl.plot(range(10))
+        plot_lib.set_labels_title(args)
+        self.assertEqual(pl.gca().get_title(), 't')
+        self.assertEqual(pl.gca().get_xlabel(), 'x')
+        self.assertEqual(pl.gca().get_ylabel(), 'y')
+
+    def test_set_grid_no_grid(self):
+        """set_grid() properly does nothing when no_grid set
+        """
+        args = MagicMock(savefig='', no_grid=True)
+        pl.plot(range(10))
+        plot_lib.set_grid(args)
+        self.assertFalse(pl.gca().xaxis._gridOnMajor)
+
+    def test_set_grid_with_grid(self):
+        """set_grid() properly sets grid when specified
+        """
+        args = MagicMock(savefig='', no_grid=False)
+        pl.plot(range(10))
+        plot_lib.set_grid(args)
+        self.assertTrue(pl.gca().xaxis._gridOnMajor)
+
+    @patch('pandashells.lib.plot_lib.sys.stderr')
+    @patch('pandashells.lib.plot_lib.sys.exit')
+    def test_ensure_xy_args_bad(self, exit_mock, stderr_mock):
+        """ensure_xy_args() exits when args are bad
+        """
+        stderr_mock.write = MagicMock()
+        args = MagicMock(x=None, y=True)
+        plot_lib.ensure_xy_args(args)
+        self.assertTrue(exit_mock.called)
+
+    @patch('pandashells.lib.plot_lib.sys.stderr')
+    @patch('pandashells.lib.plot_lib.sys.exit')
+    def test_ensure_xy_args_good(self, exit_mock, stderr_mock):
+        """ensure_xy_args() doesn't exit when args okay
+        """
+        stderr_mock.write = MagicMock()
+        args = MagicMock(x=None, y=None)
+        plot_lib.ensure_xy_args(args)
+        self.assertFalse(exit_mock.called)
+
+    @patch('pandashells.lib.plot_lib.sys.stderr')
+    @patch('pandashells.lib.plot_lib.sys.exit')
+    def test_ensure_xy_omission_state_bad(self, exit_mock, stderr_mock):
+        """ensure_xy_omission_state() identifies bad inputs
+        """
+        stderr_mock.write = MagicMock()
+        args = MagicMock(x=None, y=None)
+        df = MagicMock(columns=[1, 2, 3])
+        plot_lib.ensure_xy_omission_state(args, df)
+        self.assertTrue(exit_mock.called)
+
+    @patch('pandashells.lib.plot_lib.sys.stderr')
+    @patch('pandashells.lib.plot_lib.sys.exit')
+    def test_ensure_xy_omission_state_good(self, exit_mock, stderr_mock):
+        """ensure_xy_omission_state() identifies bad inputs
+        """
+        stderr_mock.write = MagicMock()
+        args = MagicMock(x=None, y=None)
+        df = MagicMock(columns=[1, 2])
+        plot_lib.ensure_xy_omission_state(args, df)
+        self.assertFalse(exit_mock.called)
+
