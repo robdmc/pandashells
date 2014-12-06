@@ -167,3 +167,7 @@ class PlotLibTests(TestCase):
         plot_lib.ensure_xy_omission_state(args, df)
         self.assertFalse(exit_mock.called)
 
+        """
+        need to test autofill_plot_labels next
+        """
+

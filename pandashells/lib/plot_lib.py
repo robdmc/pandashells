@@ -91,24 +91,22 @@ def ensure_xy_omission_state(args, df):
         sys.stderr.write(msg)
         sys.exit(1)
 
-def draw_xy_plot(args, df):
-    self.ensure_xy_args(args)
-    self.ensure_xy_omission_state(args, df)
-
-    #if len(df.columns) != 2:
-    #    if args.x is None:
-    #        msg = "\n\n x and y can be ommited only "
-    #        msg += "for 2-column data-frames\n"
-    #        sys.stderr.write(msg)
-    #        sys.exit(1)
+def autofill_plot_labels(args):
+    # add labels for two column inputs
     if (args.x is None) and (len(df.columns) == 2):
         args.x = [df.columns[0]]
         args.y = [df.columns[1]]
+    # if no xlabel, set it to the x field
     if args.xlabel is None:
         args.xlabel = args.x
-    if args.ylabel is None:
-        if len(args.y) == 1:
-            args.ylabel = [args.y[0]]
+    # if no ylabel, and only 1 trace being plotted, set ylabel to that field
+    if (args.ylabel is None) and (len(args.y) == 1):
+        args.ylabel = [args.y[0]]
+
+def draw_xy_plot(args, df):
+    self.ensure_xy_args(args)
+    self.ensure_xy_omission_state(args, df)
+    self.process_plot_labels(args)
 
     y_field_list = args.y
     x = df[args.x]
