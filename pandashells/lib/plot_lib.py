@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-# --- standard library imports
 import os
 import sys
 import argparse
@@ -8,7 +7,6 @@ import re
 
 from pandashells.lib import module_checker_lib
 
-# --- import required dependencies
 module_checker_lib.check_for_modules(['matplotlib', 'mpld3', 'seaborn'])
 
 import matplotlib as mpl
@@ -18,9 +16,9 @@ import mpld3
 
 
 def show(args):
-    # --- if figure saving requested
+    # if figure saving requested
     if hasattr(args, 'savefig') and args.savefig:
-        # --- save html if requested
+        # save html if requested
         rex_html = re.compile('.*?\.html$')
         if rex_html.match(args.savefig[0]):
             fig = pl.gcf()
@@ -28,20 +26,20 @@ def show(args):
             with open(args.savefig[0], 'w') as outfile:
                 outfile.write(html)
             return
-        # --- save image types
+        # save image types
         pl.savefig(args.savefig[0])
-    # --- otherwise show to screen
+    # otherwise show to screen
     else:
         pl.show()
 
 
 def set_plot_styling(args):
-    # --- set up seaborn context
+    # set up seaborn context
     sns.set(context=args.plot_context[0],
             style=args.plot_theme[0],
             palette=args.plot_palette[0])
 
-    # --- modify seaborn slightly to look good in interactive backends
+    # modify seaborn slightly to look good in interactive backends
     if 'white' not in args.plot_theme[0]:
         mpl.rcParams['figure.facecolor'] = 'white'
         mpl.rcParams['figure.edgecolor'] = 'white'
