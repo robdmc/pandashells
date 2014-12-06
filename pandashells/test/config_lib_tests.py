@@ -28,7 +28,7 @@ class GetConfigTests(TestCase):
     def tearDown(self):
         if os.path.isfile(config_lib.CONFIG_FILE_NAME + '_orig'):
             os.system('mv {f}_orig {f}'.format(f=config_lib.CONFIG_FILE_NAME))
-        else:
+        else:  # pragma: no cover
             os.system('rm  {f}'.format(f=config_lib.CONFIG_FILE_NAME))
 
     def test_set_config_creates_file(self):
