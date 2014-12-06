@@ -18,7 +18,6 @@ class PlotLibTests(TestCase):
     def tearDown(self):
         shutil.rmtree(self.dir_name)
 
-
     @patch('pandashells.lib.plot_lib.pl.show')
     def test_show_calls_pylab_show(self, show_mock):
         """show() call pylab.show()
@@ -167,7 +166,27 @@ class PlotLibTests(TestCase):
         plot_lib.ensure_xy_omission_state(args, df)
         self.assertFalse(exit_mock.called)
 
+    def test_autofill_plot_fields_and_labels_do_nothing(self):
+        """autofill_plot_fields_and_labels does no filling
         """
-        need to test autofill_plot_labels next
+        args = MagicMock(x=None, xlabel='xpre', ylabel='ypre')
+        df = MagicMock(columns=[1])
+
+        plot_lib.autofill_plot_fields_and_labels(args, df)
+        self.assertEqual(args.xlabel, 'xpre')
+        self.assertEqual(args.ylabel, 'ypre')
+
+    def test_autofill_plot_fields_and_labels_2_cols(self):
+        """autofill_plot_labels() appropriately handles 2 column frame
         """
+        args = MagicMock(x=None, xlabel=None, ylabel=None)
+        df = MagicMock(columns=['x', 'y'])
+
+        plot_lib.autofill_plot_fields_and_labels(args, df)
+        self.assertEqual(args.x, ['x'])
+        self.assertEqual(args.y, ['y'])
+        self.assertEqual(args.xlabel, ['x'])
+        self.assertEqual(args.ylabel, ['y'])
+
+
 

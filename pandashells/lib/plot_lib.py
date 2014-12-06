@@ -91,7 +91,7 @@ def ensure_xy_omission_state(args, df):
         sys.stderr.write(msg)
         sys.exit(1)
 
-def autofill_plot_labels(args):
+def autofill_plot_fields_and_labels(args, df):
     # add labels for two column inputs
     if (args.x is None) and (len(df.columns) == 2):
         args.x = [df.columns[0]]
@@ -103,17 +103,18 @@ def autofill_plot_labels(args):
     if (args.ylabel is None) and (len(args.y) == 1):
         args.ylabel = [args.y[0]]
 
-def draw_xy_plot(args, df):
-    self.ensure_xy_args(args)
-    self.ensure_xy_omission_state(args, df)
-    self.process_plot_labels(args)
-
+def draw_traces(args, df):
     y_field_list = args.y
     x = df[args.x]
     for y_field in y_field_list:
         y = df[y_field]
         pl.plot(x, y, args.style[0], label=y_field, alpha=args.alpha[0])
 
+def draw_xy_plot(args, df):
+    ensure_xy_args(args)
+    ensure_xy_omission_state(args, df)
+    autofill_plot_fields_and_labels(args, df)
+    draw_traces(args, df)
     set_limits(args)
     set_labels_title(args)
     set_grid(args)
