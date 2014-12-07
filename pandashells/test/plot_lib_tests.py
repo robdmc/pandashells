@@ -13,17 +13,18 @@ import pylab as pl
 
 class PlotLibTests(TestCase):
     def setUp(self):
+        pl.plot(range(10))
         self.dir_name = tempfile.mkdtemp()
 
     def tearDown(self):
         shutil.rmtree(self.dir_name)
+        pl.clf()
 
     @patch('pandashells.lib.plot_lib.pl.show')
     def test_show_calls_pylab_show(self, show_mock):
         """show() call pylab.show()
         """
         args = MagicMock(savefig=[])
-        pl.plot(range(10))
         plot_lib.show(args)
         self.assertTrue(show_mock.called)
 
@@ -33,7 +34,6 @@ class PlotLibTests(TestCase):
         file_name = os.path.join(self.dir_name, 'plot.png')
         args = MagicMock(savefig=[file_name])
 
-        pl.plot(range(10))
         plot_lib.show(args)
 
         self.assertTrue(os.path.isfile(file_name))
@@ -44,7 +44,6 @@ class PlotLibTests(TestCase):
         file_name = os.path.join(self.dir_name, 'plot.html')
         args = MagicMock(savefig=[file_name])
 
-        pl.plot(range(10))
         xlabel = 'my_xlabel_string'
         pl.xlabel(xlabel)
         plot_lib.show(args)
@@ -74,7 +73,6 @@ class PlotLibTests(TestCase):
         """set_limits() properly does nothing when nothing specified
         """
         args = MagicMock(savefig='', xlim=[], ylim=[])
-        pl.plot(range(10))
         plot_lib.set_limits(args)
         self.assertEqual(pl.gca().get_xlim(), (0.0, 9.0))
         self.assertEqual(pl.gca().get_ylim(), (0.0, 9.0))
@@ -83,7 +81,6 @@ class PlotLibTests(TestCase):
         """set_limits() properly sets limits
         """
         args = MagicMock(savefig='', xlim=[-2, 2], ylim=[-3, 3])
-        pl.plot(range(10))
         plot_lib.set_limits(args)
         self.assertEqual(pl.gca().get_xlim(), (-2.0, 2.0))
         self.assertEqual(pl.gca().get_ylim(), (-3.0, 3.0))
@@ -92,17 +89,15 @@ class PlotLibTests(TestCase):
         """set_labels_title() properly does nothing when nothing specified
         """
         args = MagicMock(savefig='', title=[], xlabel=[], ylabel=[])
-        pl.plot(range(10))
         plot_lib.set_labels_title(args)
         self.assertEqual(pl.gca().get_title(), '')
-        self.assertEqual(pl.gca().get_label(), '')
-        self.assertEqual(pl.gca().get_title(), '')
+        self.assertEqual(pl.gca().get_xlabel(), '')
+        self.assertEqual(pl.gca().get_ylabel(), '')
 
     def test_set_labels_titles(self):
         """set_labels_title() properly sets labels and titles
         """
         args = MagicMock(savefig='', title=['t'], xlabel=['x'], ylabel=['y'])
-        pl.plot(range(10))
         plot_lib.set_labels_title(args)
         self.assertEqual(pl.gca().get_title(), 't')
         self.assertEqual(pl.gca().get_xlabel(), 'x')
@@ -112,7 +107,6 @@ class PlotLibTests(TestCase):
         """set_grid() properly does nothing when no_grid set
         """
         args = MagicMock(savefig='', no_grid=True)
-        pl.plot(range(10))
         plot_lib.set_grid(args)
         self.assertFalse(pl.gca().xaxis._gridOnMajor)
 
@@ -120,7 +114,6 @@ class PlotLibTests(TestCase):
         """set_grid() properly sets grid when specified
         """
         args = MagicMock(savefig='', no_grid=False)
-        pl.plot(range(10))
         plot_lib.set_grid(args)
         self.assertTrue(pl.gca().xaxis._gridOnMajor)
 
