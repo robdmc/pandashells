@@ -118,4 +118,5 @@ def draw_xy_plot(args, df):
     set_limits(args)
     set_labels_title(args)
     set_grid(args)
+    set_legend(args)
     show(args)

@@ -4,11 +4,12 @@ import json
 import tempfile
 import shutil
 from unittest import TestCase
-from pandashells.lib import plot_lib
+from pandashells.lib import plot_lib, arg_lib
 import argparse
 from mock import patch, MagicMock, call
 import matplotlib as mpl
 import pylab as pl
+import pandas as pd
 
 
 class PlotLibTests(TestCase):
@@ -103,6 +104,30 @@ class PlotLibTests(TestCase):
         self.assertEqual(pl.gca().get_xlabel(), 'x')
         self.assertEqual(pl.gca().get_ylabel(), 'y')
 
+    @patch('pandashells.lib.plot_lib.pl.legend')
+    def test_set_legend_no_args(self, legend_mock):
+        """set_legend() properly does nothing when nothing specified
+        """
+        args = MagicMock(savefig='', legend=[])
+        plot_lib.set_legend(args)
+        self.assertFalse(legend_mock.called)
+
+    @patch('pandashells.lib.plot_lib.pl.legend')
+    def test_set_legend_best(self, legend_mock):
+        """set_legend() properly calls legend when specified
+        """
+        args = MagicMock(savefig='', legend=['best'])
+        plot_lib.set_legend(args)
+        legend_mock.assert_called_with(loc='best')
+
+    @patch('pandashells.lib.plot_lib.pl.legend')
+    def test_set_legend_int(self, legend_mock):
+        """set_legend() properly calls legend when specified
+        """
+        args = MagicMock(savefig='', legend=['3'])
+        plot_lib.set_legend(args)
+        legend_mock.assert_called_with(loc=3)
+
     def test_set_grid_no_grid(self):
         """set_grid() properly does nothing when no_grid set
         """
@@ -181,5 +206,47 @@ class PlotLibTests(TestCase):
         self.assertEqual(args.xlabel, ['x'])
         self.assertEqual(args.ylabel, ['y'])
 
+    @patch('pandashells.lib.plot_lib.pl.plot')
+    def test_draw_traces(self, plot_mock):
+        args = MagicMock(savefig='', x='x', y='y')
+        df = pd.DataFrame([[1, 1], [2, 2]], columns=['x', 'y'])
+        plot_lib.draw_traces(args, df)
+        self.assertTrue(plot_mock.called)
 
+    def test_draw_xy_plot(self):
+        """draw_xy_plot() properly produces an output html file
+        """
+        out_file = os.path.join(self.dir_name, 'test.html')
+        argv = (
+            'p.plot -x x -y btrace ctrace -s o- --xlabel myxlabel '
+            '--ylabel myylabel --title mytitle --theme darkgrid '
+            '--context talk --palette muted -a .5 --nogrid '
+            '--legend best --xlim 0 10 --ylim -10 10 '
+            '--savefig {}'.format(out_file)
+        ).split()
+        with patch('pandashells.lib.plot_lib.sys.argv', argv) as argv_mock:
+            pl.clf()
+            df = pd.DataFrame(
+                {
+                    'x': range(10),
+                    'btrace': [-x for x in range(10)],
+                    'ctrace':[x for x in range(10)]
+                })
+            parser = argparse.ArgumentParser()
+            arg_lib.add_args(
+                parser, 'io_in', 'xy_plotting', 'decorating', 'example')
 
+            parser.add_argument(
+                "-a", "--alpha", help="Set opacity", nargs=1, default=[1.],
+                type=float)
+            args = parser.parse_args()
+            plot_lib.draw_xy_plot(args, df)
+            with open(out_file) as f:
+                html = f.read()
+                self.assertTrue('myxlabel' in html)
+                self.assertTrue('myylabel' in html)
+                self.assertTrue('mytitle' in html)
+                self.assertTrue('btrace' in html)
+                self.assertTrue('ctrace' in html)
+                self.assertTrue('1' in html)
+                self.assertTrue('10' in html)
