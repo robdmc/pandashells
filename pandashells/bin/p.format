@@ -1,0 +1,9 @@
+I intend this to be a file that allows for simplifying input to p.parallel
+
+
+cat file.csv | p.format '{fn} {fn} {fn}' 
+
+this will take a dataframe and print a string with the given output
+Note that output will not be a dataframe, but simply a bunch of strings.
+
+May require duplicating output writer code.
