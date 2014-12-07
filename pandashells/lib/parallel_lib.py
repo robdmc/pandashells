@@ -163,7 +163,3 @@ def parallel(cmd_list, njobs=None, verbose=False, suppress_cmd=True,
     # wait until all processes are done
     for p in p_list:
         p.join()
-
-if __name__ == '__main__':
-    cmd_list = sys.stdin.readlines()
-    parallel(cmd_list)
