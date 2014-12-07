@@ -11,6 +11,7 @@ import numpy as np
 import csv
 import datetime
 import json
+from contextlib import contextmanager
 
 # define a field list for csv writing output
 F_LIST = [
@@ -25,7 +26,6 @@ F_LIST = [
 
 
 def pre_command_verbose_print(verbose, suppress_cmd, cmd, job_num, job_tot):
-    rec = {}
     # take care of special case of not verbose but show commands
     if (not verbose) and (not suppress_cmd):
         sys.stdout.write(cmd + '\n')
@@ -70,6 +70,16 @@ def post_command_verbose_print(now, then, rec, verbose):
         writer.writerow(rec)
         sys.stdout.flush()
 
+@contextmanager
+def verbose_writer(verbose, suppress_cmd, cmd, job_num, job_tot):
+    rec = pre_command_verbose_print(
+        verbose, suppress_cmd, cmd, job_num, job_tot)
+    then = datetime.datetime.now()
+    yield
+    now = datetime.datetime.now()
+    dt = now - then
+    post_command_verbose_print(now, then, rec, verbose)
+
 
 def worker(q, verbose=False, suppress_cmd=True, suppress_stdout=False,
             suppress_stderr=False):
@@ -87,15 +97,12 @@ def worker(q, verbose=False, suppress_cmd=True, suppress_stdout=False,
             q.task_done()
             return
 
-        # process the command with appropriate verbosity
-        then = datetime.datetime.now()
-        rec = pre_command_verbose_print(
-            verbose, suppress_cmd, cmd, job_num, job_tot)
-        p = subprocess.Popen(['bash', '-c', cmd], stdout=stdout, stderr=stderr)
-        p.wait()
-        now = datetime.datetime.now()
-        post_command_verbose_print(now, then, rec)
-        q.task_done()
+        # run the command
+        with verbose_writer(verbose, suppress_cmd, cmd, job_num, job_tot):
+            p = subprocess.Popen(
+                ['bash', '-c', cmd], stdout=stdout, stderr=stderr)
+            p.wait()
+            q.task_done()
 
 
 def parallel(cmd_list, njobs=None, verbose=False, suppress_cmd=True,

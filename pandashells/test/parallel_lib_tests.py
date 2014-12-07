@@ -12,6 +12,7 @@ import matplotlib as mpl
 import pylab as pl
 import pandas as pd
 import datetime
+import multiprocessing as mp
 
 
 class ParallelLibTests(TestCase):
@@ -25,7 +26,7 @@ class ParallelLibTests(TestCase):
     @patch('pandashells.lib.parallel_lib.csv.DictWriter')
     def test_precommand_verbose_print_not_verbose_no_supress(
             self, DictWriter_mock, stdout_mock):
-        DictWriter_mock.return_value=MagicMock()
+        DictWriter_mock.return_value = MagicMock()
         stdout_mock.flush = MagicMock()
         stdout_mock.write = MagicMock()
         writer_mock = DictWriter_mock.return_value
@@ -42,7 +43,7 @@ class ParallelLibTests(TestCase):
     @patch('pandashells.lib.parallel_lib.csv.DictWriter')
     def test_precommand_verbose_print_verbose_supress(
             self, DictWriter_mock, stdout_mock):
-        DictWriter_mock.return_value=MagicMock()
+        DictWriter_mock.return_value = MagicMock()
         stdout_mock.flush = MagicMock()
         stdout_mock.write = MagicMock()
         writer_mock = DictWriter_mock.return_value
@@ -57,12 +58,11 @@ class ParallelLibTests(TestCase):
         self.assertTrue(writer_mock.writerow.called)
         self.assertEqual(kwarg['cmd'], '')
 
-
     @patch('pandashells.lib.parallel_lib.sys.stdout')
     @patch('pandashells.lib.parallel_lib.csv.DictWriter')
     def test_precommand_verbose_print_verbose_no_supress(
             self, DictWriter_mock, stdout_mock):
-        DictWriter_mock.return_value=MagicMock()
+        DictWriter_mock.return_value = MagicMock()
         stdout_mock.flush = MagicMock()
         stdout_mock.write = MagicMock()
         writer_mock = DictWriter_mock.return_value
@@ -81,7 +81,7 @@ class ParallelLibTests(TestCase):
     @patch('pandashells.lib.parallel_lib.csv.DictWriter')
     def test_precommand_verbose_print_not_verbose_supress(
             self, DictWriter_mock, stdout_mock):
-        DictWriter_mock.return_value=MagicMock()
+        DictWriter_mock.return_value = MagicMock()
         stdout_mock.flush = MagicMock()
         stdout_mock.write = MagicMock()
         writer_mock = DictWriter_mock.return_value
@@ -97,7 +97,7 @@ class ParallelLibTests(TestCase):
     @patch('pandashells.lib.parallel_lib.csv.DictWriter')
     def test_post_command_verbose_print_non_verbose(
             self, DictWriter_mock):
-        DictWriter_mock.return_value=MagicMock()
+        DictWriter_mock.return_value = MagicMock()
         writer_mock = DictWriter_mock.return_value
         writer_mock.writerow = MagicMock()
 
@@ -112,7 +112,7 @@ class ParallelLibTests(TestCase):
     @patch('pandashells.lib.parallel_lib.csv.DictWriter')
     def test_post_command_verbose_print_verbose(
             self, DictWriter_mock):
-        DictWriter_mock.return_value=MagicMock()
+        DictWriter_mock.return_value = MagicMock()
         writer_mock = DictWriter_mock.return_value
         writer_mock.writerow = MagicMock()
 
@@ -124,4 +124,37 @@ class ParallelLibTests(TestCase):
         parallel_lib.post_command_verbose_print(now, then, rec, verbose)
         kwarg = writer_mock.writerow.call_args_list[0][0][0]
         self.assertAlmostEqual(kwarg['duration_sec'], 7)
+
+    @patch('pandashells.lib.parallel_lib.sys.stdout')
+    def test_verbose_writer(self, stdout_mock):
+        stdout_mock.write = MagicMock()
+        verbose, suppress_cmd = True, False
+        cmd = 'echo hello'
+        job_num, job_tot = 1, 1
+        with parallel_lib.verbose_writer(verbose, suppress_cmd, cmd, job_num,
+                                         job_tot):
+            pass
+        self.assertEqual(len(stdout_mock.write.call_args_list), 2)
+
+    @patch('pandashells.lib.parallel_lib.sys.stdout')
+    def test_worker(self, stdout_mock):
+        stdout_mock.write = MagicMock()
+
+        verbose, suppress_cmd = True, True
+        suppress_stdout, suppress_stderr = True, True
+        cmd_list = ['echo 1', 'echo 2', 'echo 3']
+        job_tot, keep_alive = len(cmd_list), True
+
+        queue = mp.JoinableQueue()
+        for job_num, cmd in enumerate(cmd_list):
+            queue.put((job_num, job_tot, cmd, keep_alive))
+        queue.put((0, 0, '', False))
+        parallel_lib.worker(
+            queue, verbose, suppress_cmd, suppress_stdout, suppress_stderr)
+        self.assertEqual(len(stdout_mock.write.call_args_list), 6)
+
+
+
+
+
 
