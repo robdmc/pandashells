@@ -51,6 +51,7 @@ def set_limits(args):
     if args.ylim:
         pl.gca().set_ylim(args.ylim)
 
+
 def set_labels_title(args):
     if args.title:
         pl.title(args.title[0])
@@ -58,6 +59,7 @@ def set_labels_title(args):
         pl.xlabel(args.xlabel[0])
     if args.ylabel:
         pl.ylabel(args.ylabel[0])
+
 
 def set_legend(args):
     if args.legend:
@@ -70,11 +72,13 @@ def set_legend(args):
             loc = 'best'
         pl.legend(loc=loc)
 
+
 def set_grid(args):
     if args.no_grid:
         pl.grid(False)
     else:
         pl.grid(True)
+
 
 def ensure_xy_args(args):
     x_is_none = args.x is None
@@ -84,12 +88,14 @@ def ensure_xy_args(args):
         sys.stderr.write(msg)
         sys.exit(1)
 
+
 def ensure_xy_omission_state(args, df):
     if (len(df.columns) != 2) and (args.x is None):
         msg = "\n\n x and y can be ommited only "
         msg += "for 2-column data-frames\n"
         sys.stderr.write(msg)
         sys.exit(1)
+
 
 def autofill_plot_fields_and_labels(args, df):
     # add labels for two column inputs
@@ -103,12 +109,14 @@ def autofill_plot_fields_and_labels(args, df):
     if (args.ylabel is None) and (len(args.y) == 1):
         args.ylabel = [args.y[0]]
 
+
 def draw_traces(args, df):
     y_field_list = args.y
     x = df[args.x]
     for y_field in y_field_list:
         y = df[y_field]
         pl.plot(x, y, args.style[0], label=y_field, alpha=args.alpha[0])
+
 
 def draw_xy_plot(args, df):
     ensure_xy_args(args)

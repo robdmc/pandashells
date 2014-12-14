@@ -210,23 +210,22 @@ class ParallelLibTests(TestCase):
         parallel_lib.master_verbose_writer(False, True)
         self.assertFalse(DictWriter_mock.called)
 
-
     def test_parallel(self):
         cmd = "python -c 'import time; time.sleep(.75)'"
         cmd_list = [cmd for nn in range(4)]
         then = datetime.datetime.now()
         parallel_lib.parallel(
-             cmd_list, njobs=1, suppress_stdout=True, suppress_stderr=True,
-             assume_hyperthread=True,
-             suppress_cmd=True,
-         )
+            cmd_list, njobs=1, suppress_stdout=True, suppress_stderr=True,
+            assume_hyperthread=True,
+            suppress_cmd=True,
+        )
         seconds_single = (datetime.datetime.now() - then).total_seconds()
 
         then = datetime.datetime.now()
         parallel_lib.parallel(
-             cmd_list, njobs=4, suppress_stdout=True, suppress_stderr=True,
-             assume_hyperthread=True,
-             suppress_cmd=True,
-         )
+            cmd_list, njobs=4, suppress_stdout=True, suppress_stderr=True,
+            assume_hyperthread=True,
+            suppress_cmd=True,
+        )
         seconds_multi = (datetime.datetime.now() - then).total_seconds()
         self.assertTrue(seconds_single / seconds_multi >= 3.)

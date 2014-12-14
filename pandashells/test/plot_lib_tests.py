@@ -230,7 +230,7 @@ class PlotLibTests(TestCase):
                 {
                     'x': range(10),
                     'btrace': [-x for x in range(10)],
-                    'ctrace':[x for x in range(10)]
+                    'ctrace': [x for x in range(10)]
                 })
             parser = argparse.ArgumentParser()
             arg_lib.add_args(

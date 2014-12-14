@@ -71,6 +71,7 @@ def post_command_verbose_print(now, then, rec, verbose):
         writer.writerow(rec)
         sys.stdout.flush()
 
+
 @contextmanager
 def verbose_writer(verbose, suppress_cmd, cmd, job_num, job_tot):
     rec = pre_command_verbose_print(
@@ -82,8 +83,9 @@ def verbose_writer(verbose, suppress_cmd, cmd, job_num, job_tot):
     post_command_verbose_print(now, then, rec, verbose)
 
 
-def worker(q, verbose=False, suppress_cmd=True, suppress_stdout=False,
-            suppress_stderr=False):
+def worker(
+        q, verbose=False, suppress_cmd=True, suppress_stdout=False,
+        suppress_stderr=False):
     # set destination of stderr and stdout
     stdout = subprocess.PIPE if suppress_stdout else None
     stderr = subprocess.PIPE if suppress_stderr else None
@@ -105,6 +107,7 @@ def worker(q, verbose=False, suppress_cmd=True, suppress_stdout=False,
             p.wait()
             q.task_done()
 
+
 def get_number_of_jobs(njobs=None, assume_hyperthread=None):
     # determine the number of cores
     n_cores = mp.cpu_count()
@@ -117,6 +120,7 @@ def get_number_of_jobs(njobs=None, assume_hyperthread=None):
         njobs = n_cores
     return njobs
 
+
 def master_verbose_writer(verbose, suppress_cmd):
     # take command of of field list if it is to be suprressed
     if suppress_cmd:
@@ -127,6 +131,7 @@ def master_verbose_writer(verbose, suppress_cmd):
         writer = csv.DictWriter(sys.stdout, F_LIST)
         writer.writeheader()
         sys.stdout.flush()
+
 
 def parallel(cmd_list, njobs=None, verbose=False, suppress_cmd=True,
              suppress_stdout=False, suppress_stderr=False,
