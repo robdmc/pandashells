@@ -26,6 +26,7 @@ F_LIST = [
 
 
 def pre_command_verbose_print(verbose, suppress_cmd, cmd, job_num, job_tot):
+    rec = {}
     # take care of special case of not verbose but show commands
     if (not verbose) and (not suppress_cmd):
         sys.stdout.write(cmd + '\n')
@@ -104,6 +105,28 @@ def worker(q, verbose=False, suppress_cmd=True, suppress_stdout=False,
             p.wait()
             q.task_done()
 
+def get_number_of_jobs(njobs=None, assume_hyperthread=None):
+    # determine the number of cores
+    n_cores = mp.cpu_count()
+    if assume_hyperthread:
+        if (n_cores % 2) == 0:
+            n_cores = n_cores / 2
+
+    # set the number of jobs to default if necesarry
+    if njobs is None:
+        njobs = n_cores
+    return njobs
+
+def master_verbose_writer(verbose, suppress_cmd):
+    # take command of of field list if it is to be suprressed
+    if suppress_cmd:
+        F_LIST.pop(-1)
+
+    if verbose:
+        # write csv header
+        writer = csv.DictWriter(sys.stdout, F_LIST)
+        writer.writeheader()
+        sys.stdout.flush()
 
 def parallel(cmd_list, njobs=None, verbose=False, suppress_cmd=True,
              suppress_stdout=False, suppress_stderr=False,
@@ -115,28 +138,12 @@ def parallel(cmd_list, njobs=None, verbose=False, suppress_cmd=True,
     # fill a joinable cueue with commands
     queue = mp.JoinableQueue()
 
-    # determine the number of cores
-    n_cores = mp.cpu_count()
-    if assume_hyperthread:
-        if (n_cores % 2) == 0:
-            n_cores = n_cores / 2
-
-    # set the number of jobs to default if necesarry
-    if njobs is None:
-        njobs = n_cores
+    njobs = get_number_of_jobs(njobs)
 
     # initialize an empty process list
     p_list = []
 
-    # take command of of field list if it is to be suprressed
-    if suppress_cmd:
-        F_LIST.pop(-1)
-
-    if verbose:
-        # write csv header
-        writer = csv.DictWriter(sys.stdout, F_LIST)
-        writer.writeheader()
-        sys.stdout.flush()
+    master_verbose_writer(verbose, suppress_cmd)
 
     # spin up njobs workers to tackle the queue
     for nn in range(njobs):

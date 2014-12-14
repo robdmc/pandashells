@@ -24,7 +24,7 @@ if __name__ == '__main__':
     # --- read command line arguments
     parser = argparse.ArgumentParser(description=msg)
 
-    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example',
+    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example',  # DO I REALLY NEED IO_IN ??
                     io_no_col_spec_allowed=True)
 
     parser.add_argument('--how', choices=['left', 'right', 'inner', 'outer'],

@@ -16,6 +16,18 @@ if not modulesOkay:
 import pandas as pd
 import numpy as np
 
+"""
+What if I had interface like this?
+
+p.rand -n 100 -c 2 -t normal --mu --sigma --alpha -beta -N -p -k --theta --min --max
+-t = uniform normal beta gamma binomial poisson (maybe divide uniform into float and int)
+where mu, sigma can work for normal, gamma, beta
+min max work for uniform
+mu works for poisson
+N, p work for binomail
+alpha, beta work for uniform, beta
+"""
+
 # --- this dict holds info on all valid distribution types
 TYPE_LIST = [{
     'name': 'uniform',

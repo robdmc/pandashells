@@ -28,7 +28,7 @@ if __name__ == '__main__':
     arg_lib.addArgs(parser, 'io_in', 'xy_plotting', 'decorating', 'example',
                     io_no_col_spec_allowed=False)
 
-    parser.add_argument("-a", "--alpha", help="Set opacity",
+    parser.add_argument("-a", "--alpha", help="Set opacity",  # WHY ISN'T THIS IN DECORATING?
                         nargs=1, default=[1.], type=float)
 
     # --- parse arguments
