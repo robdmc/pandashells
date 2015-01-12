@@ -1,9 +1,55 @@
 #! /usr/bin/env python
+
 # standard library imports
-import os
-import sys
 import argparse
+import datetime
+import os
 import re
+import sys
+
+# import required dependencies
+modulesOkay = module_checker_lib.check_for_modules([
+    'pandas',
+    'numpy',
+    'dateutil',
+])
+
+if not modulesOkay:
+    sys.exit(1)
+
+import pandas as pd
+import numpy as np
+from dateutil.parser import parse
+
+def get_extra_modules(command_list):
+    # need to recognize plotting commands here too
+
+    module_for_name = {
+        'scp': 'scipy',
+        'pl': 'pylab',
+        'sns': 'seaborn'
+    }
+
+
+
+
+def main():
+    # read command line arguments
+    parser = argparse.ArgumentParser(description=msg)
+
+    options = {}
+    arg_lib.addArgs(parser, 'io_in', 'io_out', 'decorating', 'example')
+    parser.add_argument("statement", help="Statement to execute", nargs="*")
+
+    # parse arguments
+    args = parser.parse_args()
+
+    # get a list of commands to execute
+    command_list = args.statement
+
+    # find modules needed to process commands
+    extra_modules = get_extra_modules(command_list)
+
 
 
 
