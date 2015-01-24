@@ -192,6 +192,16 @@ p.timezone | Change timestamps between time zones
 
 Half Baked Ideas
 ===
+It might be nice to have a 
+p.batch -n batch-size -g str-group-func --apply app-process --first first-group-process --last last-group-process --parallel 2 
+p.batch -n batch-size -g str-group-func --apply app-process -i input-options -o output-options --parallel 2 
+
+
+might also be nice to have a  
+p.deal --file-field column-name -i input-options -o output-options
+
+
+
 Here are some half-baked ideas for tool syntax that I'm still think about how to implement.
 
 * p.regress - statmodels linear regression with full summary output. maybe use --fit to add fit results to df

@@ -3,6 +3,7 @@
 # standard library imports
 import argparse
 import datetime
+import importlib
 import os
 import re
 import sys
@@ -21,14 +22,20 @@ import pandas as pd
 import numpy as np
 from dateutil.parser import parse
 
-def get_extra_modules(command_list):
+def get_extra_import_commands(command_list):
     # need to recognize plotting commands here too
+    cmd_string = ' '.join(command_list)
 
-    module_for_name = {
-        'scp': 'scipy',
-        'pl': 'pylab',
-        'sns': 'seaborn'
+    cmds_for_name = {
+        'scp': 'import scipy as scp',
+        'pl': 'import pylab as pl',
+        'sns': 'import seaborn as sns'
     }
+    import_commands = [
+        cmd for (word, cmd) in cmds_for_name.iteritems() if word in cmd_string
+    ]
+
+
 
 
 
