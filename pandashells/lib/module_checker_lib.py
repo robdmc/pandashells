@@ -11,6 +11,7 @@ HEADER += "installing them.\n\n"
 CMD_DICT = {
     'numpy': 'conda install numpy',
     'scipy': 'conda install scipy',
+    'dateutil': 'pip install dateutil',
     'matplotlib': 'conda install matplotlib',
     'pandas': 'pip install pandas',
     'statsmodels': 'pip install statsmodels',

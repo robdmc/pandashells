@@ -22,9 +22,17 @@ setup(
     package_data={'pandashells': ['example_data/*.csv']},
     # include_package_data=True,
     long_description='Bringing the power of pandas to the command line',
-    scripts=scripts,
+    #scripts=scripts,
     classifiers=[
         "Topic :: Utilities",
         "License ::  Simplified BSD License",
     ],
+
+
+
+    entry_points={
+            'console_scripts': [
+                'p.df = pandashells.lib.p_df:main',
+            ],
+        }
 )

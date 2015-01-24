@@ -6,10 +6,13 @@ from pandashells.lib import arg_lib, config_lib
 import argparse
 from mock import patch, MagicMock, call
 
+from pandashells.bin.p.df import get_extra_import_commands
+
 class GetExtraImportCommandsTest(TestCase):
-    def test_get_extra_import_(self):
+    def test_get_extra_import_none_needed(self):
+        command_list = ['df.reset_index()', 'df.head()']
         print
-        print 'testing silly'
+        print  
 
 # class ArgLibTests(TestCase):
 #     def setUp(self):
