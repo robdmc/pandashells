@@ -6,13 +6,59 @@ from pandashells.lib import arg_lib, config_lib
 import argparse
 from mock import patch, MagicMock, call
 
-from pandashells.bin.p.df import get_extra_import_commands
+from pandashells.bin.p_df import (
+    needs_show,
+    get_modules_and_shortcuts,
+    ensure_modules_installed,
+)
 
-class GetExtraImportCommandsTest(TestCase):
-    def test_get_extra_import_none_needed(self):
+
+class NeedsShowTests(TestCase):
+    def test_doesnt_need_show(self):
         command_list = ['df.reset_index()', 'df.head()']
-        print
-        print  
+        self.assertFalse(needs_show(command_list))
+    def test_needs_show(self):
+        command_list = ['set_xlim([1, 2])']
+        self.assertTrue(needs_show(command_list))
+
+
+class GetModulesAndShortcutsTests(TestCase):
+    def test_none_needed(self):
+        command_list = ['df.reset_index()', 'df.head()']
+        self.assertEqual(get_modules_and_shortcuts(command_list), [])
+
+    def test_get_extra_import_all_needed(self):
+        command_list = [
+            'pl.plot(df.x)',
+            'sns.distplot(df.x)',
+            'scp.stats.norm(1, 1)',
+            'np.random.randn(1)'
+        ]
+        self.assertEqual(
+            set(get_modules_and_shortcuts(command_list)),
+            {
+                ('scipy', 'scp'),
+                ('pylab', 'pl'),
+                ('seaborn', 'sns'),
+                ('numpy', 'np'),
+            },
+        )
+
+class EnsureModulesInstalledTests(TestCase):
+    @patch('pandashells.bin.p_df.sys.exit')
+    @patch('pandashells.bin.p_df.module_checker_lib.check_for_modules')
+    def test_modules_installed(self, checker_mock, exit_mock):
+        checker_mock.return_value = True
+        ensure_modules_installed()
+        self.assertFalse(exit_mock.called)
+
+    @patch('pandashells.bin.p_df.sys.exit')
+    @patch('pandashells.bin.p_df.module_checker_lib.check_for_modules')
+    def test_modules_not_installed(self, checker_mock, exit_mock):
+        checker_mock.return_value = False
+        ensure_modules_installed()
+        self.assertTrue(exit_mock.called)
+
 
 # class ArgLibTests(TestCase):
 #     def setUp(self):

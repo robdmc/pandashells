@@ -32,7 +32,7 @@ setup(
 
     entry_points={
             'console_scripts': [
-                'p.df = pandashells.lib.p_df:main',
+                'p.df = pandashells.bin.p_df:main',
             ],
         }
 )
