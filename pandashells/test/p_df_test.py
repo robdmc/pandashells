@@ -7,25 +7,30 @@ import argparse
 from mock import patch, MagicMock, call
 
 from pandashells.bin.p_df import (
-    needs_show,
+    needs_plots,
     get_modules_and_shortcuts,
-    ensure_modules_installed,
 )
 
 
-class NeedsShowTests(TestCase):
-    def test_doesnt_need_show(self):
+class NeedsPlots(TestCase):
+    def test_doesnt_need_plots(self):
         command_list = ['df.reset_index()', 'df.head()']
-        self.assertFalse(needs_show(command_list))
-    def test_needs_show(self):
+        self.assertFalse(needs_plots(command_list))
+    def test_needs_plots(self):
         command_list = ['set_xlim([1, 2])']
-        self.assertTrue(needs_show(command_list))
+        self.assertTrue(needs_plots(command_list))
 
 
 class GetModulesAndShortcutsTests(TestCase):
-    def test_none_needed(self):
+    def test_no_extra_needed(self):
         command_list = ['df.reset_index()', 'df.head()']
-        self.assertEqual(get_modules_and_shortcuts(command_list), [])
+        self.assertEqual(
+            set(get_modules_and_shortcuts(command_list)),
+            {
+                ('pandas', 'pd'),
+                ('dateutil', 'dateutil'),
+            }
+        )
 
     def test_get_extra_import_all_needed(self):
         command_list = [
@@ -37,6 +42,8 @@ class GetModulesAndShortcutsTests(TestCase):
         self.assertEqual(
             set(get_modules_and_shortcuts(command_list)),
             {
+                ('dateutil', 'dateutil'),
+                ('pandas', 'pd'),
                 ('scipy', 'scp'),
                 ('pylab', 'pl'),
                 ('seaborn', 'sns'),
@@ -44,20 +51,20 @@ class GetModulesAndShortcutsTests(TestCase):
             },
         )
 
-class EnsureModulesInstalledTests(TestCase):
-    @patch('pandashells.bin.p_df.sys.exit')
-    @patch('pandashells.bin.p_df.module_checker_lib.check_for_modules')
-    def test_modules_installed(self, checker_mock, exit_mock):
-        checker_mock.return_value = True
-        ensure_modules_installed()
-        self.assertFalse(exit_mock.called)
-
-    @patch('pandashells.bin.p_df.sys.exit')
-    @patch('pandashells.bin.p_df.module_checker_lib.check_for_modules')
-    def test_modules_not_installed(self, checker_mock, exit_mock):
-        checker_mock.return_value = False
-        ensure_modules_installed()
-        self.assertTrue(exit_mock.called)
+#class EnsureModulesInstalledTests(TestCase):
+#    @patch('pandashells.bin.p_df.sys.exit')
+#    @patch('pandashells.bin.p_df.module_checker_lib.check_for_modules')
+#    def test_modules_installed(self, checker_mock, exit_mock):
+#        checker_mock.return_value = True
+#        ensure_modules_installed()
+#        self.assertFalse(exit_mock.called)
+#
+#    @patch('pandashells.bin.p_df.sys.exit')
+#    @patch('pandashells.bin.p_df.module_checker_lib.check_for_modules')
+#    def test_modules_not_installed(self, checker_mock, exit_mock):
+#        checker_mock.return_value = False
+#        ensure_modules_installed()
+#        self.assertTrue(exit_mock.called)
 
 
 # class ArgLibTests(TestCase):

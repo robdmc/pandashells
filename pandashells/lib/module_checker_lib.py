@@ -9,15 +9,17 @@ HEADER += "installing them.\n\n"
 
 # --- define a dict to map a module name to its install command
 CMD_DICT = {
-    'numpy': 'conda install numpy',
-    'scipy': 'conda install scipy',
     'dateutil': 'pip install dateutil',
     'matplotlib': 'conda install matplotlib',
+    'mpld3': 'mpld3',
+    'numpy': 'conda install numpy',
     'pandas': 'pip install pandas',
-    'statsmodels': 'pip install statsmodels',
-    'seaborn': 'pip install seaborn',
+    'pylab': 'conda install matplotlib',
     'requests': 'pip install requests',
-    'mpld3': 'mpld3'}
+    'scipy': 'conda install scipy',
+    'seaborn': 'pip install seaborn',
+    'statsmodels': 'pip install statsmodels',
+}
 
 
 # ============================================================================
@@ -32,7 +34,7 @@ def check_for_modules(module_list):
     # --- initialize an error message
     msg = ''
 
-    # --- try importing all the required modules
+    # --- try importing all the required mojkdules
     for module in module_list:
         try:
             importlib.import_module(module)

@@ -8,10 +8,10 @@ import os
 import re
 import sys
 
-from pandashells.lib import module_checker_lib
+from pandashells.lib import module_checker_lib, arg_lib, io_lib
 
 
-def needs_show(command_list):
+def needs_plots(command_list):
     # define regex to identify plot commands
     plot_command_list = [
         'plot', 'hist', 'scatter', 'figure', 'subplot', 'xlabel', 'ylabel',
@@ -32,66 +32,57 @@ def get_modules_and_shortcuts(command_list):
         ('pylab', 'pl'),
         ('seaborn', 'sns'),
     ]
-    out = [
+    base_requirements = [
+        ('pandas', 'pd'),
+        ('dateutil', 'dateutil'),
+    ]
+    out = base_requirements + [
         tup for tup in names_shortcuts
         if '{}.'.format(tup[1]) in ' '.join(command_list)
     ]
-    if needs_show(command_list):
+    if needs_plots(command_list):
         out = list(set([('pylab', 'pl')] + out))
     return out
 
-def ensure_modules_installed():
-    modulesOkay = module_checker_lib.check_for_modules([
-        m for (m, s) in get_modules_and_shortcuts(sys.argv)
-    ])
-    if not modulesOkay:
-        sys.exit(1)
 
 def main():
-    required_modules = [
-        m for (m, s) in get_modules_and_shortcuts(sys.argv)
-    ]
-    print 
-    print 'running main'
-    print sys.argv
+    # read command line arguments
+    msg = (
+        "Bring pandas manipulation to command line.  Input from stdin "
+         "is placed into a dataframe named 'df'.  The output of each "
+         "specified command must evaluate to a dataframe that will "
+         "overwrite 'df'. The output of the final command will be sent "
+         "to stdout.  The namespace in which the commands are executed "
+         "includes pandas as pd, numpy as np, scipy as scp, pylab as pl, "
+         "dateutil.parser.parse as parse, datetime.  Plot-specific "
+         "commands will be ignored unless a supplied command creates "
+         "a plot. "
+    )
+    parser = argparse.ArgumentParser(description=msg)
+    arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating', 'example')
+    parser.add_argument("statement", help="Statement to execute", nargs="*")
+    args = parser.parse_args()
+
+    # get a list of commands to execute
+    command_list = args.statement
+
+    # make sure all the required modules are installed
+    module_checker_lib.check_for_modules([
+        m for (m, s) in get_modules_and_shortcuts(command_list)
+    ])
+
+    # import required modules
+    from dateutil.parser import parse
+    for (module, shortcut) in get_modules_and_shortcuts(command_list):
+        exec('import {} as {}'.format(module, shortcut))
 
 
-## import required dependencies
-#modulesOkay = module_checker_lib.check_for_modules([
-#    'pandas',
-#    'numpy',
-#    'dateutil',
-#])
+
+
+if __name__ == '__main__':
+    main()
+
 #
-#if not modulesOkay:
-#    sys.exit(1)
-#
-#import pandas as pd
-#import numpy as np
-#from dateutil.parser import parse
-#
-#
-#
-#
-#
-#
-#
-#def main():
-#    # read command line arguments
-#    parser = argparse.ArgumentParser(description=msg)
-#
-#    options = {}
-#    arg_lib.addArgs(parser, 'io_in', 'io_out', 'decorating', 'example')
-#    parser.add_argument("statement", help="Statement to execute", nargs="*")
-#
-#    # parse arguments
-#    args = parser.parse_args()
-#
-#    # get a list of commands to execute
-#    command_list = args.statement
-#
-#    # find modules needed to process commands
-#    extra_modules = get_extra_modules(command_list)
 #
 #
 #
