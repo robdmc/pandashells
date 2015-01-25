@@ -86,10 +86,6 @@ def framify(cmd, df):
 def process_command(args, cmd, df):
     # define regex to identify if supplied command is for col assignment
     rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
-    print
-    print 'executing', cmd
-    print 'on df'
-    print df.to_csv()
 
     # if this is a column-assignment command, just execute it
     if rex_col_cmd.match(cmd):
@@ -146,5 +142,5 @@ def main():
     # write the output
     io_lib.df_to_output(args, df)
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     main()

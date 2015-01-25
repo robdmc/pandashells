@@ -141,7 +141,7 @@ class IntegrationTests(TestCase):
             stdout, stderr = p.communicate(self.df.to_string(index=False))
         else:
             stdout, stderr = p.communicate(self.df.to_csv(index=False))
-        return stdout
+        return stdout.strip()
 
     def test_no_command(self):
         cmd = 'p.df'
@@ -152,6 +152,11 @@ class IntegrationTests(TestCase):
         cmd = 'p.df --names  x y'
         df = pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
         self.assertEqual(list(df.columns), ['x', 'y'])
+
+    def test_multiple_commands(self):
+        cmd = """p.df  'df["y"] = -df.y'  'df["z"] = df["y"]' --names  x y"""
+        df = pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
+        self.assertTrue(all(df.z < 0))
 
     def test_input_table(self):
         cmd = 'p.df -i table'
@@ -167,10 +172,9 @@ class IntegrationTests(TestCase):
 
     def test_plotting(self):
         dir_name = tempfile.mkdtemp()
-        fn = os.path.join(dir_name, 'deleteme.pgn')
-        print
-        print fn
-        os.system('rm -rf {}'.format(dir_name)
-        return
-        cmd = """p.df 'df.plot(x="a", y="b")' --savefig {}""".format(fn)
+        file_name = os.path.join(dir_name, 'deleteme.png')
+        cmd = """p.df 'df.plot(x="a", y="b")' --savefig {}""".format(file_name)
         self.get_command_result(cmd)
+        file_existed = os.path.isfile(file_name)
+        os.system('rm -rf {}'.format(dir_name))
+        self.assertTrue(file_existed)
