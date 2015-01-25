@@ -52,6 +52,7 @@ def exec_plot_command(args, cmd, df):
     plot_lib.show(args)
 
 def framify(cmd, df):
+    import pandas as pd
     if isinstance(df, pd.DataFrame):
         return df
     else:
@@ -68,6 +69,9 @@ def framify(cmd, df):
 
 
 def process_command(cmd, df):
+        # define regex to identify if supplied command is for col assignment
+        rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
+
         # if this is a column-assignment command, just execute it
         if rex_col_cmd.match(cmd):
             exec(cmd)
@@ -120,9 +124,6 @@ def main():
     from dateutil.parser import parse
     for (module, shortcut) in get_modules_and_shortcuts(command_list):
         exec('import {} as {}'.format(module, shortcut))
-
-    # define regex to identify if supplied command is for col assignment
-    rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
 
     # get the input dataframe
     df = io_lib.df_from_input(args)
