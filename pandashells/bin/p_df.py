@@ -84,29 +84,33 @@ def framify(cmd, df):
 
 
 def process_command(args, cmd, df):
-        # define regex to identify if supplied command is for col assignment
-        rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
+    # define regex to identify if supplied command is for col assignment
+    rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
+    print
+    print 'executing', cmd
+    print 'on df'
+    print df.to_csv()
 
-        # if this is a column-assignment command, just execute it
-        if rex_col_cmd.match(cmd):
-            'matches col'
-            exec(cmd)
-            return df
-
-        # if this is a plot command, execute it and quit
-        elif needs_plots([cmd]):
-            exec_plot_command(args, cmd, df)
-            sys.exit(0)
-
-        # if instead this is a command on the whole frame
-        else:
-            # put results of command in temp var
-            cmd = 'df = {}'.format(cmd)
-            exec(cmd)
-
-        # make sure df is still dataframe and return
-        df = framify(cmd, df)
+    # if this is a column-assignment command, just execute it
+    if rex_col_cmd.match(cmd):
+        'matches col'
+        exec(cmd)
         return df
+
+    # if this is a plot command, execute it and quit
+    elif needs_plots([cmd]):
+        exec_plot_command(args, cmd, df)
+        sys.exit(0)
+
+    # if instead this is a command on the whole frame
+    else:
+        # put results of command in temp var
+        cmd = 'df = {}'.format(cmd)
+        exec(cmd)
+
+    # make sure df is still dataframe and return
+    df = framify(cmd, df)
+    return df
 
 def main():
     # read command line arguments
