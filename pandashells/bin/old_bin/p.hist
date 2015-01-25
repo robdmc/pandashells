@@ -30,6 +30,7 @@ if __name__ == '__main__':
     arg_lib.addArgs(parser, 'io_in', 'example', 'decorating',
                     io_no_col_spec_allowed=False)
 
+    #WANT TO ADD A -o OPTION TO THIS TO OUTPUT BIN COUNTS
     # --- specify columns to histogram
     parser.add_argument("-c", "--cols",
                         help="Column(s) to histogram", nargs="+")
