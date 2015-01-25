@@ -45,13 +45,57 @@ def get_modules_and_shortcuts(command_list):
     return out
 
 
+def exec_plot_command(args, cmd, df):
+    exec(cmd)
+    from pandashells.lib import plot_lib
+    plot_lib.refine_plot(args)
+    plot_lib.show(args)
+
+def framify(cmd, df):
+    if isinstance(df, pd.DataFrame):
+        return df
+    else:
+        try:
+            return pd.DataFrame(df)
+        except pd.core.common.PandasError:
+            msg = (
+                '\n\nResult of command: \n'
+                '\'{cmd}\' \n'
+                'could not be cast to dataframe\n\n'
+            ).format(cmd=cmd)
+            sys.stderr.write(msg)
+            sys.exit(1)
+
+
+def process_command(cmd, df):
+        # if this is a column-assignment command, just execute it
+        if rex_col_cmd.match(cmd):
+            exec(cmd)
+            return df
+
+        # if this is a plot command, execute it and quit
+        elif needs_plots(cmd):
+            exec_plot_command(cmd, df)
+            sys.exit()
+
+        # if instead this is a command on the whole frame
+        else:
+            # put results of command in temp var
+            cmd = 'df = {}'.format(cmd)
+            exec(cmd)
+
+        # make sure df is still dataframe and return
+        df = framify(cmd, df)
+        return df
+
 def main():
     # read command line arguments
     msg = (
         "Bring pandas manipulation to command line.  Input from stdin "
          "is placed into a dataframe named 'df'.  The output of each "
-         "specified command must evaluate to a dataframe that will "
-         "overwrite 'df'. The output of the final command will be sent "
+         "command must evaluate to either a dataframe or a series."
+         "The output of each command will be available to the next command "
+         "as 'df'. The output of the final command will be sent "
          "to stdout.  The namespace in which the commands are executed "
          "includes pandas as pd, numpy as np, scipy as scp, pylab as pl, "
          "dateutil.parser.parse as parse, datetime.  Plot-specific "
@@ -60,7 +104,8 @@ def main():
     )
     parser = argparse.ArgumentParser(description=msg)
     arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating', 'example')
-    parser.add_argument("statement", help="Statement to execute", nargs="*")
+    parser.add_argument(
+        "statement", help="[statement ...] Statement(s) to execute", nargs="*")
     args = parser.parse_args()
 
     # get a list of commands to execute
@@ -76,109 +121,28 @@ def main():
     for (module, shortcut) in get_modules_and_shortcuts(command_list):
         exec('import {} as {}'.format(module, shortcut))
 
+    # define regex to identify if supplied command is for col assignment
+    rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
 
+    # get the input dataframe
+    df = io_lib.df_from_input(args)
 
+    # execute the statements in order 
+    # plot commands are terminal statements so will call sys.exit()
+    for cmd in args.statement:
+        df = process_command(cmd, df)
+
+    # write the output
+    io_lib.df_to_output(args, df)
 
 if __name__ == '__main__':
     main()
 
-#
-#
-#
-#
-#
-#
-#
-###############################################################################
-#
-## standard library imports
-#import os
-#import sys
-#import argparse
-#import re
-#
-#from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
-#
-## import required dependencies
-#modulesOkay = module_checker_lib.check_for_modules([
-#    'pandas',
-#    'numpy',
-#    'scipy',
-#    'dateutil',
-#    'matplotlib'])
-#if not modulesOkay:
-#    sys.exit(1)
-#
-#import pandas as pd
-#import numpy as np
-#import scipy as scp
-#import pylab as pl
-#from dateutil.parser import parse
-#import datetime
-#
-#
-#
-#
-#
-#
-#
-## ============================================================================
-#if __name__ == '__main__':
-#    msg = "Bring pandas manipulation to command line.  Input from stdin "
-#    msg += "is placed into a dataframe named 'df'.  The output of each "
-#    msg += "specified command must evaluate to a dataframe that will "
-#    msg += "overwrite 'df'. The output of the final command will be sent "
-#    msg += "to stdout.  The namespace in which the commands are executed "
-#    msg += "includes pandas as pd, numpy as np, scipy as scp, pylab as pl, "
-#    msg += "dateutil.parser.parse as parse, datetime.  Plot-specific "
-#    msg += "commands will be ignored unless a supplied command creates "
-#    msg += "a plot. "
-#
-#    # read command line arguments
-#    parser = argparse.ArgumentParser(description=msg)
-#
-#    options = {}
-#    arg_lib.addArgs(parser, 'io_in', 'io_out', 'decorating', 'example')
-#    parser.add_argument("statement", help="Statement to execute", nargs="*")
-#
-#    # parse arguments
-#    args = parser.parse_args()
-#
 #    # set up plot styling in case it's needed
 #    plot_lib.set_plot_styling(args)
 #
-#    # get the input dataframe
-#    df = io_lib.df_from_input(args)
 #
-#    # define regex to identify if supplied command is for col assignment
-#    rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
 #
-#    # define regex to identify plot commands
-#    plot_command_list = [
-#        'plot',
-#        'hist',
-#        'scatter',
-#        'figure',
-#        'subplot',
-#        'xlabel',
-#        'ylabel',
-#        'set_xlabel',
-#        'set_ylabel',
-#        'title',
-#        'set_xlim',
-#        'set_ylim',
-#        'legend',
-#        'twinx',
-#        'gca',
-#        'gcf']
-#
-#    pstring = '|'.join(plot_command_list)
-#    rex_plot_str = r'.*({})\(.*\).*'.format(pstring)
-#    rex_plot_cmd = re.compile(rex_plot_str)
-#    needs_show = False
-#
-#    # default temp to df to handle no statement provided case
-#    temp = df
 #
 #    # execute the statements in sequence
 #    for cmd in args.statement:
