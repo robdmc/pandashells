@@ -117,14 +117,16 @@ def draw_traces(args, df):
         y = df[y_field]
         pl.plot(x, y, args.style[0], label=y_field, alpha=args.alpha[0])
 
+def refine_plot(args):
+    set_limits(args)
+    set_labels_title(args)
+    set_grid(args)
+    set_legend(args)
 
 def draw_xy_plot(args, df):
     ensure_xy_args(args)
     ensure_xy_omission_state(args, df)
     autofill_plot_fields_and_labels(args, df)
     draw_traces(args, df)
-    set_limits(args)
-    set_labels_title(args)
-    set_grid(args)
-    set_legend(args)
+    refine_plot(args)
     show(args)

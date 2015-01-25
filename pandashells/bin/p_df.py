@@ -10,6 +10,10 @@ import sys
 
 from pandashells.lib import module_checker_lib, arg_lib, io_lib
 
+# Note:
+# There are some conditional imports into global scope 
+# right after the first two functions
+
 
 def needs_plots(command_list):
     # define regex to identify plot commands
@@ -23,7 +27,6 @@ def needs_plots(command_list):
         return True
     else:
         return False
-
 
 def get_modules_and_shortcuts(command_list):
     names_shortcuts = [
@@ -44,15 +47,27 @@ def get_modules_and_shortcuts(command_list):
         out = list(set([('pylab', 'pl')] + out))
     return out
 
+# make sure all the required modules are installed
+module_checker_lib.check_for_modules([
+    m for (m, s) in get_modules_and_shortcuts(sys.argv)
+])
+
+# import required modules into the global scope
+import pandas as pd
+from dateutil.parser import parse
+for (module, shortcut) in get_modules_and_shortcuts(sys.argv):
+    exec('import {} as {}'.format(module, shortcut))
+if needs_plots(sys.argv):
+    from pandashells.lib import plot_lib
+
 
 def exec_plot_command(args, cmd, df):
+    plot_lib.set_plot_styling(args)
     exec(cmd)
-    from pandashells.lib import plot_lib
     plot_lib.refine_plot(args)
     plot_lib.show(args)
 
 def framify(cmd, df):
-    import pandas as pd
     if isinstance(df, pd.DataFrame):
         return df
     else:
@@ -68,19 +83,20 @@ def framify(cmd, df):
             sys.exit(1)
 
 
-def process_command(cmd, df):
+def process_command(args, cmd, df):
         # define regex to identify if supplied command is for col assignment
         rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
 
         # if this is a column-assignment command, just execute it
         if rex_col_cmd.match(cmd):
+            'matches col'
             exec(cmd)
             return df
 
         # if this is a plot command, execute it and quit
-        elif needs_plots(cmd):
-            exec_plot_command(cmd, df)
-            sys.exit()
+        elif needs_plots([cmd]):
+            exec_plot_command(args, cmd, df)
+            sys.exit(0)
 
         # if instead this is a command on the whole frame
         else:
@@ -115,101 +131,16 @@ def main():
     # get a list of commands to execute
     command_list = args.statement
 
-    # make sure all the required modules are installed
-    module_checker_lib.check_for_modules([
-        m for (m, s) in get_modules_and_shortcuts(command_list)
-    ])
-
-    # import required modules
-    from dateutil.parser import parse
-    for (module, shortcut) in get_modules_and_shortcuts(command_list):
-        exec('import {} as {}'.format(module, shortcut))
-
     # get the input dataframe
     df = io_lib.df_from_input(args)
 
     # execute the statements in order 
     # plot commands are terminal statements so will call sys.exit()
     for cmd in args.statement:
-        df = process_command(cmd, df)
+        df = process_command(args, cmd, df)
 
     # write the output
     io_lib.df_to_output(args, df)
 
 if __name__ == '__main__':
     main()
-
-#    # set up plot styling in case it's needed
-#    plot_lib.set_plot_styling(args)
-#
-#
-#
-#
-#    # execute the statements in sequence
-#    for cmd in args.statement:
-#        # if this is a column-assignment command, just execute it
-#        if rex_col_cmd.match(cmd):
-#            exec(cmd)
-#            temp = df
-#        # if this is a plot command, execute it and quit
-#        elif rex_plot_cmd.match(cmd):
-#            exec(cmd)
-#            needs_show = True
-#
-#        # if instead this is a command on the whole frame
-#        else:
-#            # put results of command in temp var
-#            cmd = 'temp = {}'.format(cmd)
-#            exec(cmd)
-#
-#        # transform results to dataframe if needed
-#        if not rex_plot_cmd.match(cmd):
-#            if isinstance(temp, pd.DataFrame):
-#                df = temp
-#            else:
-#                try:
-#                    df = pd.DataFrame(temp)
-#                except pd.core.common.PandasError:
-#                    print temp
-#                    sys.exit(0)
-#
-#    # show plots if requested
-#    if needs_show:
-#        plot_lib.refine_plot(args)
-#        plot_lib.show(args)
-#    # otherwise print results
-#    else:
-#        io_lib.df_to_output(args, df)
-#
-#
-#
-#
-#
-#
-##class CommandProcessor(object):
-##    def __init__(self, args):
-##        self.args = args
-##        # define regex to identify if supplied command is for col assignment
-##        self.rex_col_cmd = re.compile(r'.*?df\[.+\].*?=')
-##
-##        # define regex to identify plot commands
-##        plot_command_list = [
-##            'plot', 'hist', 'scatter', 'figure', 'subplot', 'xlabel', 'ylabel',
-##            'set_xlabel', 'set_ylabel', 'title', 'set_xlim', 'set_ylim',
-##            'legend', 'twinx', 'gca', 'gcf'
-##        ]
-##        pstring = '|'.join(plot_command_list)
-##        rex_plot_str = r'.*({})\(.*\).*'.format(pstring)
-##        self.rex_plot_cmd = re.compile(rex_plot_str)
-##
-##        # read in the commands
-##        self.command_list = args.statement
-##
-##        # read the input dataframe
-##        self.df = io_lib.df_from_input(self.args)
-##
-##
-##    def _
-##
-#
-#
