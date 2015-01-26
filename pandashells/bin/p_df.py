@@ -60,12 +60,14 @@ for (module, shortcut) in get_modules_and_shortcuts(sys.argv):
 
 # This branch is run in the integrations tests, but since it's being
 # run from a system call, coverage doesn't know about it.  I'm 
-# labeling it as no_cover, but it actually does get run.
+# labeling it as no_cover because it actually does get run.
 if needs_plots(sys.argv): # pragma: no cover
     from pandashells.lib import plot_lib
 
-
-def exec_plot_command(args, cmd, df):
+# This function is run in the integrations tests, but since it's being
+# run from a system call, coverage doesn't know about it.  I'm 
+# labeling it as no_cover because it actually does get run.
+def exec_plot_command(args, cmd, df): # pragma: no cover
     plot_lib.set_plot_styling(args)
     exec(cmd)
     plot_lib.refine_plot(args)
@@ -112,7 +114,10 @@ def process_command(args, cmd, df):
     df = framify(cmd, df)
     return df
 
-def main():
+# This function is run in the integrations tests, but since it's being
+# run from a system call, coverage doesn't know about it.  I'm 
+# labeling it as no_cover because it actually does get run.
+def main(): # pragma: no cover
     # read command line arguments
     msg = (
         "Bring pandas manipulation to command line.  Input from stdin "
