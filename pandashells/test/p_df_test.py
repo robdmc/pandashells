@@ -1,7 +1,9 @@
 #! /usr/bin/env python
 import argparse
+import copy
 import json
 import os
+import sys
 import StringIO
 import subprocess
 import tempfile
@@ -12,11 +14,13 @@ from unittest import TestCase
 import pandas as pd
 
 from pandashells.lib import arg_lib, config_lib
+import pandashells.bin.p_df
 from pandashells.bin.p_df import (
     needs_plots,
     get_modules_and_shortcuts,
     framify,
     process_command,
+    exec_plot_command,
 )
 
 
@@ -58,6 +62,23 @@ class GetModulesAndShortcutsTests(TestCase):
                 ('numpy', 'np'),
             },
         )
+
+
+class ExecPlotCommandTests(TestCase):
+    @patch('pandashells.bin.p_df.plot_lib')
+    def test_calls_made(self, plot_lib_mock):
+        plot_lib_mock.set_plot_styling = MagicMock()
+        plot_lib_mock.refine_plot = MagicMock()
+        plot_lib_mock.show = MagicMock()
+        args = MagicMock()
+        df = MagicMock()
+        cmd = 'x = 1'
+        exec_plot_command(args, cmd, df)
+        self.assertTrue(plot_lib_mock.set_plot_styling.called)
+        self.assertTrue(plot_lib_mock.refine_plot.called)
+        self.assertTrue(plot_lib_mock.show.called)
+
+
 
 class FramifyTests(TestCase):
     def test_dataframe_to_dataframe(self):
@@ -178,3 +199,19 @@ class IntegrationTests(TestCase):
         file_existed = os.path.isfile(file_name)
         os.system('rm -rf {}'.format(dir_name))
         self.assertTrue(file_existed)
+
+#class ModuleLoadingTests(TestCase):
+#    cmd = 'df.plot(x="z")'
+#    def test_plot_lib_not_loaded_for_no_plots(self):
+#        print
+#        print 'argv', sys.argv
+#        reload(pandashells.bin.p_df)
+#        self.assertFalse('plot_lib' in pandashells.bin.p_df.__dict__.keys())
+#        print pandashells.bin.p_df.__dict__.keys()
+#
+#    def test_plot_lib_loaded_for_plots(self):
+#        sys.argv.append('df.plot(x="z")')
+#        reload(pandashells.bin.p_df)
+#        self.assertTrue('plot_lib' in pandashells.bin.p_df.__dict__.keys())
+#        sys.argv.pop()
+#

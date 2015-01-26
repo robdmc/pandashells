@@ -57,7 +57,11 @@ import pandas as pd
 from dateutil.parser import parse
 for (module, shortcut) in get_modules_and_shortcuts(sys.argv):
     exec('import {} as {}'.format(module, shortcut))
-if needs_plots(sys.argv):
+
+# This branch is run in the integrations tests, but since it's being
+# run from a system call, coverage doesn't know about it.  I'm 
+# labeling it as no_cover, but it actually does get run.
+if needs_plots(sys.argv): # pragma: no cover
     from pandashells.lib import plot_lib
 
 
