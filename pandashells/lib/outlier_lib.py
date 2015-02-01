@@ -43,9 +43,9 @@ def sigma_edit_series(
 
     return in_series
 
-def ensure_col_exists(df, col, df_name):
-    if df and (col not in df.columns):
-        msg = '\n\n{} does not have column {}\n\n'.format(df_name, col)
+def ensure_col_exists(df, col, df_name='dataframe'):
+    if not df.empty and col not in list(df.columns):
+        msg = 'in sigma_edit: {} does not have column {}'.format(df_name, repr(col))
         raise ValueError(msg)
 
 

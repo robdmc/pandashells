@@ -18,6 +18,7 @@ from pandashells.lib import arg_lib, config_lib
 import pandashells.bin.p_df
 from pandashells.lib.outlier_lib import (
     sigma_edit_series,
+    ensure_col_exists,
 )
 
 
@@ -76,3 +77,14 @@ class SigmaEditSeriesTests(TestCase):
         ser = ser - ser.mean()+ ref
         ser = sigma_edit_series(sigma_thresh, ser, ref_series=ref, max_iter=3)
         self.assertTrue(all_in_bounds(sigma_thresh, ser, ref=ref))
+
+
+class EnsureColExistsTests(TestCase):
+    def test_col_exists(self):
+        df = pd.DataFrame({'a': [1, 2, 3]})
+        ensure_col_exists(df, 'a')
+
+    def test_col_does_not_exist(self):
+        df = pd.DataFrame({'a': [1, 2, 3]})
+        with self.assertRaises(ValueError):
+            ensure_col_exists(df, 'b', 'my_df')
