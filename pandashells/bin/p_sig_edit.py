@@ -43,6 +43,13 @@ def main():
     df = outlier_lib.sigma_edit_dataframe(
         args.sigma_thresh[0], args.cols, df, max_iter=args.max_iter[0])
 
+    print
+    print '^^^^^^^^^^^^^^^^'
+    print 'you need to change na_rep in  io_lib.  Maybe make it an arg
+    print df.head(3).to_string()
+    sys.exit()
+    print '^^^^^^^^^^^^^^^^'
+
     # write dataframe to output
     io_lib.df_to_output(args, df)
 
