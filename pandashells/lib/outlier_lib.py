@@ -15,6 +15,8 @@ module_checker_lib.check_for_modules(['pandas', 'numpy'])
 import pandas as pd
 import numpy as np
 
+# disable the chained assignment warning because raises fale alarm
+pd.options.mode.chained_assignment = None
 
 # recursive edit a series
 def sigma_edit_series(
@@ -37,7 +39,7 @@ def sigma_edit_series(
     sigma_t = sigma_thresh * std
     outside = resid.abs() >= sigma_t
     if any(outside):
-        in_series[outside] = np.NaN
+        in_series.loc[outside] = np.NaN
         in_series = sigma_edit_series(sigma_thresh, in_series,
             ref_series, iter_counter, max_iter)
 
@@ -49,11 +51,9 @@ def ensure_col_exists(df, col, df_name='dataframe'):
         raise ValueError(msg)
 
 
-def sigma_edit_dataframe(sigma_thresh, columns, df, df_ref=None):
+def sigma_edit_dataframe(sigma_thresh, columns, df, ref_ser=None):
     for col in columns:
         ensure_col_exists(df, col, 'df')
-        ensure_col_exists(df_ref, col, 'df_ref')
-        ser = df[col_name]
-        ref_ser = df_ref[col_name] if df_ref else None
-        df[col] = sigma_edit_series(sigma_thresh, ser, ref_series=ref_ser)
+        ser = df[col]
+        df.loc[:, col] = sigma_edit_series(sigma_thresh, ser, ref_series=ref_ser)
     return df
