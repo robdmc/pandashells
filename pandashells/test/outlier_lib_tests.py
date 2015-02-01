@@ -15,14 +15,14 @@ import pandas as pd
 
 from pandashells.lib import arg_lib, config_lib
 import pandashells.bin.p_df
-#from pandashells.bin.p_sig_edit import (
-#    xxx,
-#)
+from pandashells.bin.p_sig_edit import (
+    sigma_edit_series,
+)
 
 
 
 
-class TestNothing(TestCase):
+class SigmaEditSeriesTests(TestCase):
     def test_nothing(self):
         print
         print 'doin it'
