@@ -1,10 +1,11 @@
 #! /usr/bin/env python
 
 # standard library imports
-import os
-import sys
+from collections import Counter
 import argparse
+import os
 import re
+import sys
 
 from pandashells.lib import module_checker_lib
 
@@ -16,19 +17,29 @@ import numpy as np
 
 
 # recursive edit a series
-def sigma_edit_series(sigma_thresh, in_series, ref_series=None):
+def sigma_edit_series(
+        sigma_thresh, in_series,
+        ref_series=None, iter_counter=None, max_iter=20):
+    iter_counter = Counter() if iter_counter is None else iter_counter
+
     if in_series.count() == 0:
         msg = "Error:  No non-NaN values from which to remove outliers"
         raise ValueError(msg)
 
-    ref = ref_series if ref_series else in_series.mean()
+    iter_counter.update('n')
+    if iter_counter['n'] > max_iter:
+        msg = "Error:  Max Number of iterations exceeded in sigma-editing"
+        raise ValueError(msg)
+
+    ref = in_series.mean() if ref_series is None else ref_series
     resid = in_series - ref
     std = resid.std()
     sigma_t = sigma_thresh * std
     outside = resid.abs() >= sigma_t
     if any(outside):
         in_series[outside] = np.NaN
-        in_series = sigma_edit_series(sigma_thresh, in_series, ref_series)
+        in_series = sigma_edit_series(sigma_thresh, in_series,
+            ref_series, iter_counter, max_iter)
 
     return in_series
 
