@@ -17,7 +17,7 @@ import numpy as np
 
 
 
-def main()
+def main():
     msg = "Perform recursive sigma editing on columns of a dataframe. "
     msg += "Recursively NaNs out values greater than sigma_thresh standard "
     msg += "deviations away from sample mean."
@@ -26,8 +26,8 @@ def main()
     parser = argparse.ArgumentParser(description=msg)
 
     options = {}
-    arg_lib.addArgs(parser, 'io_in', 'io_out', 'example',
-                    io_no_col_spec_allowed=True)
+    arg_lib.add_args(parser, 'io_in', 'io_out', 'example')
+
     parser.add_argument("-t", "--sigma_thresh", help="Sigma threshold",
                         nargs=1, required=True, type=float)
     parser.add_argument("-c", "--cols", required=True,
@@ -40,7 +40,6 @@ def main()
 
     # get the input dataframe
     df = io_lib.df_from_input(args)
-
     df = outlier_lib.sigma_edit_dataframe(
         args.sigma_thresh[0], args.cols, df, max_iter=args.max_iter[0])
 

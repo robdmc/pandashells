@@ -33,6 +33,7 @@ setup(
     entry_points={
             'console_scripts': [
                 'p.df = pandashells.bin.p_df:main',
+                'p.sig_edit = pandashells.bin.p_sig_edit:main',
             ],
         }
 )
