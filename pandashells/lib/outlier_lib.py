@@ -19,9 +19,7 @@ import numpy as np
 pd.options.mode.chained_assignment = None
 
 # recursive edit a series
-def sigma_edit_series(
-        sigma_thresh, in_series,
-        ref_series=None, iter_counter=None, max_iter=20):
+def sigma_edit_series(sigma_thresh, in_series, iter_counter=None, max_iter=20):
     iter_counter = Counter() if iter_counter is None else iter_counter
 
     if in_series.count() == 0:
@@ -33,15 +31,14 @@ def sigma_edit_series(
         msg = "Error:  Max Number of iterations exceeded in sigma-editing"
         raise ValueError(msg)
 
-    ref = in_series.mean() if ref_series is None else ref_series
-    resid = in_series - ref
+    resid = in_series - in_series.mean()
     std = resid.std()
     sigma_t = sigma_thresh * std
     outside = resid.abs() >= sigma_t
     if any(outside):
         in_series.loc[outside] = np.NaN
         in_series = sigma_edit_series(sigma_thresh, in_series,
-            ref_series, iter_counter, max_iter)
+            iter_counter, max_iter)
 
     return in_series
 
@@ -51,9 +48,9 @@ def ensure_col_exists(df, col, df_name='dataframe'):
         raise ValueError(msg)
 
 
-def sigma_edit_dataframe(sigma_thresh, columns, df, ref_ser=None):
+def sigma_edit_dataframe(sigma_thresh, columns, df, max_iter=20):
     for col in columns:
         ensure_col_exists(df, col, 'df')
         ser = df[col]
-        df.loc[:, col] = sigma_edit_series(sigma_thresh, ser, ref_series=ref_ser)
+        df.loc[:, col] = sigma_edit_series(sigma_thresh, ser, max_iter=max_iter)
     return df
