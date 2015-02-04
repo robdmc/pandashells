@@ -45,6 +45,8 @@ def get_nan_rep(args, config_dict):
     NOTE THAT THIS WORK IS HAPPENING IN THE P_CONFIG_TESTS BRANCH
     WHICH SHOULD GET MERGED INTO THE P_SIG_EDIT_TESTS BRANCH
     WHICH THEN CAN GET MERGED INTO THE ADD_TESTS BRANCH.
+
+    ILL HAVE TO SEE IF I NEED NAN-REP IN INPUT STUFF TOO
     if hasattr(args, 
     sep_dict = {'csv': ',', 'table': r'\s+'}
     input_type_set = set(args.input_options).intersection(set(sep_dict.keys()))
