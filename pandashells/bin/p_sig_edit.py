@@ -45,7 +45,7 @@ def main():
 
     print
     print '^^^^^^^^^^^^^^^^'
-    print 'you need to change na_rep in  io_lib.  Maybe make it an arg
+    print 'you need to change na_rep in  io_lib.  Maybe make it an arg'
     print df.head(3).to_string()
     sys.exit()
     print '^^^^^^^^^^^^^^^^'

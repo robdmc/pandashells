@@ -36,6 +36,23 @@ def get_header_names(args):
         header = None
     return header, names
 
+def get_nan_rep(args, config_dict):
+    OKAY HERES THE DEAL.  I WAS WORKING P.SIG_EDIT WHEN I REALIZED
+    I WANTED TO SPECIFY NAN_REP ON IO_LIB.  HENCE THIS FUNCTION.
+    I AM NOW IN A PLACE WHERE I NEED TO ADD NAN_REP STUFF TO ARGLIB
+    IN ORDER TO MAKE THIS WORK.
+
+    NOTE THAT THIS WORK IS HAPPENING IN THE P_CONFIG_TESTS BRANCH
+    WHICH SHOULD GET MERGED INTO THE P_SIG_EDIT_TESTS BRANCH
+    WHICH THEN CAN GET MERGED INTO THE ADD_TESTS BRANCH.
+    if hasattr(args, 
+    sep_dict = {'csv': ',', 'table': r'\s+'}
+    input_type_set = set(args.input_options).intersection(set(sep_dict.keys()))
+    if input_type_set:
+        input_type = list(input_type_set)[0]
+    else:
+        input_type = config_dict['io_input_type']
+    return sep_dict[input_type]
 
 def df_from_input(args, in_file=None):
     # --- set up proper state for reading input
