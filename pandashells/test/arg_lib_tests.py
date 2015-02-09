@@ -1,9 +1,6 @@
 #! /usr/bin/env python
-import os
-import json
 from unittest import TestCase
 from pandashells.lib import arg_lib, config_lib
-import argparse
 from mock import patch, MagicMock, call
 
 
@@ -93,9 +90,10 @@ class ArgLibTests(TestCase):
         # --- define the current defaults
         default_for_output = ['csv', 'header', 'noindex']
         msg = 'Options taken from {}'.format(repr(io_opt_list))
-        call_obj1 = call('-o', '--output_options', nargs='+',
-                        type=str, dest='output_options', metavar='option',
-                        default=default_for_output, help=msg)
+        call_obj1 = call(
+            '-o', '--output_options', nargs='+',
+            type=str, dest='output_options', metavar='option',
+            default=default_for_output, help=msg)
 
         msg = (
             'Replace NaNs with this string. '
