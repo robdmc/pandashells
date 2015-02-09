@@ -2,6 +2,7 @@
 import os
 import sys
 import json
+import numpy as np
 import pandas as pd
 from unittest import TestCase
 from pandashells.lib.module_checker_lib import check_for_modules
@@ -72,6 +73,16 @@ class IOLibTests(TestCase):
         self.assertEqual(header, None)
         self.assertEqual(names, None)
 
+    def test_get_nan_rep_with_nan(self):
+        config_dict = {'io_output_na_rep': '-'}
+        args = MagicMock(io_output_na_rep=['-'])
+        self.assertEqual(io_lib.get_nan_rep(args, config_dict), '-')
+
+    def test_get_nan_rep_no_arg(self):
+        config_dict = {'io_output_na_rep': 'nan'}
+        args = MagicMock(io_output_na_rep=None)
+        self.assertTrue(np.isnan(io_lib.get_nan_rep(args, config_dict)))
+
     @patch('pandashells.lib.io_lib.sys.stdin')
     @patch('pandashells.lib.io_lib.pd')
     def test_df_from_input_no_infile(self, pd_mock, stdin_mock):
@@ -107,7 +118,7 @@ class IOLibTests(TestCase):
     def test_csv_writer(self, sys_mock):
         sys_mock.stdout = StringIO.StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
-        io_lib.csv_writer(df, header=True, index=False)
+        io_lib.csv_writer(df, header=True, index=False, na_rep='nan')
         sys.stdout = sys.__stdout__
         self.assertEqual('"a","b"\n1,2\n3,4\n', sys_mock.stdout.getvalue())
 
@@ -115,7 +126,7 @@ class IOLibTests(TestCase):
     def test_table_writer(self, sys_mock):
         sys_mock.stdout = StringIO.StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
-        io_lib.table_writer(df, header=True, index=False)
+        io_lib.table_writer(df, header=True, index=False, na_rep='nan')
         sys.stdout = sys.__stdout__
         self.assertEqual(' a  b\n 1  2\n 3  4\n', sys_mock.stdout.getvalue())
 
@@ -130,26 +141,29 @@ class IOLibTests(TestCase):
         self.assertTrue('<th>b</th>' in html)
         self.assertTrue('<td> 1</td>' in html)
 
+    @patch('pandashells.lib.io_lib.get_nan_rep', MagicMock(return_value='nan'))
     @patch('pandashells.lib.io_lib.csv_writer')
     def test_df_to_output_no_header_no_index(self, csv_writer_mock):
         args_mock = MagicMock(output_options=['csv', 'noheader'])
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.df_to_output(args_mock, df)
-        csv_writer_mock.assert_called_with(df, False, False)
+        csv_writer_mock.assert_called_with(df, False, False, 'nan')
 
+    @patch('pandashells.lib.io_lib.get_nan_rep', MagicMock(return_value='nan'))
     @patch('pandashells.lib.io_lib.csv_writer')
     def test_df_to_output_csv_type(self, csv_writer_mock):
         args_mock = MagicMock(output_options=['csv', 'index'])
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.df_to_output(args_mock, df)
-        csv_writer_mock.assert_called_with(df, True, True)
+        csv_writer_mock.assert_called_with(df, True, True, 'nan')
 
+    @patch('pandashells.lib.io_lib.get_nan_rep', MagicMock(return_value='nan'))
     @patch('pandashells.lib.io_lib.csv_writer')
     def test_df_to_output_bad_type(self, csv_writer_mock):
         args_mock = MagicMock(output_options=['bad'])
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.df_to_output(args_mock, df)
-        csv_writer_mock.assert_called_with(df, True, False)
+        csv_writer_mock.assert_called_with(df, True, False, 'nan')
 
     @patch('pandashells.lib.io_lib.sys')
     def test_df_to_output_broken_stdout(self, sys_mock):

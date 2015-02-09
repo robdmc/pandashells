@@ -58,7 +58,7 @@ class MainTests(TestCase):
     @patch('pandashells.bin.p_config.sys.argv',
         [
             'p.config',
-            '--io_output_nan_rep', '',
+            '--io_output_na_rep', '',
             '--io_input_type', 'table',
         ]
     )
@@ -67,7 +67,7 @@ class MainTests(TestCase):
             main()
         with open(config_lib.CONFIG_FILE_NAME) as config_file:
             expected_dict = copy.copy(config_lib.DEFAULT_DICT)
-            expected_dict['io_output_nan_rep'] = ''
+            expected_dict['io_output_na_rep'] = ''
             expected_dict['io_input_type'] = 'table'
 
             config_dict = json.loads(config_file.read())

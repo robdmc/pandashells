@@ -93,21 +93,32 @@ class ArgLibTests(TestCase):
         # --- define the current defaults
         default_for_output = ['csv', 'header', 'noindex']
         msg = 'Options taken from {}'.format(repr(io_opt_list))
-        call_obj = call('-o', '--output_options', nargs='+',
+        call_obj1 = call('-o', '--output_options', nargs='+',
                         type=str, dest='output_options', metavar='option',
                         default=default_for_output, help=msg)
+
+        msg = (
+            'Replace NaNs with this string. '
+            'A string containing \'nan\' will set na_rep to numpy NaN. '
+            'Current default is {}'
+        ).format(repr(str(config_lib.get_config()['io_output_na_rep'])))
+        call_obj2 = call(
+            '--output_na_rep', nargs=1, type=str, dest='io_output_na_rep',
+            help=msg)
 
         # --- run the code under test
         args = ['io_out']
         config_dict = {
             'io_output_type': 'csv',
             'io_output_header': 'header',
-            'io_output_index': 'noindex'
+            'io_output_index': 'noindex',
+            'io_output_na_rep': 'nan'
         }
         arg_lib._io_out_adder(parser, config_dict, *args)
 
         # --- make sure proper calls were made
-        self.assertEqual(parser.add_argument.call_args_list, [call_obj])
+        self.assertEqual(parser.add_argument.call_args_list[0], call_obj1)
+        self.assertEqual(parser.add_argument.call_args_list[1], call_obj2)
 
     def test_decorating_adder_inactive(self):
         """
