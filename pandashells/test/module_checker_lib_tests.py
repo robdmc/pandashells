@@ -1,11 +1,8 @@
 #! /usr/bin/env python
-import os
-import json
 from unittest import TestCase
 from pandashells.lib.module_checker_lib import check_for_modules
 from pandashells.lib import module_checker_lib
-import argparse
-from mock import patch, MagicMock, call
+from mock import patch
 
 
 class ModuleCheckerTests(TestCase):

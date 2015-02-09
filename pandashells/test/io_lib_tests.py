@@ -1,14 +1,10 @@
 #! /usr/bin/env python
-import os
 import sys
-import json
 import numpy as np
 import pandas as pd
 from unittest import TestCase
-from pandashells.lib.module_checker_lib import check_for_modules
 from pandashells.lib import io_lib
-import argparse
-from mock import patch, MagicMock, call
+from mock import patch, MagicMock
 import StringIO
 
 
@@ -90,7 +86,7 @@ class IOLibTests(TestCase):
         """
         pd_mock.read_csv = MagicMock(return_value=pd.DataFrame())
         args = MagicMock(names=[], input_options=[])
-        df = io_lib.df_from_input(args, in_file=None)
+        io_lib.df_from_input(args, in_file=None)
         self.assertEqual(pd_mock.read_csv.call_args_list[0][0][0], stdin_mock)
 
     @patch('pandashells.lib.io_lib.pd')
@@ -100,7 +96,7 @@ class IOLibTests(TestCase):
         pd_mock.read_csv = MagicMock(return_value=pd.DataFrame())
         args = MagicMock(names=[], input_options=[])
         in_file = MagicMock()
-        df = io_lib.df_from_input(args, in_file=in_file)
+        io_lib.df_from_input(args, in_file=in_file)
         self.assertEqual(pd_mock.read_csv.call_args_list[0][0][0], in_file)
 
     @patch('pandashells.lib.io_lib.pd')
