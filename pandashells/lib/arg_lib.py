@@ -31,10 +31,10 @@ def _io_in_adder(parser, config_dict, *args):
     """
     in_arg_set = set(args)
     if 'io_in' in in_arg_set:
-        # --- define the valid components
+        # define the valid components
         io_opt_list = ['csv', 'table', 'header', 'noheader']
 
-        # --- allow the option of supplying input column names
+        # allow the option of supplying input column names
         msg = 'Overwrite column names with list of names'
         parser.add_argument('--names', nargs='+', type=str,
                             dest='names', metavar="name",
@@ -55,26 +55,38 @@ def _io_out_adder(parser, config_dict, *args):
     """
     in_arg_set = set(args)
     if 'io_out' in in_arg_set:
-        # --- define the valid components
-        io_opt_list = ['csv', 'table', 'html',
-                       'header', 'noheader', 'index', 'noindex']
+        # define the valid components
+        io_opt_list = [
+            'csv', 'table', 'html', 'header', 'noheader', 'index', 'noindex',
+       ]
 
-        # --- define the current defaults
-        default_for_output = [config_dict['io_output_type'],
-                              config_dict['io_output_header'],
-                              config_dict['io_output_index']]
+        # define the current defaults
+        default_for_output = [
+            config_dict['io_output_type'],
+            config_dict['io_output_header'],
+            config_dict['io_output_index']
+        ]
 
-        # --- show the current defaults in the arg parser
+        # show the current defaults in the arg parser
         msg = 'Options taken from {}'.format(repr(io_opt_list))
         parser.add_argument('-o', '--output_options', nargs='+',
-                            type=str, dest='output_options', metavar='option',
-                            default=default_for_output, help=msg)
+            type=str, dest='output_options', metavar='option',
+            default=default_for_output, help=msg)
+
+        msg = (
+            'Replace NaNs with this string. '
+            'A string containing \'nan\' will set na_rep to numpy NaN. '
+            'Current default is {}'
+        ).format(repr(str(config_dict['io_output_na_rep'])))
+        parser.add_argument(
+            '--output_na_rep', nargs=1, type=str, dest='io_output_na_rep',
+             help=msg)
 
 
 def _decorating_adder(parser, *args):
     in_arg_set = set(args)
     if 'decorating' in in_arg_set:
-        # --- get a list of valid plot styling info
+        # get a list of valid plot styling info
         context_list = [t for t in config_lib.CONFIG_OPTS if
                         t[0] == 'plot_context'][0][1]
         theme_list = [t for t in config_lib.CONFIG_OPTS if

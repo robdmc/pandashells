@@ -13,7 +13,7 @@ CONFIG_OPTS = sorted([
     ('io_input_header', ['header', 'noheader']),
     ('io_output_header', ['header', 'noheader']),
     ('io_output_index', ['noindex', 'index']),
-    ('io_output_nan_rep', ['nan', 'NaN', '']),
+    ('io_output_na_rep', ['nan', 'NaN', '', '-']),
     ('plot_context', ['talk', 'poster', 'paper', 'notebook']),
     ('plot_theme', ['darkgrid', 'whitegrid', 'dark', 'white']),
     ('plot_palette', ['muted', 'deep', 'dark', 'colorblind', 'pastel'])])
