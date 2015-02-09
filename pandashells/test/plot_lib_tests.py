@@ -1,12 +1,11 @@
 #! /usr/bin/env python
 import os
-import json
 import tempfile
 import shutil
 from unittest import TestCase
 from pandashells.lib import plot_lib, arg_lib
 import argparse
-from mock import patch, MagicMock, call
+from mock import patch, MagicMock
 import matplotlib as mpl
 import pylab as pl
 import pandas as pd
@@ -224,7 +223,7 @@ class PlotLibTests(TestCase):
             '--legend best --xlim 0 10 --ylim -10 10 '
             '--savefig {}'.format(out_file)
         ).split()
-        with patch('pandashells.lib.plot_lib.sys.argv', argv) as argv_mock:
+        with patch('pandashells.lib.plot_lib.sys.argv', argv):
             pl.clf()
             df = pd.DataFrame(
                 {

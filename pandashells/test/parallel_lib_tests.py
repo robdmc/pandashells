@@ -1,16 +1,8 @@
 #! /usr/bin/env python
-import os
 import sys
-import json
-import tempfile
-import shutil
 from unittest import TestCase
 from pandashells.lib import parallel_lib
-import argparse
-from mock import patch, MagicMock, call
-import matplotlib as mpl
-import pylab as pl
-import pandas as pd
+from mock import patch, MagicMock
 import datetime
 import multiprocessing as mp
 
@@ -108,7 +100,6 @@ class ParallelLibTests(TestCase):
         then = datetime.datetime(2014, 1, 1, 12, 0, 0)
         now = datetime.datetime(2014, 1, 1, 12, 0, 1)
         verbose = False
-        cmd = 'echo hello'
         rec = {}
         parallel_lib.post_command_verbose_print(now, then, rec, verbose)
         self.assertFalse(writer_mock.writerow.called)
@@ -123,7 +114,6 @@ class ParallelLibTests(TestCase):
         then = datetime.datetime(2014, 1, 1, 12, 0, 0)
         now = datetime.datetime(2014, 1, 1, 12, 0, 7)
         verbose = True
-        cmd = 'echo hello'
         rec = {}
         parallel_lib.post_command_verbose_print(now, then, rec, verbose)
         kwarg = writer_mock.writerow.call_args_list[0][0][0]

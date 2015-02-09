@@ -1,27 +1,19 @@
 #! /usr/bin/env python
-import argparse
-import copy
-import json
 import os
-import sys
 import StringIO
 import subprocess
 import tempfile
 
 
-from mock import patch, MagicMock, call
+from mock import patch, MagicMock
 from unittest import TestCase
 import pandas as pd
 
-from pandashells.lib import arg_lib, config_lib
-import pandashells.bin.p_df
 from pandashells.bin.p_df import (
     needs_plots,
     get_modules_and_shortcuts,
     framify,
     process_command,
-    exec_plot_command,
-    main,
 )
 
 
@@ -29,6 +21,7 @@ class NeedsPlots(TestCase):
     def test_doesnt_need_plots(self):
         command_list = ['df.reset_index()', 'df.head()']
         self.assertFalse(needs_plots(command_list))
+
     def test_needs_plots(self):
         command_list = ['set_xlim([1, 2])']
         self.assertTrue(needs_plots(command_list))
@@ -90,9 +83,10 @@ class FramifyTests(TestCase):
         df = 7
         sys_mock.stderr = MagicMock(write=MagicMock())
         sys_mock.exit = MagicMock()
-        out = framify(cmd, df)
+        framify(cmd, df)
         self.assertTrue(sys_mock.stderr.write.called)
         self.assertTrue(sys_mock.exit.called)
+
 
 class ProcessCommandTests(TestCase):
     def setUp(self):
@@ -104,7 +98,7 @@ class ProcessCommandTests(TestCase):
         ])
 
     def test_col_assignement(self):
-        args=MagicMock()
+        args = MagicMock()
         cmd = 'df["c"] = 2 * df["a"]'
         df = process_command(args, cmd, self.df)
         self.assertEqual(df.c.iloc[0], 2)
@@ -112,15 +106,15 @@ class ProcessCommandTests(TestCase):
     @patch('pandashells.bin.p_df.sys')
     @patch('pandashells.bin.p_df.exec_plot_command')
     def test_plot_needed(self, exec_plot_mock, sys_mock):
-        args=MagicMock()
+        args = MagicMock()
         sys_mock.exit = MagicMock()
         cmd = 'df.plot(x="a", y="b")'
-        df = process_command(args, cmd, self.df)
+        process_command(args, cmd, self.df)
         self.assertTrue(exec_plot_mock.called)
         self.assertTrue(sys_mock.exit.called)
 
     def test_regular_command(self):
-        args=MagicMock()
+        args = MagicMock()
         cmd = 'df.a.value_counts()'
         df = process_command(args, cmd, self.df)
         self.assertEqual(set(df.index), {1, 2, 3, 4})

@@ -1,22 +1,15 @@
 #! /usr/bin/env python
-import argparse
 import copy
 from contextlib import contextmanager
 import json
 import os
 import sys
-import StringIO
-import subprocess
-import tempfile
 
 
-from mock import patch, MagicMock, call
+from mock import patch, MagicMock
 from unittest import TestCase
-import pandas as pd
-import numpy as np
 
-from pandashells.lib import arg_lib, config_lib
-import pandashells.bin.p_df
+from pandashells.lib import config_lib
 from pandashells.bin.p_config import (
     main,
 )
@@ -41,13 +34,13 @@ class MainTests(TestCase):
             cmd = 'rm {} 2>/dev/null'.format(config_lib.CONFIG_FILE_NAME)
             os.system(cmd)
 
-    @patch('pandashells.bin.p_config.sys.argv',
+    @patch(
+        'pandashells.bin.p_config.sys.argv',
         [
             'p.config',
             '--force_defaults',
         ]
     )
-
     def test_force_defaults(self):
         with mute_output():
             main()
@@ -55,7 +48,8 @@ class MainTests(TestCase):
             config_dict = json.loads(config_file.read())
             self.assertEqual(config_dict, config_lib.DEFAULT_DICT)
 
-    @patch('pandashells.bin.p_config.sys.argv',
+    @patch(
+        'pandashells.bin.p_config.sys.argv',
         [
             'p.config',
             '--io_output_na_rep', '',
@@ -72,8 +66,3 @@ class MainTests(TestCase):
 
             config_dict = json.loads(config_file.read())
             self.assertEqual(config_dict, expected_dict)
-
-
-#class MainUnitTest(TestCase):
-#    @patch('pandashells.bin.p_config.sys.argv')
-#    def test_from_input_to_output( self, argv_mock):

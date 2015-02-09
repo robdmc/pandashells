@@ -1,26 +1,16 @@
 #! /usr/bin/env python
-import argparse
-import copy
-import json
-import os
-import sys
 import StringIO
 import subprocess
-import tempfile
 
 
-from mock import patch, MagicMock, call
+from mock import patch, MagicMock
 from unittest import TestCase
 import pandas as pd
 import numpy as np
 
-from pandashells.lib import arg_lib, config_lib
-import pandashells.bin.p_df
 from pandashells.bin.p_sig_edit import (
     main,
 )
-
-
 
 
 class MainUnitTest(TestCase):
@@ -84,4 +74,4 @@ class IntegrationTests(TestCase):
     def test_bad_iter(self):
         cmd = 'p.sig_edit -t 2 -c a --max_iter 0'
         with self.assertRaises(ValueError):
-            df = pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
+            pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
