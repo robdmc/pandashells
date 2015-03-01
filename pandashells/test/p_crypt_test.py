@@ -14,13 +14,7 @@ from unittest import TestCase
 from pandashells.lib import config_lib
 from pandashells.bin.p_crypt import main
 
-
-#@contextmanager
-#def mute_output():
-#    sys.stdout = MagicMock()
-#    yield
-#    sys.stdout = sys.__stdout__
-
+#TODO: Mock out the add_args methods in failing tests to get them to pass
 
 class MainTests(TestCase):
 

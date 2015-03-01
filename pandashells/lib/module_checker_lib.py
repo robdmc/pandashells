@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-import sys
 import importlib
 
 # --- define the default error message to show when a module can't be found
@@ -41,7 +40,7 @@ def check_for_modules(module_list):
         except ImportError:
             # --- add to error message for each bad module
             msg = msg if msg else HEADER
-            msg += '-'*60 + '\n'
+            msg += '-' * 60 + '\n'
             msg += "Missing module '{}'. To install use: \n".format(module)
             msg += "    {}\n\n".format(CMD_DICT[module])
 

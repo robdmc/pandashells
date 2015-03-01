@@ -58,7 +58,7 @@ def _io_out_adder(parser, config_dict, *args):
         # define the valid components
         io_opt_list = [
             'csv', 'table', 'html', 'header', 'noheader', 'index', 'noindex',
-       ]
+        ]
 
         # define the current defaults
         default_for_output = [
@@ -69,7 +69,8 @@ def _io_out_adder(parser, config_dict, *args):
 
         # show the current defaults in the arg parser
         msg = 'Options taken from {}'.format(repr(io_opt_list))
-        parser.add_argument('-o', '--output_options', nargs='+',
+        parser.add_argument(
+            '-o', '--output_options', nargs='+',
             type=str, dest='output_options', metavar='option',
             default=default_for_output, help=msg)
 
@@ -80,7 +81,7 @@ def _io_out_adder(parser, config_dict, *args):
         ).format(repr(str(config_dict['io_output_na_rep'])))
         parser.add_argument(
             '--output_na_rep', nargs=1, type=str, dest='io_output_na_rep',
-             help=msg)
+            help=msg)
 
 
 def _decorating_adder(parser, *args):
@@ -120,8 +121,8 @@ def _decorating_adder(parser, *args):
                             choices=['1', '2', '3', '4', 'best'], help=msg)
         # ---
         msg = "Specify whether hide the grid or not"
-        parser.add_argument('--nogrid',  action='store_true', dest='no_grid',
-                            default=False,  help=msg)
+        parser.add_argument('--nogrid', action='store_true', dest='no_grid',
+                            default=False, help=msg)
 
         # ---
         msg = "Specify plot context. Default = '{}' ".format(context_list[0])
@@ -169,7 +170,7 @@ def _example_adder(parser, *args):
     if 'example' in in_arg_set:
         msg = "Show a usage example and exit"
         parser.add_argument('--example', action='store_true', dest='example',
-                            default=False,  help=msg)
+                            default=False, help=msg)
 
 
 def add_args(parser, *args):

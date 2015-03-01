@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 import os
-import sys
 import json
 
 # --- the name of the file in which to store configuration

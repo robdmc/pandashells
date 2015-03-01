@@ -2,10 +2,6 @@
 
 # standard library imports
 from collections import Counter
-import argparse
-import os
-import re
-import sys
 
 from pandashells.lib import module_checker_lib
 
@@ -17,6 +13,7 @@ import numpy as np
 
 # disable the chained assignment warning because raises fale alarm
 pd.options.mode.chained_assignment = None
+
 
 # recursive edit a series
 def sigma_edit_series(sigma_thresh, in_series, iter_counter=None, max_iter=20):
@@ -37,10 +34,11 @@ def sigma_edit_series(sigma_thresh, in_series, iter_counter=None, max_iter=20):
     outside = resid.abs() >= sigma_t
     if any(outside):
         in_series.loc[outside] = np.NaN
-        in_series = sigma_edit_series(sigma_thresh, in_series,
-            iter_counter, max_iter)
+        in_series = sigma_edit_series(
+            sigma_thresh, in_series, iter_counter, max_iter)
 
     return in_series
+
 
 def ensure_col_exists(df, col, df_name='dataframe'):
     if not df.empty and col not in list(df.columns):
