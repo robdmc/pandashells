@@ -4,13 +4,8 @@ import os
 import sys
 import multiprocessing as mp
 import subprocess
-import time
-import signal
-from Queue import Empty
-import numpy as np
 import csv
 import datetime
-import json
 from contextlib import contextmanager
 
 # define a field list for csv writing output
@@ -44,7 +39,7 @@ def pre_command_verbose_print(verbose, suppress_cmd, cmd, job_num, job_tot):
             'duration_min': '',
             'pid': os.getpid(),
             'cmd': cmd,
-            }
+        }
         # suppress command if requested
         if suppress_cmd:
             rec['cmd'] = ''
@@ -79,7 +74,6 @@ def verbose_writer(verbose, suppress_cmd, cmd, job_num, job_tot):
     then = datetime.datetime.now()
     yield
     now = datetime.datetime.now()
-    dt = now - then
     post_command_verbose_print(now, then, rec, verbose)
 
 

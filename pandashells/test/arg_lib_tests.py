@@ -170,8 +170,8 @@ class ArgLibTests(TestCase):
                           choices=['1', '2', '3', '4', 'best'], help=msg))
 
         msg = "Specify whether hide the grid or not"
-        calls.append(call('--nogrid',  action='store_true', dest='no_grid',
-                          default=False,  help=msg))
+        calls.append(call('--nogrid', action='store_true', dest='no_grid',
+                          default=False, help=msg))
 
         msg = "Specify plot context. Default = '{}' ".format(context_list[0])
         calls.append(call('--context', nargs=1, type=str, dest='plot_context',
@@ -257,7 +257,7 @@ class ArgLibTests(TestCase):
 
         msg = "Show a usage example and exit"
         call_obj = call('--example', action='store_true', dest='example',
-                        default=False,  help=msg)
+                        default=False, help=msg)
 
         args = ['example']
         arg_lib._example_adder(parser, *args)

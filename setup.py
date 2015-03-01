@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import sys
 from setuptools import setup, find_packages
 import glob
 
@@ -22,20 +21,17 @@ setup(
     package_data={'pandashells': ['example_data/*.csv']},
     # include_package_data=True,
     long_description='Bringing the power of pandas to the command line',
-    #scripts=scripts,
+    # scripts=scripts,
     classifiers=[
         "Topic :: Utilities",
         "License ::  Simplified BSD License",
     ],
-
-
-
     entry_points={
-            'console_scripts': [
-                'p.config = pandashells.bin.p_config:main',
-                'p.crypt = pandashells.bin.p_crypt:main',
-                'p.df = pandashells.bin.p_df:main',
-                'p.sig_edit = pandashells.bin.p_sig_edit:main',
-            ],
-        }
+        'console_scripts': [
+            'p.config = pandashells.bin.p_config:main',
+            'p.crypt = pandashells.bin.p_crypt:main',
+            'p.df = pandashells.bin.p_df:main',
+            'p.sig_edit = pandashells.bin.p_sig_edit:main',
+        ],
+    }
 )

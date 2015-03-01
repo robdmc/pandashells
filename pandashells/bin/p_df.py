@@ -2,16 +2,14 @@
 
 # standard library imports
 import argparse
-import datetime
-import importlib
-import os
-import re
-import sys
+import os  # noqa
+import re  # noqa
+import sys  # noqa
 
 from pandashells.lib import module_checker_lib, arg_lib, io_lib
 
 # Note:
-# There are some conditional imports into global scope 
+# There are some conditional imports into global scope
 # right after the first two functions
 
 
@@ -28,8 +26,10 @@ def needs_plots(command_list):
     else:
         return False
 
+
 def get_modules_and_shortcuts(command_list):
     names_shortcuts = [
+        ('datetime', 'datetime'),
         ('numpy', 'np'),
         ('scipy', 'scp'),
         ('pylab', 'pl'),
@@ -54,24 +54,28 @@ module_checker_lib.check_for_modules([
 
 # import required modules into the global scope
 import pandas as pd
-from dateutil.parser import parse
+from dateutil.parser import parse  # noqa
 for (module, shortcut) in get_modules_and_shortcuts(sys.argv):
     exec('import {} as {}'.format(module, shortcut))
 
+#TODO: change how tests are done to remove this funiness
 # This branch is run in the integrations tests, but since it's being
-# run from a system call, coverage doesn't know about it.  I'm 
+# run from a system call, coverage doesn't know about it.  I'm
 # labeling it as no_cover because it actually does get run.
-if needs_plots(sys.argv): # pragma: no cover
+if needs_plots(sys.argv):  # pragma: no cover
     from pandashells.lib import plot_lib
 
+
+#TODO: same as above
 # This function is run in the integrations tests, but since it's being
-# run from a system call, coverage doesn't know about it.  I'm 
+# run from a system call, coverage doesn't know about it.  I'm
 # labeling it as no_cover because it actually does get run.
-def exec_plot_command(args, cmd, df): # pragma: no cover
+def exec_plot_command(args, cmd, df):  # pragma: no cover
     plot_lib.set_plot_styling(args)
     exec(cmd)
     plot_lib.refine_plot(args)
     plot_lib.show(args)
+
 
 def framify(cmd, df):
     if isinstance(df, pd.DataFrame):
@@ -114,22 +118,24 @@ def process_command(args, cmd, df):
     df = framify(cmd, df)
     return df
 
+
+#TODO: same as above
 # This function is run in the integrations tests, but since it's being
-# run from a system call, coverage doesn't know about it.  I'm 
+# run from a system call, coverage doesn't know about it.  I'm
 # labeling it as no_cover because it actually does get run.
-def main(): # pragma: no cover
+def main():  # pragma: no cover
     # read command line arguments
     msg = (
         "Bring pandas manipulation to command line.  Input from stdin "
-         "is placed into a dataframe named 'df'.  The output of each "
-         "command must evaluate to either a dataframe or a series."
-         "The output of each command will be available to the next command "
-         "as 'df'. The output of the final command will be sent "
-         "to stdout.  The namespace in which the commands are executed "
-         "includes pandas as pd, numpy as np, scipy as scp, pylab as pl, "
-         "dateutil.parser.parse as parse, datetime.  Plot-specific "
-         "commands will be ignored unless a supplied command creates "
-         "a plot. "
+        "is placed into a dataframe named 'df'.  The output of each "
+        "command must evaluate to either a dataframe or a series."
+        "The output of each command will be available to the next command "
+        "as 'df'. The output of the final command will be sent "
+        "to stdout.  The namespace in which the commands are executed "
+        "includes pandas as pd, numpy as np, scipy as scp, pylab as pl, "
+        "dateutil.parser.parse as parse, datetime.  Plot-specific "
+        "commands will be ignored unless a supplied command creates "
+        "a plot. "
     )
     parser = argparse.ArgumentParser(description=msg)
     arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating', 'example')
@@ -137,13 +143,10 @@ def main(): # pragma: no cover
         "statement", help="[statement ...] Statement(s) to execute", nargs="*")
     args = parser.parse_args()
 
-    # get a list of commands to execute
-    command_list = args.statement
-
     # get the input dataframe
     df = io_lib.df_from_input(args)
 
-    # execute the statements in order 
+    # execute the statements in order
     # plot commands are terminal statements so will call sys.exit()
     for cmd in args.statement:
         df = process_command(args, cmd, df)
@@ -151,5 +154,5 @@ def main(): # pragma: no cover
     # write the output
     io_lib.df_to_output(args, df)
 
-if __name__ == '__main__': # pragma: no cover
+if __name__ == '__main__':  # pragma: no cover
     main()

@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 
-import os
 import sys
-import argparse
 import re
 
 from pandashells.lib import module_checker_lib
@@ -117,11 +115,13 @@ def draw_traces(args, df):
         y = df[y_field]
         pl.plot(x, y, args.style[0], label=y_field, alpha=args.alpha[0])
 
+
 def refine_plot(args):
     set_limits(args)
     set_labels_title(args)
     set_grid(args)
     set_legend(args)
+
 
 def draw_xy_plot(args, df):
     ensure_xy_args(args)

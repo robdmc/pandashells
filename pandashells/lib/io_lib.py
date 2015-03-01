@@ -1,9 +1,6 @@
 #! /usr/bin/env python
 
-import argparse
 import csv
-import os
-import re
 import sys
 
 from pandashells.lib import module_checker_lib, config_lib
@@ -30,20 +27,20 @@ def get_header_names(args):
         header = 0
         names = [s.strip() for s in args.names]
     else:
-        header, names = 'infer',  None
+        header, names = 'infer', None
 
     if 'noheader' in args.input_options:
         header = None
     return header, names
 
+
 def get_nan_rep(args, config_dict):
-    if (hasattr(args, 'io_output_na_rep')
-            and args.io_output_na_rep is not None):
+    if (hasattr(
+            args, 'io_output_na_rep') and args.io_output_na_rep is not None):
         na_rep = args.io_output_na_rep[0]
     else:
         na_rep = config_dict['io_output_na_rep']
     return np.NaN if na_rep.lower() == 'nan' else na_rep
-
 
 
 def df_from_input(args, in_file=None):

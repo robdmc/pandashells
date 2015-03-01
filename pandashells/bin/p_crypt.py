@@ -2,10 +2,10 @@
 
 import argparse
 import os
-import re
 import sys
 
 from pandashells.lib import arg_lib
+
 
 def main():
     msg = "Encrypt a file with aes-256-cbc as implemented by openssl. "
@@ -66,6 +66,5 @@ def main():
     #  run the proper openssl command
     os.system(cmd)
 
-if __name__ == '__main__': # pragma: no cover
-
+if __name__ == '__main__':  # pragma: no cover
     main()
