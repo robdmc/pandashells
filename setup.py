@@ -32,6 +32,7 @@ setup(
             'p.crypt = pandashells.bin.p_crypt:main',
             'p.df = pandashells.bin.p_df:main',
             'p.sig_edit = pandashells.bin.p_sig_edit:main',
+            'p.merge = pandashells.bin.p_merge:main'
         ],
     }
 )
