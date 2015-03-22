@@ -35,7 +35,7 @@ class MainTests(TestCase):
         'p.merge le ri --left_on a b --right_on d e'.split())
     @patch('pandashells.bin.p_merge.io_lib.df_to_output')
     @patch('pandashells.bin.p_merge.io_lib.df_from_input')
-    def test_nothing(self, df_from_input_mock, df_to_output_mock):
+    def test_cli(self, df_from_input_mock, df_to_output_mock):
         # make two frames to join
         df_left = pd.DataFrame([
             {'a': 1, 'b': 1, 'c': 10},
