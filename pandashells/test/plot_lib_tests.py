@@ -58,6 +58,9 @@ class PlotLibTests(TestCase):
             plot_theme=['darkgrid'],
             plot_palette=['muted'],
         )
+        mpl.rcParams['axes.color_cycle'] = ['m', 'c']
+        mpl.rcParams['axes.labelsize'] = 1
+        mpl.rcParams['axes.titlesize'] = 1
         rc_pre = dict(mpl.rcParams)
         plot_lib.set_plot_styling(args)
         rc_post = dict(mpl.rcParams)

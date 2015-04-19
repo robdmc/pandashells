@@ -31,9 +31,11 @@ setup(
             'p.config = pandashells.bin.p_config:main',
             'p.crypt = pandashells.bin.p_crypt:main',
             'p.df = pandashells.bin.p_df:main',
-            'p.sig_edit = pandashells.bin.p_sig_edit:main',
+            'p.hist = pandashells.bin.p_hist:main',
             'p.merge = pandashells.bin.p_merge:main',
             'p.plot = pandashells.bin.p_plot:main',
+            'p.regress = pandashells.bin.p_regress:main',
+            'p.sig_edit = pandashells.bin.p_sig_edit:main',
         ],
     }
 )

@@ -12,9 +12,11 @@ def main():
     # --- read in the current configuration
     default_dict = config_lib.get_config()
 
-    #TODO: write docs here
-    msg = "Need to write this. "
-    msg += "and write more."
+    #TODO:  maybe make this more informative.
+    msg = (
+        'Updates file ~/.pandashells, which hold pandashells configuration '
+        'information.'
+    )
 
     # --- populate the arg parser with current configuration
     parser = argparse.ArgumentParser(description=msg)

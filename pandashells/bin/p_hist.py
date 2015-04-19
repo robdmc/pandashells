@@ -1,10 +1,8 @@
 #! /usr/bin/env python
 
 # standard library imports
-import os
 import sys
 import argparse
-import re
 
 from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
 
@@ -13,8 +11,6 @@ module_checker_lib.check_for_modules(['numpy', 'pandas', 'matplotlib'])
 
 import numpy as np
 import pandas as pd
-import matplotlib as mpl
-import pylab as pl
 
 
 def get_input_args():
@@ -29,27 +25,33 @@ def get_input_args():
     arg_lib.add_args(parser, 'io_in', 'io_out', 'example', 'decorating')
 
     # specify columns to histogram
-    parser.add_argument('-c', '--cols',
-        help='Column(s) to histogram', nargs='+')
-
-    parser.add_argument('-q', '--quiet', action='store_true', default=False,
+    parser.add_argument(
+        '-c', '--cols', help='Column(s) to histogram', nargs='+')
+    parser.add_argument(
+        '-q', '--quiet', action='store_true', default=False,
         help='Quiet mean no plots. Send numeric output to stdout instead')
-    parser.add_argument('-n', '--nbins', help='Number of bins (default=30)',
-        nargs=1, default=[30], type=int)
-    parser.add_argument('-r', '--range', help='Range (min max) of x axis',
-        nargs=2, default=None, type=float)
-    parser.add_argument('-l', '--layout', help='Layout (rows, cols)',
+    parser.add_argument(
+        '-n', '--nbins', help='Number of bins (default=30)', nargs=1,
+        default=[30], type=int)
+    parser.add_argument(
+        '-r', '--range', help='Range (min max) of x axis', nargs=2,
+        default=None, type=float)
+    parser.add_argument(
+        '-l', '--layout', help='Layout (rows, cols)',
         nargs=2, default=None, type=int)
-    parser.add_argument('-a', '--alpha', help='Set opacity of hist bars',
-        nargs=1, default=[1.], type=float)
-    parser.add_argument('-d', '--density', action='store_true', default=False,
+    parser.add_argument(
+        '-a', '--alpha', help='Set opacity of hist bars', nargs=1,
+        default=[1.], type=float)
+    parser.add_argument(
+        '-d', '--density', action='store_true', default=False,
         help='Show probability density instead of counts')
-    parser.add_argument('--sharex', action='store_true', default=False,
+    parser.add_argument(
+        '--sharex', action='store_true', default=False,
         help='Make all x axes have the same range')
-    parser.add_argument('--sharey', action='store_true', default=False,
+    parser.add_argument(
+        '--sharey', action='store_true', default=False,
         help='Make all y axes have the same range')
     return parser.parse_args()
-
 
 
 def validate_args(args, cols, df):
@@ -58,7 +60,7 @@ def validate_args(args, cols, df):
     if bad_col_list:
         msg = '\n\nThese columns were not found:\n\t'
         msg += ',\n\t'.join(bad_col_list)
-        sys.stderr.write(msg+'\n')
+        sys.stderr.write(msg + '\n')
         sys.exit(1)
 
     if args.quiet and len(cols) > 1:
@@ -103,4 +105,3 @@ def main():
 
 if __name__ == '__main__':  # pragma: no cover
     main()
-

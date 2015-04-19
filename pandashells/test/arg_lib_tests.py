@@ -48,7 +48,7 @@ class ArgLibTests(TestCase):
 
         # --- create a list of expected call signatures
         calls = []
-        msg = 'Overwrite column names with list of names'
+        msg = 'Overwrite input column names with this list'
         calls.append(call('--names', nargs='+', type=str,
                           dest='names', metavar="name", help=msg))
         default_for_input = ['csv', 'header']

@@ -17,9 +17,8 @@ def main():
 
     arg_lib.add_args(parser, 'io_in', 'xy_plotting', 'decorating', 'example')
 
-    #TODO: Move this to the decorating function (but only after you look at p.hist and some of the others)
-    parser.add_argument("-a", "--alpha", help="Set opacity",  # WHY ISN'T THIS IN DECORATING?
-                        nargs=1, default=[1.], type=float)
+    parser.add_argument(
+        "-a", "--alpha", help="Set opacity", nargs=1, default=[1.], type=float)
 
     # parse arguments
     args = parser.parse_args()

@@ -31,7 +31,7 @@ def _io_in_adder(parser, config_dict, *args):
         io_opt_list = ['csv', 'table', 'header', 'noheader']
 
         # allow the option of supplying input column names
-        msg = 'Overwrite column names with list of names'
+        msg = 'Overwrite input column names with this list'
         parser.add_argument('--names', nargs='+', type=str,
                             dest='names', metavar="name",
                             help=msg)
