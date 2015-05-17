@@ -6,11 +6,9 @@ import glob
 
 fileDir = os.path.dirname(__file__)
 
-scripts = glob.glob(os.path.join(fileDir, 'pandashells', 'bin', 'p.*'))
-
 setup(
     name="pandashells",
-    version="0.0.1",
+    version="0.2.0",
     author="Rob deCarvalho",
     author_email="unlisted",
     description=("Command line data tools"),
@@ -21,7 +19,6 @@ setup(
     package_data={'pandashells': ['example_data/*.csv']},
     # include_package_data=True,
     long_description='Bringing the power of pandas to the command line',
-    # scripts=scripts,
     classifiers=[
         "Topic :: Utilities",
         "License ::  Simplified BSD License",
@@ -34,6 +31,7 @@ setup(
             'p.hist = pandashells.bin.p_hist:main',
             'p.merge = pandashells.bin.p_merge:main',
             'p.plot = pandashells.bin.p_plot:main',
+            'p.rand = pandashells.bin.p_rand:main',
             'p.regress = pandashells.bin.p_regress:main',
             'p.sig_edit = pandashells.bin.p_sig_edit:main',
         ],

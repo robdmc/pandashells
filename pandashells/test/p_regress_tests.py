@@ -26,7 +26,7 @@ class MainTests(TestCase):
         sys.stdout.write = write_mock
         main()
         sys.stdout = sys.__stdout__
-        out_str =  write_mock.call_args_list[0][0][0].replace('\n', ' ')
+        out_str = write_mock.call_args_list[0][0][0].replace('\n', ' ')
         rex = re.compile(r'.*x\s+1\.0+')
         m = rex.match(out_str)
         self.assertTrue(True if m else False)
@@ -38,9 +38,9 @@ class MainTests(TestCase):
     @patch('pandashells.bin.p_regress.io_lib.df_from_input')
     @patch('pandashells.bin.p_regress.mpl.get_backend')
     @patch('pandashells.bin.p_regress.pl.gcf')
-    def test_cli_plots_osx(self,
-            gcf_mock, backend_mock, df_from_input_mock, show_mock):
-        backend_mock.return_value = 'macosx'
+    def test_cli_plots_osx(
+            self, gcf_mock, backend_mock, df_from_input_mock, show_mock):
+        backend_mock.lower = MagicMock(return_value='macosx')
         df_in = pd.DataFrame({
             'x': range(1, 101),
             'y': range(1, 101),

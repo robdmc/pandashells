@@ -135,7 +135,7 @@ class IOLibTests(TestCase):
         html = sys_mock.stdout.getvalue()
         self.assertTrue('<th>a</th>' in html)
         self.assertTrue('<th>b</th>' in html)
-        self.assertTrue('<td> 1</td>' in html)
+        self.assertTrue('<td>1</td>' in html)
 
     @patch('pandashells.lib.io_lib.get_nan_rep', MagicMock(return_value='nan'))
     @patch('pandashells.lib.io_lib.csv_writer')

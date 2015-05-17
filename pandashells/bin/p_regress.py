@@ -76,7 +76,7 @@ def main():
         pl.xlabel('Residual with R^2 = {:0.4f}'.format(result.rsquared))
         pl.ylabel('Counts')
 
-        # annoying backend issue with osx backend forces if statement here 
+        # annoying issue with osx backend forces if statement here
         if mpl.get_backend().lower() in ['agg', 'macosx']:
             pl.gcf().set_tight_layout(True)
         else:
@@ -87,4 +87,3 @@ def main():
 
 if __name__ == '__main__':  # pragma: no cover
     main()
-

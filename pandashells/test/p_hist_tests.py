@@ -3,14 +3,15 @@ from mock import patch, MagicMock
 from unittest import TestCase
 import pandas as pd
 
-from pandashells.bin.p_hist import main, get_input_args, validate_args, main
+from pandashells.bin.p_hist import main, get_input_args, validate_args
+
 
 class GetInputArgsTests(TestCase):
-    @patch('pandashells.bin.p_hist.sys.argv',
-            'p.hist -c x -n 30'.split())
+    @patch('pandashells.bin.p_hist.sys.argv', 'p.hist -c x -n 30'.split())
     def test_right_number_of_args(self):
         args = get_input_args()
         self.assertEqual(len(args.__dict__), 25)
+
 
 class ValidateArgs(TestCase):
     def test_okay(self):
@@ -67,4 +68,3 @@ class MainTests(TestCase):
         df_from_input_mock.return_value = df_in
         main()
         self.assertTrue(show_mock.called)
-
