@@ -29,6 +29,7 @@ setup(
             'p.crypt = pandashells.bin.p_crypt:main',
             'p.df = pandashells.bin.p_df:main',
             'p.hist = pandashells.bin.p_hist:main',
+            'p.linspace = pandashells.bin.p_linspace:main',
             'p.merge = pandashells.bin.p_merge:main',
             'p.plot = pandashells.bin.p_plot:main',
             'p.rand = pandashells.bin.p_rand:main',
