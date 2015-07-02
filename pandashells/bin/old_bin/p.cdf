@@ -49,6 +49,16 @@ if __name__ == '__main__':
     # --- set the appropriate theme
     plot_lib.set_plot_styling(args)
 
+
+    #############################
+    ## I want to use this now
+    #
+    # from statsmodels.distributions.empirical_distribution import ECDF
+    # ecdf = ECDF(x)  # kind of like scikit-learn fit
+    # yf = ecdf(y)
+    #
+    ##############################
+
     # --- compute and plot the cdf
     osm, osr = scp.stats.probplot(x, dist='uniform', fit=False)
     pl.plot(osr, osm, label='P({} < x)'.format(args.col[0]))
