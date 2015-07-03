@@ -25,6 +25,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
+            'p.cdf = pandashells.bin.p_cdf:main',
             'p.config = pandashells.bin.p_config:main',
             'p.crypt = pandashells.bin.p_crypt:main',
             'p.df = pandashells.bin.p_df:main',
