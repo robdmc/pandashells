@@ -5,8 +5,10 @@ import re
 
 from pandashells.lib import module_checker_lib
 
-module_checker_lib.check_for_modules(['matplotlib', 'mpld3', 'seaborn'])
+module_checker_lib.check_for_modules(
+    ['matplotlib', 'dateutil', 'mpld3', 'seaborn'])
 
+from dateutil.parser import parse
 import matplotlib as mpl
 import pylab as pl
 import seaborn as sns
@@ -107,10 +109,15 @@ def autofill_plot_fields_and_labels(args, df):
     if (args.ylabel is None) and (len(args.y) == 1):
         args.ylabel = [args.y[0]]
 
+def str_to_date(x):
+    if isinstance(x.iloc[0], basestring):
+        return [parse(e) for e in x]
+    else:
+        return x
 
 def draw_traces(args, df):
     y_field_list = args.y
-    x = df[args.x]
+    x = str_to_date(df[args.x[0]])
     for y_field in y_field_list:
         y = df[y_field]
         pl.plot(x, y, args.style[0], label=y_field, alpha=args.alpha[0])

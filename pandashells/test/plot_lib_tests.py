@@ -9,6 +9,7 @@ from mock import patch, MagicMock
 import matplotlib as mpl
 import pylab as pl
 import pandas as pd
+from dateutil.parser import parse
 
 
 class PlotLibTests(TestCase):
@@ -207,6 +208,15 @@ class PlotLibTests(TestCase):
         self.assertEqual(args.y, ['y'])
         self.assertEqual(args.xlabel, ['x'])
         self.assertEqual(args.ylabel, ['y'])
+
+    def test_str_to_date_float(self):
+        x = pd.Series([1., 2., 3.])
+        self.assertEqual(list(x), list(plot_lib.str_to_date(x)))
+
+    def test_str_to_date_str(self):
+        x = pd.Series(['1/1/2014', '1/2/2014', '1/3/2014'])
+        expected = [parse(e) for e in x]
+        self.assertEqual(expected, list(plot_lib.str_to_date(x)))
 
     @patch('pandashells.lib.plot_lib.pl.plot')
     def test_draw_traces(self, plot_mock):
