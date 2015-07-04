@@ -66,7 +66,7 @@ def main():
                         help=msg)
 
     parser.add_argument("file", help="Files to join", nargs=2, type=str,
-                        metavar='file file')
+                        metavar='file')
 
     args = parser.parse_args()
     validate_args(args)
