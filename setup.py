@@ -2,7 +2,6 @@
 
 import os
 from setuptools import setup, find_packages
-import glob
 
 fileDir = os.path.dirname(__file__)
 
@@ -35,6 +34,7 @@ setup(
             'p.parallel = pandashells.bin.p_parallel:main',
             'p.plot = pandashells.bin.p_plot:main',
             'p.rand = pandashells.bin.p_rand:main',
+            'p.regplot = pandashells.bin.p_regplot:main',
             'p.regress = pandashells.bin.p_regress:main',
             'p.sig_edit = pandashells.bin.p_sig_edit:main',
         ],

@@ -109,11 +109,13 @@ def autofill_plot_fields_and_labels(args, df):
     if (args.ylabel is None) and (len(args.y) == 1):
         args.ylabel = [args.y[0]]
 
+
 def str_to_date(x):
     if isinstance(x.iloc[0], basestring):
         return [parse(e) for e in x]
     else:
         return x
+
 
 def draw_traces(args, df):
     y_field_list = args.y

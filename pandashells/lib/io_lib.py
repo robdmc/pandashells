@@ -52,7 +52,7 @@ def df_from_input(args, in_file=None):
 
     # read the input data
     df = pd.read_csv(in_file, sep=sep, header=header, names=names,
-                     encoding=ENCODING)
+                     encoding=ENCODING, low_memory=False)
 
     # if no names and no neader, create column names
     if ('noheader' in args.input_options) and (not names):

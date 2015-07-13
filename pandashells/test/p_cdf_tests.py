@@ -1,9 +1,10 @@
 #! /usr/bin/env python
-from mock import patch, MagicMock
+from mock import patch
 from unittest import TestCase
 import pandas as pd
 
 from pandashells.bin.p_cdf import main
+
 
 class MainTests(TestCase):
     @patch(
