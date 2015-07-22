@@ -28,6 +28,7 @@ setup(
             'p.config = pandashells.bin.p_config:main',
             'p.crypt = pandashells.bin.p_crypt:main',
             'p.df = pandashells.bin.p_df:main',
+            'p.format = pandashells.bin.p_format:main',
             'p.hist = pandashells.bin.p_hist:main',
             'p.linspace = pandashells.bin.p_linspace:main',
             'p.merge = pandashells.bin.p_merge:main',
