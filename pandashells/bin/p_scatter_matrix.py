@@ -23,7 +23,7 @@ def main():
 
     # specify columns
     parser.add_argument("-c", "--cols",
-                        help="Column(s) to histogram", nargs="+")
+                        help="Column(s) to correlate", nargs="+")
 
     # specify opacity
     parser.add_argument("-a", "--alpha", help="Set opacity",

@@ -37,6 +37,7 @@ setup(
             'p.rand = pandashells.bin.p_rand:main',
             'p.regplot = pandashells.bin.p_regplot:main',
             'p.regress = pandashells.bin.p_regress:main',
+            'p.scatter_matrix = pandashells.bin.p_scatter_matrix:main',
             'p.sig_edit = pandashells.bin.p_sig_edit:main',
         ],
     }
