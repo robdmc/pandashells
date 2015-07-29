@@ -60,7 +60,7 @@ def main():
         try:
             # line by line avoids weird sys.excepthook bug on pipe to head
             for line in in_file:
-                print line.strip()
+                sys.stdout.write(line.strip() + '\n')
         except IOError:
             pass
 

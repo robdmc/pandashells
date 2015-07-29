@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+import sys
 import importlib
 from pandashells.lib import config_lib
 
@@ -55,5 +56,5 @@ def check_for_modules(module_list):
             msg += '-' * 60 + '\n'
             msg += "Missing module '{}'. To install use: \n".format(module)
             msg += "    {}\n\n".format(CMD_DICT[module])
-            print msg
+            sys.stdout.write(msg + '\n')
             raise

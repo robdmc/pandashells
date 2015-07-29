@@ -61,11 +61,12 @@ def main():
         config_dict = config_lib.DEFAULT_DICT
     config_lib.set_config(config_dict)
 
-    print '\n Current Config'
-    print '  ' + '-' * 40
+    sys.stdout.write('\n Current Config\n')
+    sys.stdout.write( '  ' + '-' * 40 + '\n')
     for k in sorted(config_dict.keys()):
         if k not in ['--force_defaults']:
-            print '  {: <20} {}'.format(k + ':', repr(str(config_dict[k])))
+            sys.stdout.write(
+                '  {: <20} {}\n'.format(k + ':', repr(str(config_dict[k]))))
 
 
 if __name__ == '__main__':  # pragma: no cover
