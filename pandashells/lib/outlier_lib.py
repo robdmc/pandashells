@@ -48,6 +48,22 @@ def ensure_col_exists(df, col, df_name='dataframe'):
 
 
 def sigma_edit_dataframe(sigma_thresh, columns, df, max_iter=20):
+    """
+    :type sigma_thresh: float
+    :param sigma_thresh: The sigma threshold
+
+    :type columns: list
+    :param columns: a list of columns to sigma edit
+
+    :type df: pandas.DataFrame
+    :param df: The dataframe with columns of data to sigma-edit
+
+    :type max_iter: int
+    :param max_iter: Cap the number of iteration at this number
+
+    :rtype: Pandas DataFrame
+    :returns: A dataframe with ouliers set to NaN
+    """
     for col in columns:
         ensure_col_exists(df, col, 'df')
         ser = df[col]

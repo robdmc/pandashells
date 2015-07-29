@@ -68,8 +68,6 @@ def lomb_scargle(df, time_col, val_col, interp_exponent=0, freq_order=False):
     :param freq_order: If set to True spectrum is returned in frequency order
                        instead of period order (default=False)
 
-
-
     :rtype: Pandas DataFrame
     :returns: A dataframe with columns: period, freq, power, amplitude
     """
