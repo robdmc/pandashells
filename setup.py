@@ -17,7 +17,7 @@ setup(
     packages=find_packages(),
     package_data={'pandashells': ['example_data/*.csv']},
     # include_package_data=True,
-    long_description='Bringing the power of pandas to the command line',
+    long_description='Bringing the python data-stack to the command line',
     classifiers=[
         "Topic :: Utilities",
         "License ::  Simplified BSD License",
