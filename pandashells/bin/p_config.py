@@ -62,7 +62,7 @@ def main():
     config_lib.set_config(config_dict)
 
     sys.stdout.write('\n Current Config\n')
-    sys.stdout.write( '  ' + '-' * 40 + '\n')
+    sys.stdout.write('  ' + '-' * 40 + '\n')
     for k in sorted(config_dict.keys()):
         if k not in ['--force_defaults']:
             sys.stdout.write(
