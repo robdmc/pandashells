@@ -2,17 +2,35 @@
 
 # standard library imports
 import argparse
+import textwrap
 
 from pandashells.lib import arg_lib, io_lib, outlier_lib
 
 
 def main():
-    msg = "Perform recursive sigma editing on columns of a dataframe. "
-    msg += "Recursively NaNs out values greater than sigma_thresh standard "
-    msg += "deviations away from sample mean."
+    msg = textwrap.dedent(
+        """
+        Remove outliers from DataFrame columns using a recursive sigma-edit
+        algorithm.  The algorithm will recursively NaN out values greater than
+        sigma_thresh standard deviations away from sample mean.
 
-    # read command line arguments
-    parser = argparse.ArgumentParser(description=msg)
+        -----------------------------------------------------------------------
+        Examples:
+
+            * Do a 2.5-sigma edit on a gamma distribution and show histogram
+                p.rand -n 1000 -t gamma --alpha=3 --beta=.01\\
+                | p.df 'df["c1"] = df.c0'\\
+                | p.sig_edit -c c1 -t 2.5\\
+                | p.df 'pd.melt(df)' --names raw edited\\
+                | p.facet_grid --hue variable --map pl.hist\\
+                   --args value --kwargs 'alpha=.2' 'range=[0, 1000]' 'bins=50'
+        -----------------------------------------------------------------------
+        """
+    )
+
+    #  read command line arguments
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
     arg_lib.add_args(parser, 'io_in', 'io_out', 'example')
 

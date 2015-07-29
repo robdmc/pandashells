@@ -16,8 +16,6 @@ import numpy as np
 
 # want different default mu values for normal and poisson distributions
 def fill_default_mu(args):
-    """
-    """
     if args.type[0] == 'normal':
         args.mu = [0.] if args.mu is None else args.mu
     elif args.type[0] == 'poisson':

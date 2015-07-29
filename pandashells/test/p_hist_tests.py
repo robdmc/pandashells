@@ -10,7 +10,7 @@ class GetInputArgsTests(TestCase):
     @patch('pandashells.bin.p_hist.sys.argv', 'p.hist -c x -n 30'.split())
     def test_right_number_of_args(self):
         args = get_input_args()
-        self.assertEqual(len(args.__dict__), 25)
+        self.assertEqual(len(args.__dict__), 26)
 
 
 class ValidateArgs(TestCase):

@@ -5,8 +5,6 @@ from unittest import TestCase
 
 from pandashells.bin.p_crypt import main
 
-#TODO: Mock out the add_args methods in failing tests to get them to pass
-
 
 class MainTests(TestCase):
 
@@ -15,7 +13,6 @@ class MainTests(TestCase):
         'p.crypt -i my_in -o my_out'.split())
     @patch('pandashells.bin.p_crypt.os.system')
     @patch('pandashells.bin.p_crypt.os.path.isfile')
-    @patch('pandashells.bin.p_crypt.arg_lib', MagicMock())
     def test_proper_encrypt(self, isfile_mock, system_mock):
         isfile_mock.return_value = True
         main()
@@ -28,7 +25,6 @@ class MainTests(TestCase):
     @patch('pandashells.bin.p_crypt.sys.stdout')
     @patch('pandashells.bin.p_crypt.os.system')
     @patch('pandashells.bin.p_crypt.os.path.isfile')
-    @patch('pandashells.bin.p_crypt.arg_lib', MagicMock())
     def test_proper_encrypt_verbose(
             self, isfile_mock, system_mock, stdout_mock):
         stdout_mock.write = MagicMock()
@@ -43,7 +39,6 @@ class MainTests(TestCase):
         'p.crypt -i my_in -o my_out --password xx'.split())
     @patch('pandashells.bin.p_crypt.os.system')
     @patch('pandashells.bin.p_crypt.os.path.isfile')
-    @patch('pandashells.bin.p_crypt.arg_lib', MagicMock())
     def test_proper_encypt_with_password(self, isfile_mock, system_mock):
         isfile_mock.return_value = True
         main()
@@ -56,7 +51,6 @@ class MainTests(TestCase):
     @patch('pandashells.bin.p_crypt.sys.stderr')
     @patch('pandashells.bin.p_crypt.os.system')
     @patch('pandashells.bin.p_crypt.os.path.isfile')
-    @patch('pandashells.bin.p_crypt.arg_lib', MagicMock())
     def test_proper_encypt_no_input_file(
             self, isfile_mock, stderr_mock, system_mock):
         isfile_mock.return_value = False
@@ -68,7 +62,6 @@ class MainTests(TestCase):
         'p.crypt -i my_in -o my_out -d'.split())
     @patch('pandashells.bin.p_crypt.os.system')
     @patch('pandashells.bin.p_crypt.os.path.isfile')
-    @patch('pandashells.bin.p_crypt.arg_lib', MagicMock())
     def test_proper_decrypt(self, isfile_mock, system_mock):
         isfile_mock.return_value = True
         main()

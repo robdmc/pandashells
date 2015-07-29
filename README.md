@@ -1,98 +1,145 @@
-PandaShells                           
+Pandashells                           
 ===
 
-What is PandaShells?
+Introduction
+---
+For decades, system administrators, dev-ops engineers and data analysts have been
+piping textual data between unix tools such as grep, awk, sed, etc.  Chaining these
+tools together provides an extremely powerful workflow.
+
+The more recent emergence of the "data-scientist" has resulted in the increasing
+popularity of tools like R, Pandas, IPython, etc.  These tools have amazing power
+for transforming, analyzing and visualizing data-sets in ways that grep, awk,
+sed, and even the dreaded perl-one-liner could never accomplish.
+
+Pandashells is an attempt to marry the expressive, concise workflow of the shell pipeline
+with the statistical and visualization tools of the python data-stack.
+
+
+What is Pandashells?
 ----
 * A set of command-line tools for working with tabular data
 * Easily read/write data in CSV, or space delimited formats
 * Quickly aggregate, join, and summarize tabular data 
 * Compute descriptive statistics
-* Perform regression and classification 
+* Perform spectral decomposition and linear regression
 * Create data visualizations that can be saved to images or rendered interactively using 
   either a native backend or html.
-* Designed to be used with unix pipes for easy integration with awk, grep, sed, etc.
+* Easily integrate with unix tools like curl, awk, grep, sed, etc.
 
-What's with the name?
-----
-PandaShells is a riff on Pandas, the library created by Wes McKinney
-that has become the go-to tool for working with data in python.
-
-Description
-----
 If you work with data using Python, you have almost certainly encountered 
 <a href="http://pandas.pydata.org/">Pandas</a>,
 <a href="http://www.scipy.org/">SciPy</a>, 
 <a href="http://matplotlib.org/">Matplotlib</a>, 
 <a href="http://statsmodels.sourceforge.net/">Statsmodels</a> and
-<a href="http://scikit-learn.org/stable/">scikit-learn</a>.
+<a href="http://stanford.edu/~mwaskom/software/seaborn/">Seaborn</a>.  Pandashells
+opens up a bash API into the python data stack with command syntax
+closely mirroring the underlying libraries on which it is built.  This should
+allow those familiar with the python data stack to be immediately productive.
 
-The capabilities these tools provide, especially within the
-<a href="http://ipython.org/notebook.html">IPython Notebook</a>
-environment is really hard to beat.  But sometimes you just need to get 
-old-school and shell out.  
-
-The unix way of piping data between simple, expressive tools is incredibly powerful
-and can give you a substantial productivity boost.  Unfortunately, tools like
-awk, grep, sed, and even the dreaded perl-one-liner don't have the power or
-expressiveness that the python data stack provides.
-
-PandaShells is an effort to bring the power of the python data stack to the 
-shell prompt.  It essentially exposes a command-line API to the incredibly
-powerful suite of data tools that exist in the python community.  The authors
-of these amazing tools (see dependencies below) are greatfully acknowledged.
-
-<strong>PandaShells is still very much in alpha.
-The commands and syntax are rapidly evolving and tests/documentation are
-substantially lagging the development.
-</strong>
 
 Installation
 ----
+Pandashells is a pure-python package.  The latest release branch can be installed with
+<pre><code><strong>[~]$ pip install pandashells
+</strong></code></pre>
+
+Developement branch
 <pre><code><strong>[~]$ pip install --upgrade  git+https://github.com/robdmc/pandashells.git
-</code></pre>
+</strong></code></pre>
 
-Dependencies
+Requirements
 ----
-PandaShells relies heavily on third-party python packages.  Using the
-<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>
-will provide most of the dependencies you need to use the pandaShells tools.  Some of the
-tools will require additional packages.  If this is the case, attempting to run a command
-will raise an error and make a suggestion on how to install the missing package.  This is 
-done on a tool-by-tool basis because some packages are only required for a small subset of
-tools and there is no sense installing them if those few tools are not needed. Below is a
-comprehensive list of the packages used in the tool set.
-* numpy
-* scipy
+
+Pandashells is both Python2 and Python3 compatible and was developed using the 
+<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
+We strongly recommend using Anaconda to run Pandashells.  Most of the libraries required by
+pandashells come pre-installed with Anaconda, though some tools will require additional
+libraries.
+
+There is no requirements.txt file with pandashells because some of the tools only require
+the standard library, and there's no sense installing unnecessary packages if you only want
+to use that subset of tools.  If a particular tool encounters a missing dependency, it will
+gracefully fail with an informative message detailing the steps required for installing
+the missing dependency.
+
+Below is a comprehensive list of the packages used in the toolset.
+* gatspy
 * matplotlib
-* pandas
-* statsmodels
-* seaborn
 * mpld3
-* requests
-* toolz
+* numpy
+* pandas
+* scipy
+* seaborn
+* statsmodels
 
-Examples
+
+Overview
 ----
-The pandaShells command syntax attempts to replicate as closely as possible the
-structure of the underlying library.  This should allow those familiar with the
-python data stack to be immediately productive.  Most the the examples shown here
-make use of the p.df command.  This command provides pandas dataframe capability.
-If the syntax is unfamiliar to you, you are encouraged to review the
-<a href="http://pandas.pydata.org/pandas-docs/stable/">Pandas documentation</a>.
 
-* All pandaShells executables begin with a "p."  This is designed to work
+* All Pandashells executables begin with a "p."  This is designed to work
   nicely with the bash-completion feature.  If you can't remember the exact
   name of a command, simply typing p.[tab] will show you a complete list of
-  all pandaShells commands.
+  all Pandashells commands.
+
+* Every command can be run with a -h option to view help.  Each of these
+  help messages will contain multiple examples of how to properly use the tool.
+
+* Pandashells is equipped with a tool to generate sample csv files.  This tool
+  provides standardized inputs for use in the tool help sections as well as this
+  documentation.
+  <pre><code><strong>[~]$ p.example_data -h</strong></code></pre>
+  
+* Tool Descriptions
+
+Tool | Purpose
+--- | ---
+p.cdf | Plot emperical distribution function
+p.config | Set default Pandashells configuration options
+p.crypt | Encrypt/decrypt files using open-ssl
+p.df | Pandas dataframe manipulation of text files
+p.example_data | Create sample csv files for training/testing
+p.facet_grid | Create faceted plots for data exploration
+p.format | Render python string templates using input data
+p.hist | Plot histograms
+p.linspace | Generate a linearly spaced series of numbers
+p.lomb_scargle | Generate Lomb-Scarge spectrogram of input time series
+p.merge | Merge two data files by specifying join keys
+p.parallel | Read shell commands from stdin and run them in parallel
+p.plot | Create xy plot visualizations
+p.rand | Generate random numbers
+p.regplot | Quickly plot linear regression of data to a polynomial
+p.regress | Perform (multi-variate) linear regression with R-like patsy syntax
+p.sig_edit | Remove outliers using iterative sigma-editing
+
+
+DataFrame Maniuplations
+----
+Pandashells allows you to specify multiple dataframe operations in a single command.
+Each operation assumes data is in a dataframe named df.  Operations
+performed on this dataframe will overwrite the df variable with
+the results of that operation.  Special consideration is taken for
+assignments such as df['a'] = df.b + 1.  These are understood
+to augment the input dataframe with a new column. By way of example,
+this command:
+
+   <pre><code> p.df 'df.groupby(by="a").b.count()' 'df.reset_index()' </code></pre>
+
+is equivalent to the python expressions:
+
+<pre><code># this code in a python script 
+df = df.groupby(by="a").b.count()
+df = df.reset_index()
+</code></pre>
 
 * Show a few rows of an example data set.
-  <pre><code><strong>[~]$ p.example_data -d tips | head</strong>
+<pre><code><strong>[~]$ p.example_data -d tips | head</strong>
 "total_bill","tip","sex","smoker","day","time","size"
 16.99,1.01,"Female","No","Sun","Dinner",2
 10.34,1.66,"Male","No","Sun","Dinner",3
 21.01,3.5,"Male","No","Sun","Dinner",3
 23.68,3.31,"Male","No","Sun","Dinner",2
-  </code></pre>
+</code></pre>
 
 * Transorm the sample data from csv format to table format
   <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.head()' -o table</strong>
@@ -102,7 +149,7 @@ If the syntax is unfamiliar to you, you are encouraged to review the
        21.01  3.50    Male     No  Sun  Dinner     3
        23.68  3.31    Male     No  Sun  Dinner     2
        24.59  3.61  Female     No  Sun  Dinner     4
-    </code></pre>
+ </code></pre>
 
 * Compute statistics for numerical fields in the data set.
   <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.describe().T' -o table index </strong>
@@ -110,13 +157,6 @@ If the syntax is unfamiliar to you, you are encouraged to review the
   total_bill    244  19.785943  8.902412  3.07  13.3475  17.795  24.1275  50.81
   tip           244   2.998279  1.383638  1.00   2.0000   2.900   3.5625  10.00
   size          244   2.569672  0.951100  1.00   2.0000   2.000   3.0000   6.00
-  </code></pre>
-
-* Break down the number of tippers by gender. Output of each command is stored as df for next command to use.
-  <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.sex.value_counts()' 'df.rename(columns={0:"count"})' -o table,index</strong>
-          count
-  Male      157
-  Female     87
   </code></pre>
 
 * Find the mean tip broken down by gender and day
@@ -133,108 +173,146 @@ If the syntax is unfamiliar to you, you are encouraged to review the
          Thur  2.980333
   </code></pre>
 
-* If you have an appropriate backend specified for matplotlib (this should be configured out of the box for the 
-  <a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>)
-  the following command should pop open a window with a zoom/pan enabled version of the graph below.
-  <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.sex.value_counts()' 'df.rename(columns={0:"count"})' 'df.plot(kind="barh")'</strong> 
-  </code></pre>
-  ![Output Image](/images/gender_bar.png?raw=true "Bar chart of gender tipper counts.")
+Join files on key fields 
+----
+Pandashells can join files based on a set of key fields.  This example uses
+only one field as a key, but like the pandas merge function on which it is based,
+multiple key fields can be used for the join.
 
-* Plot tip vs total bill.
+* Show poll resultes for the 2008 US presidential election
+  <pre><code><strong>[~]$ p.example_data -d election | p.df -o table | head </strong> 
+       days state  obama  mccain                           poll
+       -305    OH     43      50                      SurveyUSA
+       -303    PA     38      46                      Rasmussen
+       -298    OR     47      47                      SurveyUSA
+       -298    WA     52      43                      SurveyUSA
+       -294    AL     29      63                      SurveyUSA
+       -294    NY     44      42                    Siena Coll.
+       -294    VA     40      52                      SurveyUSA
+       -290    NM     41      50                      SurveyUSA
+       -290    NY     49      43                      SurveyUSA
+  </pre></code>
+
+* Show population and electoral college numbers for states
+  <pre><code><strong>[~]$ p.example_data -d electoral_college | p.df -o table | head</strong> 
+       state            name  electors  population
+          AK          Alaska         3      710000
+          AL         Alabama         9     4780000
+          AR        Arkansas         6     2916000
+          AZ         Arizona        11     6392000
+          CA      California        55    37254000
+          CO        Colorado         9     5029000
+          CT     Connecticut         7     3574000
+          DC   Dist. of Col.         3      602000
+          DE        Delaware         3      898000
+  </pre></code>
+
+* Join poll and electoral-college data  (Note the use of bash <a href="http://tldp.org/LDP/abs/html/process-sub.html">process substitution</a> to specify files to join.)
+  <pre><code><strong>[~]$ p.merge &lt(p.example_data -d election) &lt(p.example_data -d electoral_college) --how left --on state | p.df -o table | head</strong> 
+       days state  obama  mccain                           poll            name  electors  population
+       -252    AK     43      48                      SurveyUSA          Alaska         3      710000
+       -213    AK     43      48                      Rasmussen          Alaska         3      710000
+       -176    AK     41      50                      Rasmussen          Alaska         3      710000
+       -143    AK     41      45                      Rasmussen          Alaska         3      710000
+       -112    AK     40      45                      Rasmussen          Alaska         3      710000
+        -99    AK     39      44                      Rasmussen          Alaska         3      710000
+        -65    AK     35      54            Ivan Moore Research          Alaska         3      710000
+        -58    AK     33      64                      Rasmussen          Alaska         3      710000
+        -56    AK     39      55                            ARG          Alaska         3      710000
+  </code></pre>
+
+Visualization Tools
+----
+Pandashells provides a number of visualization tools to help you quickly explore your data.
+All visualizations are automatically configured to show an interactive plot using the configured
+backend (default is TkAgg, but can be configured with the p.config tool).  
+
+The visualizations can also be saved to image files (e.g. .png) or rendered to html.  The html
+generated can either be opened directly in the browser to show an interactive plot (using mpld3),
+or can be embedded in an existing html file.  The examples below show Pandashells-created png images
+along with the command used to generate them.
+
+* Simple xy scatter plots
   <pre><code><strong>[~]$ p.example_data -d tips | p.plot -x total_bill -y tip -s 'o' --title 'Tip Vs Bill'</strong> 
   </code></pre>
-  ![Output Image](/images/tip_vs_bill.png?raw=true "Bar chart of gender tipper counts.")
+  ![Output Image](/images/tips_vs_bill.png?raw=true "xy scatter plot")
+
+* Faceted plots
+  <pre><code><strong>[~]$ p.example_data -d tips | p.facet_grid --row smoker --col sex --hue day --map pl.scatter --args total_bill tip --kwargs 'alpha=.2' 's=100'</strong> 
+  </code></pre>
+  ![Output Image](/images/facet_plot.png?raw=true "facet plot")
+
+* Histograms plots  (Note the use of bash <a href="http://tldp.org/LDP/abs/html/process-sub.html">process substitution</a> to paste two outputs together.)
+  
+  <pre><code><strong>[~]$ paste &lt(p.rand -t normal -n 10000 | p.df --names normal) &lt(p.rand -t gamma -n 10000 | p.df --names gamma) | p.hist -i table -c normal gamma</strong> 
+  </code></pre>
+  ![Output Image](/images/hist.png?raw=true "histogram plot")
+
+* Empirical cumulative distribution plots
+  
+  <pre><code><strong>[~]$ p.rand -t normal -n 500 | p.cdf -c value --names value</strong> 
+  </code></pre>
+  ![Output Image](/images/cdf_plot.png?raw=true "cdf plot")
 
 
-List of Tools
-===
+Spectral Estimation
+---
+* Plot a time series over which to compute a spectrum
+  <pre><code><strong>[~]$ p.example_data -d sealevel | p.plot -x year -y sealevel_mm</strong> 
+  </code></pre>
+  ![Output Image](/images/timeseries.png?raw=true "time series plot")
 
-Existing Tool | Purpose
---- | ---
-p.crypt | Encrypt/Decrypt files using open-ssl tools.
-p.df |       Pandas dataframe manipulation of csv files
-p.geocode | Use google to geocode addresses
-p.parallel | Run shell command in parallel
-p.plot | Plot data
-p.rand | Generate samples from random distributions
-p.sig_edit | Perform recursive sigma editing for outlier removal
-p.hist | Create a histogram of input data
-p.linspace | Create a linearly spaced set of numbers
-p.cdf | Compute cumulative distributions of input data
-p.regress | Perform (multi-variable) linear regression
-p.scatter_matrix | plot a pandas scatter matrix of input columns
-p.regplot | plot results of single variable polynomial regression
+* Plot the spectrum
+  <pre><code><strong>[~]$ p.example_data -d sealevel | p.lomb_scargle -t year -y sealevel_mm --interp_exp 3 | p.plot -x period -y amp --xlim 0 1.5 --ylim 0 6.5 --xlabel 'Period years' --ylabel 'Amplitude (mm)' --title 'Global Sea Surface Height Spectrum'</strong> 
+  </code></pre>
+  ![Output Image](/images/spectrum.png?raw=true "spectrum plot")
 
 
-Planned Tool | Purpose
---- | ---
-p.cov | Create a table of covariances between collumns
-p.bar | Create a bar chart using seaborn
-p.fft | Compute fft of input data
-p.lombscargle | Compute lombscargle spectra of intput data
-p.interp | Interpolate input data
-p.map | Plot geometry on maps using basemap
-p.mapDots2html | Plot points on a google map
-p.mapPoly2html | Plot polygons on a google map
-p.mongoDump | Dump mongodb records to csv
-p.normalize | Normalize a column of numbers
-p.pgsql2csv | Dump a postgres database using sql
-p.smooth | Smooth input data
-p.lowess | Do Lowess smoothing
-p.distplot | seaborn distplot
-p.kdeplot | do 1d and 2d kde plots using seaborn
-p.facetgrid | make facet grid plots using seaborn
-p.boxplot | either using pandas or seaborn
+Linear Regression
+----
+Pandashells leverages the excellent Seaborn and Statsmodels libraries to handle
+linear regression.
 
-p.sshKeyPush | Push an ssh key to a remote server
-p.template | Use the jinja2 package to render templates
-p.timezone | Change timestamps between time zones
-
-Half Baked Ideas
-===
-It might be nice to have a 
-p.batch -n batch-size -g str-group-func --apply app-process --first first-group-process --last last-group-process --parallel 2 
-p.batch -n batch-size -g str-group-func --apply app-process -i input-options -o output-options --parallel 2 
+* Quick and dirty fit to a line
+  <pre><code><strong>[~]$ p.linspace 0 10 20 | p.df 'df["y_true"] = .2 * df.x' 'df["noise"] = np.random.randn(20)' 'df["y"] = df.y_true + df.noise' --names x | p.regplot -x x -y y</strong> 
+  </code></pre>
+  ![Output Image](/images/regplot.png?raw=true "regplot plot")
 
 
-might also be nice to have a  
-p.deal --file-field column-name -i input-options -o output-options
+* Multi-variable linear regression
+  <pre><code><strong>[~]$p.example_data -d sealevel | p.df 'df["sin"]=np.sin(2*np.pi*df.year)' 'df["cos"]=np.cos(2*np.pi*df.year)' | p.regress -m 'sealevel_mm ~ year + sin + cos'</strong> 
+
+
+                              OLS Regression Results
+  ==============================================================================
+  Dep. Variable:            sealevel_mm   R-squared:                       0.961
+  Model:                            OLS   Adj. R-squared:                  0.961
+  Method:                 Least Squares   F-statistic:                     6442.
+  Date:                Mon, 27 Jul 2015   Prob (F-statistic):               0.00
+  Time:                        23:28:11   Log-Likelihood:                -2234.0
+  No. Observations:                 780   AIC:                             4476.
+  Df Residuals:                     776   BIC:                             4495.
+  Df Model:                           3
+  Covariance Type:            nonrobust
+  ==============================================================================
+                   coef    std err          t      P>|t|      [95.0% Conf. Int.]
+  ------------------------------------------------------------------------------
+  Intercept  -6500.1722     47.829   -135.903      0.000     -6594.063 -6406.282
+  year           3.2577      0.024    136.513      0.000         3.211     3.305
+  sin           -4.6933      0.217    -21.650      0.000        -5.119    -4.268
+  cos            1.4061      0.214      6.566      0.000         0.986     1.826
+  ==============================================================================
+  Omnibus:                        5.332   Durbin-Watson:                   0.709
+  Prob(Omnibus):                  0.070   Jarque-Bera (JB):                5.401
+  Skew:                          -0.189   Prob(JB):                       0.0672
+  Kurtosis:                       2.846   Cond. No.                     6.29e+05
+  ==============================================================================
+
+  Warnings:
+  [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+  [2] The condition number is large, 6.29e+05. This might indicate that there are
+  strong multicollinearity or other numerical problems.
+  </code></pre>
 
 
 
-Here are some half-baked ideas for tool syntax that I'm still think about how to implement.
-
-* p.regress - statmodels linear regression with full summary output. maybe use --fit to add fit results to df
-* p.learn.regress_linear
-* p.learn.regress_ridge
-* p.learn.regress_tree
-* p.learn.regress_forest
-* p.learn.classify.logistic
-* p.learn.classify.tree
-* p.learn.classify.forest
-* p.learn.classify.svm
-
-* Always use patsy language
-
-* the model.pkl files (which can be user-def names) hold the model as well as the string used to do the fit
-
-* with --fit model.pkl
-  saves model in model.pkl and displays rms R^2 and cross_val scores as well as the original string used to do the fit and the type of model
-
-
-* with --predict model.pkl
-  loads model, input and shows _fit variable to the dataframe
-  with --stats, does same thing, but displays rms and R2
-  with --hist shows hist of residuals
-  with --plot shows fit vs residual
-
-* of course classifiers have their own metrics and maybe have a
-  --roc that plots the roc curve
-
-* with
-  --info model.pkl, just shows the model
-
-* with --desc 'my desc'  allows you to store a description that will be displayed with the --info flag
-
-* It would be nice to create a scikit.learn model/pipeline, save it to a pickle file and then
-  have a pandaShells command that would run predictions based on that model for inputs from stdin.

@@ -2,6 +2,7 @@
 
 import sys
 import argparse
+import textwrap
 
 from pandashells.lib import parallel_lib, arg_lib
 
@@ -10,8 +11,45 @@ def main():
     msg = "Tool to run shell commands in parallel.  Spawns processes "
     msg += "to concurrently run commands supplied on stdin. "
 
+    msg = textwrap.dedent(
+        """
+        Read a list of commands from stdin and execute them in parrallel.
+
+        -----------------------------------------------------------------------
+        Examples:
+
+            * This line generates commands that will be used in the examples.
+                time seq 10 \\
+                | p.format -t 'sleep 1; echo done {n}' --names n -i noheader
+
+            * Execute the commands one at a time, no parallelism
+                time seq 10 \\
+                | p.format -t 'sleep 1; echo done {n}' --names n -i noheader \\
+                | p.parallel -n 1
+
+            * Execute all commands in parallel
+                time seq 10 \\
+                | p.format -t 'sleep 1; echo done {n}' --names n -i noheader \\
+                | p.parallel -n 10
+
+            * Suppress stdout from processes and echo commands
+                time seq 10 \\
+                | p.format -t 'sleep 1; echo done {n}' --names n -i noheader \\
+                | p.parallel -n 10 -c -s stdout
+
+            * Make a histogram of how long the individual jobs took
+                time seq 100 \\
+                | p.format -t 'sleep 1; echo done {n}' --names n -i noheader \\
+                | p.parallel -n 50 -v \\
+                | grep __job__ \\
+                | p.df 'df.dropna()' 'df.duration_sec.hist(bins=20)'
+        -----------------------------------------------------------------------
+        """
+    )
+
     # read command line arguments
-    parser = argparse.ArgumentParser(description=msg)
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
     msg = "The number of jobs to run in parallel. If not supplied, will "
     msg += "default to the number of detected cores."

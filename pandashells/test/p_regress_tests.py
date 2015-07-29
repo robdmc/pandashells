@@ -83,5 +83,5 @@ class MainTests(TestCase):
         main()
 
         df_out = df_to_output_mock.call_args_list[0][0][1]
-        self.assertTrue(np.allclose(df_out.y, df_out._fit))
-        self.assertTrue(np.allclose(df_out.y * 0, df_out._resid))
+        self.assertTrue(np.allclose(df_out.y, df_out.fit_))
+        self.assertTrue(np.allclose(df_out.y * 0, df_out.resid_))

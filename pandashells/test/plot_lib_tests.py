@@ -89,6 +89,18 @@ class PlotLibTests(TestCase):
         self.assertEqual(pl.gca().get_xlim(), (-2.0, 2.0))
         self.assertEqual(pl.gca().get_ylim(), (-3.0, 3.0))
 
+    def test_set_log_scale(self):
+        args = MagicMock(savefig='', xlog=True, ylog=True)
+        plot_lib.set_scale(args)
+        self.assertEqual(pl.gca().get_xscale(), 'log')
+        self.assertEqual(pl.gca().get_yscale(), 'log')
+
+    def test_keep_lin_scale(self):
+        args = MagicMock(savefig='', xlog=False, ylog=False)
+        plot_lib.set_scale(args)
+        self.assertEqual(pl.gca().get_xscale(), 'linear')
+        self.assertEqual(pl.gca().get_yscale(), 'linear')
+
     def test_set_labels_titles_no_args(self):
         """set_labels_title() properly does nothing when nothing specified
         """

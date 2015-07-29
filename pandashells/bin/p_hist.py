@@ -3,6 +3,7 @@
 # standard library imports
 import sys
 import argparse
+import textwrap
 
 from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
 
@@ -14,13 +15,31 @@ import pandas as pd
 
 
 def get_input_args():
-    msg = 'Plot histograms from input data.  Can either plot just a single '
-    msg += 'histogram or a grid of histograms with different columns of '
-    msg += 'data.  When multiple columns are specified, creates a grid of '
-    msg += 'histograms, one for each specified column.'
+    msg = textwrap.dedent(
+        """
+        Plot histograms from input data.  Can either plot just a single
+        histogram or a grid of histograms with different columns of data.
+        When multiple columns are specified, creates a grid of histograms,
+        one for each specified column.
 
-    # read command line arguments
-    parser = argparse.ArgumentParser(description=msg)
+        -----------------------------------------------------------------------
+        Examples:
+
+            * Plot histogram of a beta distriubtion
+                p.rand -t beta --alpha 3 --beta 10 -n 10000\\
+                | p.hist --names beta -n 50
+
+            * Plot a sid-by-side comparison of a gamma and normal distriubtion
+              paste <(p.rand -t normal  -n 10000 | p.df --names normal)\\
+                    <(p.rand -t gamma   -n 10000 | p.df --names gamma)\\
+              | p.hist -i table -c normal gamma
+        -----------------------------------------------------------------------
+        """
+    )
+
+    #  read command line arguments
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
     arg_lib.add_args(parser, 'io_in', 'io_out', 'example', 'decorating')
 

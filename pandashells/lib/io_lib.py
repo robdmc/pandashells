@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 
-import csv
 import sys
+import os
+import csv
 
 from pandashells.lib import module_checker_lib, config_lib
 module_checker_lib.check_for_modules(['pandas', 'numpy'])
@@ -51,8 +52,14 @@ def df_from_input(args, in_file=None):
     header, names = get_header_names(args)
 
     # read the input data
-    df = pd.read_csv(in_file, sep=sep, header=header, names=names,
-                     encoding=ENCODING, low_memory=False)
+    try:
+        df = pd.read_csv(in_file, sep=sep, header=header, names=names,
+                         encoding=ENCODING, low_memory=False)
+    except ValueError:
+
+        sys.stderr.write('\n{} received no input\n'.format(
+            os.path.basename(sys.argv[0])))
+        sys.exit(1)
 
     # if no names and no neader, create column names
     if ('noheader' in args.input_options) and (not names):

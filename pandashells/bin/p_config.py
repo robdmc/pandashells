@@ -4,6 +4,7 @@
 import os
 import sys  # noqa  Not used in code, but patched in testing
 import argparse
+import textwrap
 
 from pandashells.lib import config_lib
 
@@ -12,14 +13,31 @@ def main():
     # --- read in the current configuration
     default_dict = config_lib.get_config()
 
-    #TODO:  maybe make this more informative.
-    msg = (
-        'Updates file ~/.pandashells, which hold pandashells configuration '
-        'information.'
+    msg = textwrap.dedent(
+        """
+        Sets the default IO and plotting behavior for the pandashells toolset
+        by creating/modifying a hidden configuration file (~/.pandashells)
+
+        -----------------------------------------------------------------------
+        Examples:
+
+            * Show the current configuration
+                p.config
+
+            * Set the configuration to "factory defaults"
+                p.config --force_defaults
+
+            * Set default input/output to assume white-space delimited columns
+              with no headers.
+                p.config --io_input_header noheader --io_input_type table
+                p.config --io_output_header noheader --io_output_type table
+        -----------------------------------------------------------------------
+        """
     )
 
     # --- populate the arg parser with current configuration
-    parser = argparse.ArgumentParser(description=msg)
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
     parser.add_argument('--force_defaults', action='store_true',
                         dest='force_defaults',
                         help='Force to default settings')

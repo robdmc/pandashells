@@ -27,22 +27,25 @@ def _io_in_adder(parser, config_dict, *args):
     """
     in_arg_set = set(args)
     if 'io_in' in in_arg_set:
+        group = parser.add_argument_group('Input Options')
         # define the valid components
         io_opt_list = ['csv', 'table', 'header', 'noheader']
 
         # allow the option of supplying input column names
         msg = 'Overwrite input column names with this list'
-        parser.add_argument('--names', nargs='+', type=str,
-                            dest='names', metavar="name",
-                            help=msg)
+        group.add_argument(
+            '--names', nargs='+', type=str, dest='names',
+            metavar="name", help=msg)
 
-        default_for_input = [config_dict['io_input_type'],
-                             config_dict['io_input_header']]
-
-        parser.add_argument('-i', '--input_options', nargs='+',
-                            type=str, dest='input_options', metavar='option',
-                            default=default_for_input, choices=io_opt_list,
-                            help='Input Options')
+        default_for_input = [
+            config_dict['io_input_type'],
+            config_dict['io_input_header']
+        ]
+        msg = 'Must be one of {}'.format(repr(io_opt_list))
+        group.add_argument(
+            '-i', '--input_options', nargs='+', type=str, dest='input_options',
+            metavar='option', default=default_for_input, choices=io_opt_list,
+            help=msg)
 
 
 def _io_out_adder(parser, config_dict, *args):
@@ -51,6 +54,7 @@ def _io_out_adder(parser, config_dict, *args):
     """
     in_arg_set = set(args)
     if 'io_out' in in_arg_set:
+        group = parser.add_argument_group('Output Options')
         # define the valid components
         io_opt_list = [
             'csv', 'table', 'html', 'header', 'noheader', 'index', 'noindex',
@@ -64,8 +68,8 @@ def _io_out_adder(parser, config_dict, *args):
         ]
 
         # show the current defaults in the arg parser
-        msg = 'Options taken from {}'.format(repr(io_opt_list))
-        parser.add_argument(
+        msg = 'Must be one of {}'.format(repr(io_opt_list))
+        group.add_argument(
             '-o', '--output_options', nargs='+',
             type=str, dest='output_options', metavar='option',
             default=default_for_output, help=msg)
@@ -75,7 +79,7 @@ def _io_out_adder(parser, config_dict, *args):
             'A string containing \'nan\' will set na_rep to numpy NaN. '
             'Current default is {}'
         ).format(repr(str(config_dict['io_output_na_rep'])))
-        parser.add_argument(
+        group.add_argument(
             '--output_na_rep', nargs=1, type=str, dest='io_output_na_rep',
             help=msg)
 
@@ -91,57 +95,54 @@ def _decorating_adder(parser, *args):
         palette_list = [t for t in config_lib.CONFIG_OPTS if
                         t[0] == 'plot_palette'][0][1]
 
-        # ---
+        group = parser.add_argument_group('Plot specific Options')
         msg = "Set the x-limits for the plot"
-        parser.add_argument('--xlim', nargs=2, type=float, dest='xlim',
-                            metavar=('XMIN', 'XMAX'), help=msg)
-        # ---
+        group.add_argument(
+            '--xlim', nargs=2, type=float, dest='xlim',
+            metavar=('XMIN', 'XMAX'), help=msg)
         msg = "Set the y-limits for the plot"
-        parser.add_argument('--ylim', nargs=2, type=float, dest='ylim',
-                            metavar=('YMIN', 'YMAX'), help=msg)
-        # ---
+        group.add_argument(
+            '--ylim', nargs=2, type=float, dest='ylim',
+            metavar=('YMIN', 'YMAX'), help=msg)
+        msg = "Draw x axis with log scale"
+        group.add_argument(
+            '--xlog', action='store_true', dest='xlog', default=False,
+            help=msg)
+        msg = "Draw y axis with log scale"
+        group.add_argument(
+            '--ylog', action='store_true', dest='ylog', default=False,
+            help=msg)
         msg = "Set the x-label for the plot"
-        parser.add_argument('--xlabel', nargs=1, type=str, dest='xlabel',
-                            help=msg)
-        # ---
+        group.add_argument(
+            '--xlabel', nargs=1, type=str, dest='xlabel', help=msg)
         msg = "Set the y-label for the plot"
-        parser.add_argument('--ylabel', nargs=1, type=str, dest='ylabel',
-                            help=msg)
-        # ---
+        group.add_argument(
+            '--ylabel', nargs=1, type=str, dest='ylabel', help=msg)
         msg = "Set the title for the plot"
-        parser.add_argument('--title', nargs=1, type=str, dest='title',
-                            help=msg)
-        # ---
+        group.add_argument(
+            '--title', nargs=1, type=str, dest='title', help=msg)
         msg = "Specify legend location"
-        parser.add_argument('--legend', nargs=1, type=str, dest='legend',
-                            choices=['1', '2', '3', '4', 'best'], help=msg)
-        # ---
+        group.add_argument(
+            '--legend', nargs=1, type=str, dest='legend',
+            choices=['1', '2', '3', '4', 'best'], help=msg)
         msg = "Specify whether hide the grid or not"
-        parser.add_argument('--nogrid', action='store_true', dest='no_grid',
-                            default=False, help=msg)
-
-        # ---
+        group.add_argument(
+            '--nogrid', action='store_true', dest='no_grid', default=False,
+            help=msg)
         msg = "Specify plot context. Default = '{}' ".format(context_list[0])
-        parser.add_argument('--context', nargs=1,
-                            type=str, dest='plot_context',
-                            default=[context_list[0]], choices=context_list,
-                            help=msg)
-        # ---
+        group.add_argument(
+            '--context', nargs=1, type=str, dest='plot_context',
+            default=[context_list[0]], choices=context_list, help=msg)
         msg = "Specify plot theme. Default = '{}' ".format(theme_list[0])
-        parser.add_argument('--theme', nargs=1,
-                            type=str, dest='plot_theme',
-                            default=[theme_list[0]], choices=theme_list,
-                            help=msg)
-        # ---
+        group.add_argument(
+            '--theme', nargs=1, type=str, dest='plot_theme',
+            default=[theme_list[0]], choices=theme_list, help=msg)
         msg = "Specify plot palette. Default = '{}' ".format(palette_list[0])
-        parser.add_argument('--palette', nargs=1,
-                            type=str, dest='plot_palette',
-                            default=[palette_list[0]], choices=palette_list,
-                            help=msg)
-        # ---
+        group.add_argument(
+            '--palette', nargs=1, type=str, dest='plot_palette',
+            default=[palette_list[0]], choices=palette_list, help=msg)
         msg = "Save the figure to this file"
-        parser.add_argument('--savefig', nargs=1, type=str,
-                            help=msg)
+        group.add_argument('--savefig', nargs=1, type=str, help=msg)
 
 
 def _xy_adder(parser, *args):
@@ -149,24 +150,17 @@ def _xy_adder(parser, *args):
     if 'xy_plotting' in in_arg_set:
 
         msg = 'Column to plot on x-axis'
-        parser.add_argument('-x', nargs=1, type=str, dest='x', metavar='col',
-                            help=msg)
+        parser.add_argument(
+            '-x', nargs=1, type=str, dest='x', metavar='col', help=msg)
 
         msg = 'List of columns to plot on y-axis'
-        parser.add_argument('-y', nargs='+', type=str, dest='y',
-                            metavar='col', help=msg)
+        parser.add_argument(
+            '-y', nargs='+', type=str, dest='y', metavar='col', help=msg)
 
-        msg = "Plot style defaults to .-"
-        parser.add_argument('-s', '--style', nargs=1, type=str, dest='style',
-                            default=['.-'], help=msg)
-
-
-def _example_adder(parser, *args):
-    in_arg_set = set(args)
-    if 'example' in in_arg_set:
-        msg = "Show a usage example and exit"
-        parser.add_argument('--example', action='store_true', dest='example',
-                            default=False, help=msg)
+        msg = "Plot style(s) defaults to .-"
+        parser.add_argument(
+            '-s', '--style', nargs='+', type=str, dest='style', default=['.-'],
+            help=msg, metavar='style')
 
 
 def add_args(parser, *args):
@@ -183,4 +177,3 @@ def add_args(parser, *args):
     _io_out_adder(parser, config_dict, *args)
     _decorating_adder(parser, *args)
     _xy_adder(parser, *args)
-    _example_adder(parser, *args)

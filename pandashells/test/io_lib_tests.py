@@ -10,60 +10,39 @@ import StringIO
 
 class IOLibTests(TestCase):
     def test_get_separator_csv(self):
-        """
-        get_separator() recognizes csv
-        """
         config_dict = {'io_input_type': 'csv'}
         args = MagicMock(input_options=['csv'])
         self.assertEqual(',', io_lib.get_separator(args, config_dict))
 
     def test_get_separator_table(self):
-        """
-        get_separator() recognizes table
-        """
         config_dict = {'io_input_type': 'csv'}
         args = MagicMock(input_options=['table'])
         self.assertEqual(r'\s+', io_lib.get_separator(args, config_dict))
 
     def test_get_separator_default(self):
-        """
-        get_separator() goes to default for unrecognized
-        """
         config_dict = {'io_input_type': 'csv'}
         args = MagicMock(input_options=[])
         self.assertEqual(',', io_lib.get_separator(args, config_dict))
 
     def test_get_header_names_with_names_and_header(self):
-        """
-        get_header_names() does right thing for names and header
-        """
         args = MagicMock(names=['a'], input_options=[])
         header, names = io_lib.get_header_names(args)
         self.assertEqual(header, 0)
         self.assertEqual(names, ['a'])
 
     def test_get_header_names_with_names_and_no_header(self):
-        """
-        get_header_names() does right thing for names and header
-        """
         args = MagicMock(names=['a'], input_options=['noheader'])
         header, names = io_lib.get_header_names(args)
         self.assertEqual(header, None)
         self.assertEqual(names, ['a'])
 
     def test_get_header_names_with_no_names_and_header(self):
-        """
-        get_header_names() does right thing for names and header
-        """
         args = MagicMock(names=None, input_options=[])
         header, names = io_lib.get_header_names(args)
         self.assertEqual(header, 'infer')
         self.assertEqual(names, None)
 
     def test_get_header_names_with_no_names_and_no_header(self):
-        """
-        get_header_names() does right thing for names and header
-        """
         args = MagicMock(names=None, input_options=['noheader'])
         header, names = io_lib.get_header_names(args)
         self.assertEqual(header, None)
@@ -82,8 +61,6 @@ class IOLibTests(TestCase):
     @patch('pandashells.lib.io_lib.sys.stdin')
     @patch('pandashells.lib.io_lib.pd')
     def test_df_from_input_no_infile(self, pd_mock, stdin_mock):
-        """
-        """
         pd_mock.read_csv = MagicMock(return_value=pd.DataFrame())
         args = MagicMock(names=[], input_options=[])
         io_lib.df_from_input(args, in_file=None)
@@ -91,8 +68,6 @@ class IOLibTests(TestCase):
 
     @patch('pandashells.lib.io_lib.pd')
     def test_df_from_input_with_infile(self, pd_mock):
-        """
-        """
         pd_mock.read_csv = MagicMock(return_value=pd.DataFrame())
         args = MagicMock(names=[], input_options=[])
         in_file = MagicMock()
@@ -100,9 +75,17 @@ class IOLibTests(TestCase):
         self.assertEqual(pd_mock.read_csv.call_args_list[0][0][0], in_file)
 
     @patch('pandashells.lib.io_lib.pd')
+    def test_df_from_input_no_input(self, pd_mock):
+        def raiser(*args, **kwargs):
+            raise ValueError()
+        pd_mock.read_csv = raiser
+        args = MagicMock(names=[], input_options=[])
+        in_file = MagicMock()
+        with self.assertRaises(SystemExit):
+            io_lib.df_from_input(args, in_file=in_file)
+
+    @patch('pandashells.lib.io_lib.pd')
     def test_df_from_input_create_names(self, pd_mock):
-        """
-        """
         df_in = pd.DataFrame(columns=[1, 2])
         pd_mock.read_csv = MagicMock(return_value=df_in)
         pd_mock.Index = pd.Index

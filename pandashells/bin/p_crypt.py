@@ -1,19 +1,35 @@
 #! /usr/bin/env python
 
 import argparse
+import textwrap
 import os
 import sys
 
-from pandashells.lib import arg_lib
-
 
 def main():
-    msg = "Encrypt a file with aes-256-cbc as implemented by openssl. "
+    msg = textwrap.dedent(
+        """
+        Encrypts and decrypts files using openssl.  Openssl provides command-
+        line tools that are capable of encrypting and decrypting files.  This
+        tool provides a thin wrapper around that capability by hardcoding
+        the encyrption to be aes256-cbc.
+
+        -----------------------------------------------------------------------
+        Examples:
+
+            * Encrypt an input file echoing the openssl command
+                echo 'plain text' > file.txt
+                p.crypt -i file.txt -v -o file.txt.crypt
+
+            * Decrypt an input file
+                p.crypt  -d -i file.txt.crypt -o file_restored.txt
+        -----------------------------------------------------------------------
+        """
+    )
 
     #  read command line arguments
-    parser = argparse.ArgumentParser(description=msg)
-
-    arg_lib.add_args(parser, 'example')
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
     parser.add_argument(
         '-i', '--in_file', nargs=1, type=str,

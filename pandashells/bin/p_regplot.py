@@ -2,6 +2,7 @@
 
 # standard library imports
 import argparse
+import textwrap
 import re
 import sys  # NOQA just use this for patching in tests
 
@@ -40,10 +41,38 @@ def make_label(coeffs, savefig):
 
 
 def main():
-    msg = 'Shows a quick single variable regression plot of specified order.'
+    msg = textwrap.dedent(
+        """
+        Create a single variable regression plot of specified order.
 
-    # read command line arguments
-    parser = argparse.ArgumentParser(description=msg)
+        -----------------------------------------------------------------------
+        Examples:
+            * Fit a line to synthetic data with boostrap errors.
+                p.linspace 0 10 20 \\
+                | p.df 'df["y_true"] = .2 * df.x' \\
+                       'df["noise"] = np.random.randn(20)' \\
+                        'df["y"] = df.y_true + df.noise' --names x \\
+                | p.regplot -x x -y y
+
+            * Fit a quadratic to synthetic data with boostrap errors.
+                p.linspace 0 10 40 \\
+                | p.df 'df["y_true"] = .5 * df.x  + .3 * df.x ** 2'\\
+                       'df["noise"] = np.random.randn(40)' \\
+                        'df["y"] = df.y_true + df.noise' --names x \\
+                | p.regplot -x x -y y --order 2
+
+            * Fit sealevel data with no bootstrap
+                p.example_data -d sealevel\\
+                | p.regplot -x year -y sealevel_mm --n_boot 1
+
+
+        -----------------------------------------------------------------------
+        """
+    )
+
+    #  read command line arguments
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
     arg_lib.add_args(parser, 'io_in', 'io_out', 'example', 'decorating')
 

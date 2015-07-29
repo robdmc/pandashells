@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import textwrap
 
 from pandashells.lib import arg_lib, io_lib
 
@@ -19,14 +20,24 @@ class OutStream(object):  # pragma no cover
 
 
 def main():
-    msg = (
-        'Use python template to create strings from dataframe '
-        'records.  Each record will get past as **kwargs to the python '
-        '.format(**kwargs) string method.'
+    msg = textwrap.dedent(
+        """
+        Create strings from a dataframe using python str.format() template.
+        This tool is particularly useful for generating a list of commands
+        that for piping into p.parallel.
+        -----------------------------------------------------------------------
+        Examples:
+
+            * Create commands to touch a sequence of files in /tmp
+                seq 10 | p.df --names n -i noheader\\
+                | p.format -t 'touch /tmp/file{n:02d}.txt'
+        -----------------------------------------------------------------------
+        """
     )
 
-    # read command line arguments
-    parser = argparse.ArgumentParser(description=msg)
+    #  read command line arguments
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
     arg_lib.add_args(parser, 'io_in')
 

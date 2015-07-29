@@ -3,6 +3,7 @@
 # standard library imports
 import sys
 import argparse
+import textwrap
 
 from pandashells.lib import module_checker_lib, arg_lib, io_lib
 
@@ -34,12 +35,27 @@ def validate_args(args):
 
 
 def main():
-    msg = "Tool to merge dataframes.  Similar functionality to database "
-    msg += " joins. The arguments closely parallel those of the pandas merge "
-    msg += "command.  See the pandas merge documentation for more details."
+    msg = textwrap.dedent(
+        """
+        Tool to merge datasets.  Similar functionality to database
+        joins. The arguments closely parallel those of the pandas merge
+        command.  See the pandas merge documentation for more details.
+
+        -----------------------------------------------------------------------
+        Examples:
+
+            * Merge election polls with electoral-college numbers
+                p.merge <(p.example_data -d election) \\
+                        <(p.example_data -d electoral_college) \\
+                        --how left --on state \\
+                | p.df -o table | head
+        -----------------------------------------------------------------------
+        """
+    )
 
     # read command line arguments
-    parser = argparse.ArgumentParser(description=msg)
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
     arg_lib.add_args(parser, 'io_in', 'io_out', 'example')  # DO I REALLY NEED IO_IN ??
 
