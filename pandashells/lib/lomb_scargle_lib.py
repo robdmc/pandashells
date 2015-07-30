@@ -1,14 +1,12 @@
 #! /usr/bin/env python
 
 # standard library imports
-
-from pandashells.lib import module_checker_lib
-
-# import required dependencies
-module_checker_lib.check_for_modules(['gatspy', 'pandas', 'numpy'])
-
-import pandas as pd
-import numpy as np
+try:
+    import pandas as pd
+    import numpy as np
+# will catch import errors in module_checker_lib so won't test this branch
+except ImportError:  # pragma: nocover
+    pass
 
 
 def _next_power_two(x):
@@ -70,9 +68,11 @@ def lomb_scargle(df, time_col, val_col, interp_exponent=0, freq_order=False):
     :rtype: Pandas DataFrame
     :returns: A dataframe with columns: period, freq, power, amplitude
     """
-    # do gatspy import here to avoid loading plot libraries when this
-    # module is imported in __init__.py
+    # do imports here to avoid loading plot libraries when this
+    # module is loaded in __init__.py
     # which then doesn't allow for doing matplotlib.use() later
+    from pandashells.lib import module_checker_lib
+    module_checker_lib.check_for_modules(['gatspy', 'pandas', 'numpy'])
     import gatspy
 
     # only care about timestamped values
