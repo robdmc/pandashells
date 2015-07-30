@@ -118,6 +118,10 @@ def autofill_plot_fields_and_labels(args, df):
 
 
 def str_to_date(x):
+    try:
+        basestring
+    except NameError:
+        basestring = str
     if isinstance(x.iloc[0], basestring):
         return [parse(e) for e in x]
     else:

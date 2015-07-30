@@ -41,7 +41,8 @@ def main():
 
     # parse arguments
     args = parser.parse_args()
-    min_val, max_val, N = float(args.numbers[0]), float(args.numbers[1]), int(args.numbers[2])
+    min_val, max_val = float(args.numbers[0]), float(args.numbers[1])
+    N = int(args.numbers[2])
 
     df = pd.DataFrame({'c0': np.linspace(min_val, max_val, N)})
 

@@ -12,7 +12,8 @@ import pandashells
 def main():
     # create a dict of data-set names and corresponding files
     package_dir = os.path.dirname(os.path.realpath(pandashells.__file__))
-    sample_data_dir = os.path.realpath(os.path.join(package_dir, 'example_data'))
+    sample_data_dir = os.path.realpath(
+        os.path.join(package_dir, 'example_data'))
 
     f_dict = {}
     for f in os.listdir(sample_data_dir):

@@ -2,17 +2,15 @@
 
 # standard library imports
 import argparse
+from importlib import import_module
 import textwrap
 import os  # noqa
 import re  # noqa
 import sys  # noqa
 import datetime  # noqa
+import pandas as pd
 
 from pandashells.lib import module_checker_lib, arg_lib, io_lib
-
-# Note:
-# There are some conditional imports into global scope
-# right after the first two functions
 
 
 def needs_plots(command_list):
@@ -47,26 +45,22 @@ def get_modules_and_shortcuts(command_list):
     ]
     if needs_plots(command_list):
         out = list(set([('pylab', 'pl')] + out))
+
+    # make sure required modules are installed
+    module_checker_lib.check_for_modules([m for (m, s) in out])
+
     return out
 
-# make sure all the required modules are installed
-module_checker_lib.check_for_modules([
-    m for (m, s) in get_modules_and_shortcuts(sys.argv)
-])
 
-# import required modules into the global scope
-import pandas as pd
-from dateutil.parser import parse  # noqa
-for (module, shortcut) in get_modules_and_shortcuts(sys.argv):
-    exec('import {} as {}'.format(module, shortcut))
-
-
-# TODO: change how tests are done to remove this funiness
-# This branch is run in the integrations tests, but since it's being
-# run from a system call, coverage doesn't know about it.  I'm
-# labeling it as no_cover because it actually does get run.
-if needs_plots(sys.argv):  # pragma: no cover
-    from pandashells.lib import plot_lib
+def execute(cmd, scope_entries=None, retval_name=None):
+    scope = scope_entries if scope_entries else {}
+    from dateutil.parser import parse
+    scope['parse'] = parse
+    scope['pd'] = pd
+    for (module, shortcut) in get_modules_and_shortcuts(sys.argv):
+        scope[shortcut] = import_module(module)
+    exec(cmd, scope)
+    return scope.get(retval_name, None)
 
 
 # TODO: same as above
@@ -74,8 +68,9 @@ if needs_plots(sys.argv):  # pragma: no cover
 # run from a system call, coverage doesn't know about it.  I'm
 # labeling it as no_cover because it actually does get run.
 def exec_plot_command(args, cmd, df):  # pragma: no cover
+    from pandashells.lib import plot_lib
     plot_lib.set_plot_styling(args)
-    exec(cmd)
+    execute(cmd, scope_entries={'df': df})
     plot_lib.refine_plot(args)
     plot_lib.show(args)
 
@@ -102,8 +97,7 @@ def process_command(args, cmd, df):
 
     # if this is a column-assignment command, just execute it
     if rex_col_cmd.match(cmd):
-        'matches col'
-        exec(cmd)
+        df = execute(cmd, scope_entries={'df': df}, retval_name='df')
         return df
 
     # if this is a plot command, execute it and quit
@@ -115,7 +109,7 @@ def process_command(args, cmd, df):
     else:
         # put results of command in temp var
         cmd = 'df = {}'.format(cmd)
-        exec(cmd)
+        df = execute(cmd, scope_entries={'df': df}, retval_name='df')
 
     # make sure df is still dataframe and return
     df = framify(cmd, df)

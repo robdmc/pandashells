@@ -1,12 +1,15 @@
 #! /usr/bin/env python
-import StringIO
 import subprocess
-
 
 from mock import patch, MagicMock
 from unittest import TestCase
 import pandas as pd
 import numpy as np
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from pandashells.bin.p_sig_edit import (
     main,
@@ -62,16 +65,17 @@ class IntegrationTests(TestCase):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        stdout, stderr = p.communicate(self.df.to_csv(index=False))
-        return stdout.strip()
+        stdout, stderr = p.communicate(
+            self.df.to_csv(index=False).encode('utf-8'))
+        return stdout.decode('utf-8').strip()
 
     def test_editing(self):
         cmd = 'p.sig_edit -t 2 -c a'
-        df = pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
+        df = pd.read_csv(StringIO(self.get_command_result(cmd)))
         self.assertTrue(np.isnan(df.a.iloc[-1]))
         self.assertEqual(len(df.dropna()), 8)
 
     def test_bad_iter(self):
         cmd = 'p.sig_edit -t 2 -c a --max_iter 0'
         with self.assertRaises(ValueError):
-            pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
+            pd.read_csv(StringIO(self.get_command_result(cmd)))

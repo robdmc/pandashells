@@ -132,7 +132,11 @@ def main():
     grid = sns.FacetGrid(df, **facet_grid_kwargs)
 
     map_func_name = args.map[0]
-    exec('map_func = {}'.format(map_func_name))
+
+    scope = {'pl': pl, 'sns': sns, 'map_func_name': map_func_name}
+    exec('map_func = {}'.format(map_func_name), scope)
+    map_func = scope['map_func']
+
     map_args = args.args
 
     map_kwargs = {}

@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 import os
-import StringIO
 import subprocess
 import tempfile
 
@@ -8,6 +7,10 @@ import tempfile
 from mock import patch, MagicMock
 from unittest import TestCase
 import pandas as pd
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from pandashells.bin.p_df import (
     needs_plots,
@@ -138,36 +141,38 @@ class IntegrationTests(TestCase):
             stderr=subprocess.PIPE,
         )
         if as_table:
-            stdout, stderr = p.communicate(self.df.to_string(index=False))
+            stdout, stderr = p.communicate(
+                self.df.to_string(index=False).encode('utf-8'))
         else:
-            stdout, stderr = p.communicate(self.df.to_csv(index=False))
-        return stdout.strip()
+            stdout, stderr = p.communicate(
+                self.df.to_csv(index=False).encode('utf-8'))
+        return stdout.decode('utf-8').strip()
 
     def test_no_command(self):
         cmd = 'p.df'
-        df = pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
+        df = pd.read_csv(StringIO(self.get_command_result(cmd)))
         self.assertEqual(list(df.a), [1, 2, 3, 4])
 
     def test_names(self):
         cmd = 'p.df --names  x y'
-        df = pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
+        df = pd.read_csv(StringIO(self.get_command_result(cmd)))
         self.assertEqual(list(df.columns), ['x', 'y'])
 
     def test_multiple_commands(self):
         cmd = """p.df  'df["y"] = -df.y'  'df["z"] = df["y"]' --names  x y"""
-        df = pd.read_csv(StringIO.StringIO(self.get_command_result(cmd)))
+        df = pd.read_csv(StringIO(self.get_command_result(cmd)))
         self.assertTrue(all(df.z < 0))
 
     def test_input_table(self):
         cmd = 'p.df -i table'
-        df = pd.read_csv(StringIO.StringIO(
+        df = pd.read_csv(StringIO(
             self.get_command_result(cmd, as_table=True)))
         self.assertEqual(list(df.columns), ['a', 'b'])
 
     def test_output_table(self):
         cmd = 'p.df -o table'
         df = pd.read_csv(
-            StringIO.StringIO(self.get_command_result(cmd)), delimiter=r'\s+')
+            StringIO(self.get_command_result(cmd)), delimiter=r'\s+')
         self.assertEqual(list(df.columns), ['a', 'b'])
 
     def test_plotting(self):

@@ -52,7 +52,7 @@ def main():
     args = parser.parse_args()
 
     # --- set the arguments to the current value of the arg parser
-    config_dict = {t[0]: t[1][0] for t in args.__dict__.iteritems()
+    config_dict = {t[0]: t[1][0] for t in args.__dict__.items()
                    if not t[0] in ['force_defaults']}
 
     if args.force_defaults:

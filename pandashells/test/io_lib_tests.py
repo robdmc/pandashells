@@ -5,7 +5,10 @@ import pandas as pd
 from unittest import TestCase
 from pandashells.lib import io_lib
 from mock import patch, MagicMock
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 class IOLibTests(TestCase):
@@ -95,7 +98,7 @@ class IOLibTests(TestCase):
 
     @patch('pandashells.lib.io_lib.sys')
     def test_csv_writer(self, sys_mock):
-        sys_mock.stdout = StringIO.StringIO()
+        sys_mock.stdout = StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.csv_writer(df, header=True, index=False, na_rep='nan')
         sys.stdout = sys.__stdout__
@@ -103,7 +106,7 @@ class IOLibTests(TestCase):
 
     @patch('pandashells.lib.io_lib.sys')
     def test_table_writer(self, sys_mock):
-        sys_mock.stdout = StringIO.StringIO()
+        sys_mock.stdout = StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.table_writer(df, header=True, index=False, na_rep='nan')
         sys.stdout = sys.__stdout__
@@ -111,7 +114,7 @@ class IOLibTests(TestCase):
 
     @patch('pandashells.lib.io_lib.sys')
     def test_html_writer(self, sys_mock):
-        sys_mock.stdout = StringIO.StringIO()
+        sys_mock.stdout = StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
         io_lib.html_writer(df, header=True, index=False)
         sys.stdout = sys.__stdout__
