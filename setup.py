@@ -7,7 +7,7 @@ fileDir = os.path.dirname(__file__)
 
 setup(
     name="pandashells",
-    version="0.2.0",
+    version="0.1.0",
     author="Rob deCarvalho",
     author_email="unlisted",
     description=("Command line data tools"),
