@@ -169,14 +169,15 @@ performed on this dataframe will overwrite the df variable with
 the results of that operation.  Special consideration is taken for
 assignments such as df['a'] = df.b + 1.  These are understood
 to augment the input dataframe with a new column. By way of example,
-this command:
+this command at the bash prompt:
 
-   <pre><code> p.df 'df.groupby(by="a").b.count()' 'df.reset_index()' </code></pre>
+   <pre><code> p.df 'df["c"] = 2 * df.b' 'df.groupby(by="a").c.count()' 'df.reset_index()' </code></pre>
 
-is equivalent to the python expressions:
+is equivalent to the following python snippet:
 
 <pre><code># this code in a python script 
-df = df.groupby(by="a").b.count()
+df["c"] = 2 * df.b
+df = df.groupby(by="a").c.count()
 df = df.reset_index()
 </code></pre>
 
