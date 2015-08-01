@@ -41,10 +41,11 @@ allow those familiar with the python data stack to be immediately productive.
 Installation
 ----
 Pandashells is a pure-python package.  The latest release branch can be installed with
+pip, but read the requirements section for more information.
 <pre><code><strong>[~]$ pip install pandashells
 </strong></code></pre>
 
-Developement branch
+Developement Version
 <pre><code><strong>[~]$ pip install --upgrade  git+https://github.com/robdmc/pandashells.git
 </strong></code></pre>
 
@@ -73,31 +74,46 @@ Below is a comprehensive list packages that pandashells imports.
 * seaborn
 * statsmodels
 
-To perform a complete installation of pandashells with full capability, the following
-commands can be used.
+To perform a complete installation of pandashells with full capability,
+first install and activate the 
+<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>
+then run the following commands
 
 * Full python-2 install
-<pre><code> conda create -n pandashells python=2.7 anaconda  # only need this if you want a dedicated pandashells env
+<pre><code>#Create and activate a new conda env for pandashells (optional) 
+conda create -n pandashells python=2.7 anaconda
 . activate pandashells
+
+# seaborn and mpld3 only needed if you want to create plots
 conda install seaborn
 pip install mpld3
+
+# astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
 pip install astroML
 pip install supersmoother
 pip install gatspy
+
+# installs all command line tools
 pip install pandashells
 </code></pre>
 
 * Full python-3 install
-<pre><code> conda create -n pandashells python=3.4 anaconda  # only need this if you want a dedicated pandashells env
+<pre><code>#Create and activate a new conda env for pandashells (optional) 
+conda create -n pandashells python=3.4 anaconda
 . activate pandashells
+
+# seaborn and mpld3 only needed if you want to create plots
 conda install seaborn
 pip install mpld3
+
+# astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
 pip install astroML
 pip install supersmoother
 pip install gatspy
+
+# installs all command line tools
 pip install pandashells
 </code></pre>
-
 
 
 Overview
