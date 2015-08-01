@@ -42,7 +42,7 @@ Installation
 ----
 Pandashells is a pure-python package.  The latest release branch can be installed with
 pip, but read the requirements section for more information.
-<pre><code><strong>[~]$ pip install pandashells
+<pre><code><strong>[~]$ pip install pandashells  # does NOT automatically install dependencies (see below)
 </strong></code></pre>
 
 Developement Version
