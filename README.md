@@ -80,39 +80,39 @@ first install and activate the
 then run the following commands
 
 * Full python-2 install
-<pre><code>#Create and activate a new conda env for pandashells (optional) 
-conda create -n pandashells python=2.7 anaconda
-. activate pandashells
+<pre><code> #Create and activate a new conda env for pandashells (optional) 
+ conda create -n pandashells python=2.7 anaconda
+ . activate pandashells
 
-#seaborn and mpld3 only needed if you want to create plots
-conda install seaborn
-pip install mpld3
+ #seaborn and mpld3 only needed if you want to create plots
+ conda install seaborn
+ pip install mpld3
 
-#astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
-pip install astroML
-pip install supersmoother
-pip install gatspy
+ #astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
+ pip install astroML
+ pip install supersmoother
+ pip install gatspy
 
-#installs all command line tools
-pip install pandashells
+ #installs all command line tools
+ pip install pandashells
 </code></pre>
 
 * Full python-3 install
-<pre><code>#Create and activate a new conda env for pandashells (optional) 
-conda create -n pandashells python=3.4 anaconda
-. activate pandashells
+<pre><code> #Create and activate a new conda env for pandashells (optional) 
+ conda create -n pandashells python=3.4 anaconda
+ . activate pandashells
 
-#seaborn and mpld3 only needed if you want to create plots
-conda install seaborn
-pip install mpld3
+ #seaborn and mpld3 only needed if you want to create plots
+ conda install seaborn
+ pip install mpld3
+ 
+ #astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
+ pip install astroML
+ pip install supersmoother
+ pip install gatspy
 
-#astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
-pip install astroML
-pip install supersmoother
-pip install gatspy
-
-#installs all command line tools
-pip install pandashells
+ #installs all command line tools
+ pip install pandashells
 </code></pre>
 
 
