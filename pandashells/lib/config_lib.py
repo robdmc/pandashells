@@ -17,7 +17,7 @@ CONFIG_OPTS = sorted(
         ('plot_context', ['talk', 'poster', 'paper', 'notebook']),
         ('plot_theme', ['darkgrid', 'whitegrid', 'dark', 'white']),
         ('plot_palette', ['muted', 'deep', 'dark', 'colorblind', 'pastel']),
-        ('plot_backend', ['TkAgg', 'MacOSX', 'Qt4Agg']),
+        ('plot_backend', ['TkAgg', 'MacOSX', 'Qt4Agg', 'Agg']),
 
     ]
 )
