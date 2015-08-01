@@ -139,7 +139,7 @@ p.regress | Perform (multi-variate) linear regression with R-like patsy syntax
 p.sig_edit | Remove outliers using iterative sigma-editing
 
 
-DataFrame Maniuplations
+DataFrame Manipulations
 ----
 Pandashells allows you to specify multiple dataframe operations in a single command.
 Each operation assumes data is in a dataframe named df.  Operations
