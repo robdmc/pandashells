@@ -7,7 +7,7 @@ fileDir = os.path.dirname(__file__)
 
 setup(
     name="pandashells",
-    version="0.1.0",
+    version="0.1.2",
     author="Rob deCarvalho",
     author_email="unlisted",
     description=("Command line data tools"),
@@ -19,8 +19,15 @@ setup(
     # include_package_data=True,
     long_description='Bringing the python data-stack to the command line',
     classifiers=[
-        "Topic :: Utilities",
-        "License ::  Simplified BSD License",
+        'Environment :: Console',
+        'Intended Audience :: Science/Research',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Topic :: Scientific/Engineering',
     ],
     entry_points={
         'console_scripts': [
