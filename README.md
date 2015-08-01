@@ -366,5 +366,7 @@ linear regression.
   strong multicollinearity or other numerical problems.
   </code></pre>
 
-
+Further examples of each tool can be seen by running the tools with the -h switch.
+You are encouraged to fully explore these examples. They highlight how Pandashells
+can be used to significantly imporove your effieciency.
 
