@@ -181,6 +181,9 @@ df = df.groupby(by="a").c.count()
 df = df.reset_index()
 </code></pre>
 
+Shown below are several examples of how to use the p.df tool.  You are encourage
+to copy/paste these commands to your bash prompt to see pandashells in action.
+
 * Show a few rows of an example data set.
 <pre><code><strong>[~]$ p.example_data -d tips | head</strong>
 "total_bill","tip","sex","smoker","day","time","size"
