@@ -117,7 +117,7 @@ then run the following commands
 
 **Important:**  If you want to use pandashells without interactive visualizations
 (e. g. on a VM without X-forwarding), but would like to retain the ability to
-create image or html visualizations, you may need to configure pandashells to
+create static-image or html-based visualizations, you may need to configure pandashells to
 use the Agg backend as follows:
 <pre><code>p.config --plot_backend Agg</code></pre>
 
