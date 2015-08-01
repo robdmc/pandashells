@@ -5,9 +5,16 @@ from setuptools import setup, find_packages
 
 fileDir = os.path.dirname(__file__)
 
+LONG_DESCRIPTION = """
+Pandashells is a set of unix command-line tools that provide accessibility
+to the python data stack directly from the bash prompt.  Users can utilize
+pandas-based data-munging, perform linear regression, and even take
+the spectral decomposition of non-uniformly sampled time series.
+"""
+
 setup(
     name="pandashells",
-    version="0.1.2",
+    version="0.1.3",
     author="Rob deCarvalho",
     author_email="unlisted",
     description=("Command line data tools"),
@@ -17,7 +24,7 @@ setup(
     packages=find_packages(),
     package_data={'pandashells': ['example_data/*.csv']},
     # include_package_data=True,
-    long_description='Bringing the python data-stack to the command line',
+    long_description=LONG_DESCRIPTION,
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: Science/Research',
