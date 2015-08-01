@@ -80,7 +80,7 @@ first install and activate the
 then run the following commands
 
 * Full python-2 install
-<pre><code> # Create and activate a new conda env for pandashells (optional) 
+<pre><code># Create and activate a new conda env for pandashells (optional) 
  conda create -n pandashells python=2.7 anaconda
  . activate pandashells
 
@@ -98,7 +98,7 @@ then run the following commands
 </code></pre>
 
 * Full python-3 install
-<pre><code> # Create and activate a new conda env for pandashells (optional) 
+<pre><code># Create and activate a new conda env for pandashells (optional) 
  conda create -n pandashells python=3.4 anaconda
  . activate pandashells
 
