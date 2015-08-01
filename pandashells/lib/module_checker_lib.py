@@ -13,14 +13,14 @@ CMD_DICT = {
     'dateutil': 'pip install dateutil',
     'gatspy': 'pip install gatspy',
     'matplotlib': 'conda install matplotlib',
-    'mpld3': 'mpld3',
+    'mpld3': 'pip install mpld3',
     'numpy': 'conda install numpy',
-    'pandas': 'pip install pandas',
+    'pandas': 'conda install pandas',
     'pylab': 'conda install matplotlib',
     'requests': 'pip install requests',
     'scipy': 'conda install scipy',
-    'seaborn': 'pip install seaborn',
-    'statsmodels': 'pip install statsmodels',
+    'seaborn': 'conda install seaborn',
+    'statsmodels': 'conda install statsmodels',
 }
 
 

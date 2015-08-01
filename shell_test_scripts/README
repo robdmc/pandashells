@@ -1,6 +1,6 @@
 
 # run the following command to test everything except p.crypt
-ls | p.format -t '(echo {f}); ({f})' --names f | grep -v crypt | bash -
+ls  *.sh | p.format -t '(echo {f}); ({f})' --names f | grep -v crypt | bash -
 
 p.crypt can be tested on its own by running
 crypt.examples.sh

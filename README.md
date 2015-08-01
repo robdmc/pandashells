@@ -57,13 +57,13 @@ We strongly recommend using Anaconda to run Pandashells.  Most of the libraries 
 pandashells come pre-installed with Anaconda, though some tools will require additional
 libraries.
 
-There is no requirements.txt file with pandashells because some of the tools only require
+There is no requirements file with pandashells because some of the tools only require
 the standard library, and there's no sense installing unnecessary packages if you only want
 to use that subset of tools.  If a particular tool encounters a missing dependency, it will
 gracefully fail with an informative message detailing the steps required for installing
 the missing dependency.
 
-Below is a comprehensive list of the packages used in the toolset.
+Below is a comprehensive list packages that pandashells imports.
 * gatspy
 * matplotlib
 * mpld3
@@ -72,6 +72,32 @@ Below is a comprehensive list of the packages used in the toolset.
 * scipy
 * seaborn
 * statsmodels
+
+To perform a complete installation of pandashells with full capability, the following
+commands can be used.
+
+* Full python-2 install
+<pre><code> conda create -n pandashells python=2.7 anaconda  # only need this if you want a dedicated pandashells env
+. activate pandashells
+conda install seaborn
+pip install mpld3
+pip install astroML
+pip install supersmoother
+pip install gatspy
+pip install pandashells
+</code></pre>
+
+* Full python-3 install
+<pre><code> conda create -n pandashells python=3.4 anaconda  # only need this if you want a dedicated pandashells env
+. activate pandashells
+conda install seaborn
+pip install mpld3
+pip install astroML
+pip install supersmoother
+pip install gatspy
+pip install pandashells
+</code></pre>
+
 
 
 Overview
