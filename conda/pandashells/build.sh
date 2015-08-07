@@ -2,9 +2,10 @@
 
 $PYTHON setup.py install
 
-pip install astroML
-pip install supersmoother
-pip install gatspy
+pip install --no-cache-dir mpld3
+pip install --no-cache-dir astroML
+pip install --no-cache-dir supersmoother
+pip install --no-cache-dir gatspy
 
 # Add more build steps here, if they are necessary.
 

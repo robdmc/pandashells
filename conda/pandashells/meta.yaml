@@ -56,7 +56,6 @@ requirements:
     - pandas
     - statsmodels
     - seaborn
-    - mpld3
 
 test:
   # Python imports
