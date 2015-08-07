@@ -2,6 +2,10 @@
 
 $PYTHON setup.py install
 
+pip install astroML
+pip install supersmoother
+pip install gatspy
+
 # Add more build steps here, if they are necessary.
 
 # See
