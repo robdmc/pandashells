@@ -46,9 +46,18 @@ build:
 requirements:
   build:
     - python
-    - setuptools
+    - jinja2
+    - numpy
+    - scipy
+    - matplotlib
+    - scikit-learn
+    - pandas
+    - statsmodels
+    - seaborn
 
   run:
+    - python
+    - jinja2
     - numpy
     - scipy
     - matplotlib
