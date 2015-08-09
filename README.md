@@ -71,7 +71,7 @@ to use that subset of tools.  If a particular tool encounters a missing dependen
 gracefully fail with an informative message detailing the steps required for installing
 the missing dependency.
 
-Below is a comprehensive list packages that pandashells imports.
+Below is a comprehensive list of packages that pandashells imports.
 * gatspy
 * matplotlib
 * mpld3
