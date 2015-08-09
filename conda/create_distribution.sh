@@ -6,3 +6,6 @@
 conda build --python 2.7 --python 3.3 --python 3.4 --output . | p.format -t 'conda convert --platform osx-64 {c0}' -i noheader | bash -
 conda build --python 2.7 --python 3.3 --python 3.4 --output . | p.format -t 'conda convert --platform linux-32 {c0}' -i noheader | bash -
 conda build --python 2.7 --python 3.3 --python 3.4 --output . | p.format -t 'conda convert --platform linux-64 {c0}' -i noheader | bash -
+
+
+binstar login && find . -name '*.bz2' | xargs binstar upload
