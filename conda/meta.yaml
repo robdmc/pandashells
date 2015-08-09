@@ -68,23 +68,18 @@ requirements:
 
 test:
   imports:
-      - pandashells
-      - nose
-      - mock
+      # - nose
 
-  #commands:
+  commands:
   #  # You can put test commands to be run here.  Use this to test that the
   #  # entry points work.
-  #  #nose.main()
-  #  print 'hello'
 
 
   # You can also put a file called run_test.py in the recipe that will be run
   # at test time.
 
   requires:
-     - nose
-     - mock
+      # - nose
 
 about:
   home: https://github.com/robdmc/pandashells
