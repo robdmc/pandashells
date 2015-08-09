@@ -1,3 +1,7 @@
+# This is just an example of how one can use make files in a data science 
+# chain.  It is still an undocumented work in progress, but feel free to
+# play with it.
+
 SHELL := /bin/bash
 D := ./out/
 

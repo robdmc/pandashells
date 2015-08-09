@@ -1,0 +1,90 @@
+package:
+  name: pandashells
+  version: "0.1.4"
+
+source:
+  fn: pandashells-0.1.4.tar.gz
+  url: https://pypi.python.org/packages/source/p/pandashells/pandashells-0.1.4.tar.gz
+  md5: 761f198e6da8874791629333beae0adb
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
+build:
+  # noarch_python: True
+  # preserve_egg_dir: True
+  entry_points:
+    # Put any entry points (scripts to be generated automatically) here. The
+    # syntax is module:function.  For example
+    #
+    # - pandashells = pandashells:main
+    #
+    # Would create an entry point called pandashells that calls pandashells.main()
+
+    - p.cdf = pandashells.bin.p_cdf:main
+    - p.config = pandashells.bin.p_config:main
+    - p.crypt = pandashells.bin.p_crypt:main
+    - p.df = pandashells.bin.p_df:main
+    - p.facet_grid = pandashells.bin.p_facet_grid:main
+    - p.format = pandashells.bin.p_format:main
+    - p.hist = pandashells.bin.p_hist:main
+    - p.linspace = pandashells.bin.p_linspace:main
+    - p.lomb_scargle = pandashells.bin.p_lomb_scargle:main
+    - p.merge = pandashells.bin.p_merge:main
+    - p.parallel = pandashells.bin.p_parallel:main
+    - p.plot = pandashells.bin.p_plot:main
+    - p.rand = pandashells.bin.p_rand:main
+    - p.regplot = pandashells.bin.p_regplot:main
+    - p.regress = pandashells.bin.p_regress:main
+    - p.example_data = pandashells.bin.p_example_data:main
+    - p.sig_edit = pandashells.bin.p_sig_edit:main
+
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  # number: 1
+requirements:
+  build:
+    - python
+    - jinja2
+    - numpy
+    - scipy
+    - matplotlib
+    - scikit-learn
+    - pandas
+    - statsmodels
+    - seaborn
+
+  run:
+     - python
+     - jinja2
+     - numpy
+     - scipy
+     - matplotlib
+     - scikit-learn
+     - pandas
+     - statsmodels
+     - seaborn
+
+test:
+  imports:
+      # - nose
+
+  commands:
+  #  # You can put test commands to be run here.  Use this to test that the
+  #  # entry points work.
+
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  requires:
+      # - nose
+
+about:
+  home: https://github.com/robdmc/pandashells
+  license: BSD
+  summary: 'Command line data tools'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
