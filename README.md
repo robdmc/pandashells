@@ -62,9 +62,8 @@ Requirements
 
 Pandashells is both Python2 and Python3 compatible and was developed using the 
 <a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
-We strongly recommend using Anaconda to run Pandashells.  Most of the libraries required by
-pandashells come pre-installed with Anaconda, though some tools will require additional
-libraries.
+We strongly recommend using Anaconda and or Miniconda to run Pandashells because 
+installing the required external and system libraries is completely taken care of.
 
 There is no requirements file with pandashells because some of the tools only require
 the standard library, and there's no sense installing unnecessary packages if you only want
@@ -82,46 +81,6 @@ Below is a comprehensive list packages that pandashells imports.
 * seaborn
 * statsmodels
 
-To perform a complete installation of pandashells with full capability,
-first install and activate the 
-<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>
-then run the following commands
-
-* Full python-2 install
-<pre><code># Create and activate a new conda env for pandashells (optional) 
- conda create -n pandashells python=2.7 anaconda
- . activate pandashells
-
- # seaborn and mpld3 only needed if you want to create plots
- conda install seaborn
- pip install mpld3
-
- # astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
- pip install astroML
- pip install supersmoother
- pip install gatspy
-
- # installs all command line tools
- pip install pandashells
-</code></pre>
-
-* Full python-3 install
-<pre><code># Create and activate a new conda env for pandashells (optional) 
- conda create -n pandashells python=3.4 anaconda
- . activate pandashells
-
- # seaborn and mpld3 only needed if you want to create plots
- conda install seaborn
- pip install mpld3
- 
- # astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
- pip install astroML
- pip install supersmoother
- pip install gatspy
-
- # installs all command line tools
- pip install pandashells
-</code></pre>
 
 **Important:**  If you want to use pandashells without interactive visualizations
 (e. g. on a VM without X-forwarding), but would like to retain the ability to
