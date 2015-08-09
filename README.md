@@ -40,12 +40,20 @@ allow those familiar with the python data stack to be immediately productive.
 
 Installation
 ----
-Pandashells is a pure-python package.  The latest release branch can be installed with
-pip, but read the requirements section for more information.
+Pandashells is a pure-python package, but depends heavily on other packages which are not.
+By far the fastest and most painless way to get started with Pandashells is to install the
+<a href="http://conda.pydata.org/docs/install/quick.html">Miniconda</a> package manager,
+and then simply run
+<pre><code><strong>[~]$ conda install -c https://conda.anaconda.org/robdmc pandashells 
+</strong></code></pre>
+Note that this command will also work if you are using the much heavier
+<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
+
+If you prefer to manage your own dependencies, you can install Pandashells with pip 
+using the command
 <pre><code><strong>[~]$ pip install pandashells  # does NOT automatically install dependencies (see below)
 </strong></code></pre>
-
-Developement Version
+or for the development version (could be unstable)
 <pre><code><strong>[~]$ pip install --upgrade  git+https://github.com/robdmc/pandashells.git
 </strong></code></pre>
 
@@ -54,9 +62,8 @@ Requirements
 
 Pandashells is both Python2 and Python3 compatible and was developed using the 
 <a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
-We strongly recommend using Anaconda to run Pandashells.  Most of the libraries required by
-pandashells come pre-installed with Anaconda, though some tools will require additional
-libraries.
+We strongly recommend using Anaconda and or Miniconda to run Pandashells because 
+installing the required external and system libraries is completely taken care of.
 
 There is no requirements file with pandashells because some of the tools only require
 the standard library, and there's no sense installing unnecessary packages if you only want
@@ -74,46 +81,6 @@ Below is a comprehensive list packages that pandashells imports.
 * seaborn
 * statsmodels
 
-To perform a complete installation of pandashells with full capability,
-first install and activate the 
-<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>
-then run the following commands
-
-* Full python-2 install
-<pre><code># Create and activate a new conda env for pandashells (optional) 
- conda create -n pandashells python=2.7 anaconda
- . activate pandashells
-
- # seaborn and mpld3 only needed if you want to create plots
- conda install seaborn
- pip install mpld3
-
- # astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
- pip install astroML
- pip install supersmoother
- pip install gatspy
-
- # installs all command line tools
- pip install pandashells
-</code></pre>
-
-* Full python-3 install
-<pre><code># Create and activate a new conda env for pandashells (optional) 
- conda create -n pandashells python=3.4 anaconda
- . activate pandashells
-
- # seaborn and mpld3 only needed if you want to create plots
- conda install seaborn
- pip install mpld3
- 
- # astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
- pip install astroML
- pip install supersmoother
- pip install gatspy
-
- # installs all command line tools
- pip install pandashells
-</code></pre>
 
 **Important:**  If you want to use pandashells without interactive visualizations
 (e. g. on a VM without X-forwarding), but would like to retain the ability to
