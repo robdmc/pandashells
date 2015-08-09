@@ -40,12 +40,20 @@ allow those familiar with the python data stack to be immediately productive.
 
 Installation
 ----
-Pandashells is a pure-python package.  The latest release branch can be installed with
-pip, but read the requirements section for more information.
+Pandashells is a pure-python package, but depends heavily on other packages which are not.
+By far the fastest and most painless way to get started with Pandashells is to install the
+<a href="http://conda.pydata.org/docs/install/quick.html">Miniconda</a> package manaager,
+and then simply run
+<pre><code><strong>[~]$ conda install -c https://conda.anaconda.org/robdmc pandashells 
+</strong></code></pre>
+Note that this command will also work if you are using the much heavier
+<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
+
+If you prefer to manage your own dependencies, you can install Pandashells with pip 
+using the command
 <pre><code><strong>[~]$ pip install pandashells  # does NOT automatically install dependencies (see below)
 </strong></code></pre>
-
-Developement Version
+or for the development version (could be unstable)
 <pre><code><strong>[~]$ pip install --upgrade  git+https://github.com/robdmc/pandashells.git
 </strong></code></pre>
 
