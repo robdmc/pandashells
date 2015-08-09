@@ -5,6 +5,7 @@ Here is a checklist
 
 - update the version number in setup.py
 - upload the new version to pypi
+    python setup.py sdist upload -r pypi
 - run conda skeleton in a temp directory somewhere to make pandashells yaml
 - run vimdiff with yaml in this directory and do appropriate updates
 - run the following
