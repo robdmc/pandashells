@@ -16,6 +16,12 @@ osx-64 :
 
 all : linux-32 linux-64 osx-64
 
+upload : all
+	binstar upload */*.bz2
+
+remove :
+	binstar remove robdmc/pandashells
+
 clean :
 	rm -rf linux-32 2>/dev/null
 	rm -rf linux-64 2>/dev/null
