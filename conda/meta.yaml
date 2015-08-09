@@ -56,52 +56,35 @@ requirements:
     - seaborn
 
   run:
-    - python
-    - jinja2
-    - numpy
-    - scipy
-    - matplotlib
-    - scikit-learn
-    - pandas
-    - statsmodels
-    - seaborn
+     - python
+     - jinja2
+     - numpy
+     - scipy
+     - matplotlib
+     - scikit-learn
+     - pandas
+     - statsmodels
+     - seaborn
 
 test:
-  # Python imports
   imports:
-    - pandashells
-    - pandashells.bin
-    - pandashells.lib
-    - pandashells.test
+      - pandashells
+      - nose
+      - mock
 
-  commands:
-    # You can put test commands to be run here.  Use this to test that the
-    # entry points work.
+  #commands:
+  #  # You can put test commands to be run here.  Use this to test that the
+  #  # entry points work.
+  #  #nose.main()
+  #  print 'hello'
 
-    - p.cdf --help
-    - p.config --help
-    - p.crypt --help
-    - p.df --help
-    - p.facet_grid --help
-    - p.format --help
-    - p.hist --help
-    - p.linspace --help
-    - p.lomb_scargle --help
-    - p.merge --help
-    - p.parallel --help
-    - p.plot --help
-    - p.rand --help
-    - p.regplot --help
-    - p.regress --help
-    - p.example_data --help
-    - p.sig_edit --help
 
   # You can also put a file called run_test.py in the recipe that will be run
   # at test time.
 
-  # requires:
-    # Put any additional test requirements here.  For example
-    # - nose
+  requires:
+     - nose
+     - mock
 
 about:
   home: https://github.com/robdmc/pandashells
