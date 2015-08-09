@@ -42,7 +42,7 @@ Installation
 ----
 Pandashells is a pure-python package, but depends heavily on other packages which are not.
 By far the fastest and most painless way to get started with Pandashells is to install the
-<a href="http://conda.pydata.org/docs/install/quick.html">Miniconda</a> package manaager,
+<a href="http://conda.pydata.org/docs/install/quick.html">Miniconda</a> package manager,
 and then simply run
 <pre><code><strong>[~]$ conda install -c https://conda.anaconda.org/robdmc pandashells 
 </strong></code></pre>
