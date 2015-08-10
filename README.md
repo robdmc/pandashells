@@ -58,9 +58,11 @@ We strongly recommend using Anaconda to run Pandashells.  Most of the libraries 
 pandashells come pre-installed with Anaconda, though some tools will require additional
 libraries.
 
-There is no requirements file with pandashells because some of the tools only require
+There are no default requirements with pandashells because some of the tools only require
 the standard library, and there's no sense installing unnecessary packages if you only want
-to use that subset of tools.  If a particular tool encounters a missing dependency, it will
+to use that subset of tools. There are optional requirements specified for the tools that use
+the features `pandas`, `graphics`, and `lomb_scargle`. All of these are also covered by the
+feature `full`. If a particular tool encounters a missing dependency, it will
 gracefully fail with an informative message detailing the steps required for installing
 the missing dependency.
 
@@ -84,17 +86,7 @@ then run the following commands
  conda create -n pandashells python=2.7 anaconda
  . activate pandashells
 
- # seaborn and mpld3 only needed if you want to create plots
- conda install seaborn
- pip install mpld3
-
- # astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
- pip install astroML
- pip install supersmoother
- pip install gatspy
-
- # installs all command line tools
- pip install pandashells
+ pip install pandashells[full]
 </code></pre>
 
 * Full python-3 install
@@ -102,17 +94,7 @@ then run the following commands
  conda create -n pandashells python=3.4 anaconda
  . activate pandashells
 
- # seaborn and mpld3 only needed if you want to create plots
- conda install seaborn
- pip install mpld3
- 
- # astroML, supersmoother, gatspy only needed if you want to use lomb_scarge tool
- pip install astroML
- pip install supersmoother
- pip install gatspy
-
- # installs all command line tools
- pip install pandashells
+ pip install pandashells[full]
 </code></pre>
 
 **Important:**  If you want to use pandashells without interactive visualizations

@@ -36,25 +36,39 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Topic :: Scientific/Engineering',
     ],
+    # If you add/remove a requirement, please also update full
+    extras_require = {
+        'pandas': ['numpy', 'pandas', 'scipy', 'statsmodels'],
+        'graphics': ['matplotlib', 'mpld3', 'seaborn'],
+        'lomb_scargle': ['astroML', 'supersmoother', 'gatspy'],
+        'full': [
+            'numpy', 'pandas', 'scipy', 'statsmodels',
+            'matplotlib', 'mpld3', 'seaborn',
+            'astroML', 'supersmoother', 'gatspy',
+        ],
+    },
     entry_points={
         'console_scripts': [
-            'p.cdf = pandashells.bin.p_cdf:main',
             'p.config = pandashells.bin.p_config:main',
             'p.crypt = pandashells.bin.p_crypt:main',
-            'p.df = pandashells.bin.p_df:main',
-            'p.facet_grid = pandashells.bin.p_facet_grid:main',
             'p.format = pandashells.bin.p_format:main',
-            'p.hist = pandashells.bin.p_hist:main',
-            'p.linspace = pandashells.bin.p_linspace:main',
-            'p.lomb_scargle = pandashells.bin.p_lomb_scargle:main',
-            'p.merge = pandashells.bin.p_merge:main',
             'p.parallel = pandashells.bin.p_parallel:main',
-            'p.plot = pandashells.bin.p_plot:main',
-            'p.rand = pandashells.bin.p_rand:main',
-            'p.regplot = pandashells.bin.p_regplot:main',
-            'p.regress = pandashells.bin.p_regress:main',
-            'p.example_data = pandashells.bin.p_example_data:main',
-            'p.sig_edit = pandashells.bin.p_sig_edit:main',
+
+            'p.df = pandashells.bin.p_df:main [pandas]',
+            'p.example_data = pandashells.bin.p_example_data:main [pandas]',
+            'p.linspace = pandashells.bin.p_linspace:main [pandas]',
+            'p.merge = pandashells.bin.p_merge:main [pandas]',
+            'p.rand = pandashells.bin.p_rand:main [pandas]',
+            'p.regress = pandashells.bin.p_regress:main [pandas]',
+            'p.sig_edit = pandashells.bin.p_sig_edit:main [pandas]',
+
+            'p.cdf = pandashells.bin.p_cdf:main [graphics]',
+            'p.facet_grid = pandashells.bin.p_facet_grid:main [graphics]',
+            'p.hist = pandashells.bin.p_hist:main [graphics]',
+            'p.plot = pandashells.bin.p_plot:main [graphics]',
+            'p.regplot = pandashells.bin.p_regplot:main [graphics]',
+
+            'p.lomb_scargle = pandashells.bin.p_lomb_scargle:main [lomb_scargle]',
         ],
     }
 )
