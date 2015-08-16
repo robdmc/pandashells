@@ -40,49 +40,42 @@ allow those familiar with the python data stack to be immediately productive.
 
 Installation
 ----
+
+###Install with conda (recommended)
 Pandashells is a pure-python package, but depends heavily on other packages which are not.
 By far the fastest and most painless way to get started with Pandashells is to install the
 <a href="http://conda.pydata.org/docs/install/quick.html">Miniconda</a> package manager,
-and then simply run
+and then simply run the following command to obtain a full Pandashells install.
+Note that this command will also work if you are using the 
+<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
 <pre><code><strong>[~]$ conda install -c https://conda.anaconda.org/robdmc pandashells 
 </strong></code></pre>
-Note that this command will also work if you are using the much heavier
-<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
 
-If you prefer to manage your own dependencies, you can install Pandashells with pip 
-using the command
-<pre><code><strong>[~]$ pip install pandashells  # does NOT automatically install dependencies (see below)
-</strong></code></pre>
-or for the development version (could be unstable)
-<pre><code><strong>[~]$ pip install --upgrade  git+https://github.com/robdmc/pandashells.git
-</strong></code></pre>
+###Install with pip
+If you prefer to manage your own dependencies, you can pip install Pandashells using one
+of the following commands.  Note that, unlike the conda package manager, pip is not able
+to install system libraries. This can result in significant manual tinkering
+especially for the graphics backends required under the `[full]` installation option.
+
+* Install Pandashells but no requirements
+<pre><code><strong> [~]$ pip install pandashells </strong></code></pre>
+
+* Install Pandashells along with requirements for all non-graphics pandas-based tools
+<pre><code><strong>[~]$ pip install pandashells[pandas] </strong></code></pre>
+
+* Perform a full installation.  May require manual installation of missing system libraries.
+<pre><code><strong> [~]$ pip install pandashells[full] </strong></code></pre>
+
 
 Requirements
 ----
-
-Pandashells is both Python2 and Python3 compatible and was developed using the 
-<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
-We strongly recommend using Anaconda and or Miniconda to run Pandashells because 
-installing the required external and system libraries is completely taken care of.
-
-There are no default requirements with pandashells because some of the tools only require
-the standard library, and there's no sense installing unnecessary packages if you only want
-to use that subset of tools. There are optional requirements specified for the tools that use
-the numpy/scipy/pandas stack `[pandas]` feature set and for those that generate plots
-`[plotting]` feature set.  All of these are also covered by the `[full]` feature set.
-If a particular tool encounters a missing dependency, it will
-gracefully fail with an informative message detailing the steps required for installing
-the missing dependency.
-
-Below is a comprehensive list packages that pandashells imports.
-* gatspy
-* matplotlib
-* mpld3
-* numpy
-* pandas
-* scipy
-* seaborn
-* statsmodels
+Pandashells is both Python2 and Python3 compatible.  There are no default requirements
+because some of the tools only require the standard library, and there's no sense installing
+unnecessary packages if you only want to use that subset of tools.  If a particular tool
+encounters a missing dependency, it will fail with an error message indicating the missing
+dependency.  Below is a list of all imports used across the Pandashells toolkit
+* `[pandas]` numpy, scipy, pandas, statsmodels
+* `[full]`   numpy, scipy, pandas, statsmodels matplotlib mpld3 seaborn gatspy
 
 
 **Important:**  If you want to use pandashells without interactive visualizations
@@ -95,40 +88,41 @@ use the Agg backend as follows:
 Overview
 ----
 
-* All Pandashells executables begin with a "p."  This is designed to work
-  nicely with the bash-completion feature.  If you can't remember the exact
-  name of a command, simply typing p.[tab] will show you a complete list of
-  all Pandashells commands.
+All Pandashells executables begin with a "p."  This is designed to work
+nicely with the bash-completion feature.  If you can't remember the exact
+name of a command, simply typing p.[tab] will show you a complete list of
+all Pandashells commands.
 
-* Every command can be run with a -h option to view help.  Each of these
-  help messages will contain multiple examples of how to properly use the tool.
+Every command can be run with a -h option to view help.  Each of these
+help messages will contain multiple examples of how to properly use the tool.
 
-* Pandashells is equipped with a tool to generate sample csv files.  This tool
-  provides standardized inputs for use in the tool help sections as well as this
-  documentation.
-  <pre><code><strong>[~]$ p.example_data -h</strong></code></pre>
+Pandashells is equipped with a tool to generate sample csv files.  This tool
+provides standardized inputs for use in the tool help sections as well as this
+documentation.
+<pre><code><strong>[~]$ p.example_data -h</strong></code></pre>
   
-* Tool Descriptions
+Tool Descriptions
+---
 
-Tool | Purpose
---- | ---
-p.cdf | Plot emperical distribution function
-p.config | Set default Pandashells configuration options
-p.crypt | Encrypt/decrypt files using open-ssl
-p.df | Pandas dataframe manipulation of text files
-p.example_data | Create sample csv files for training/testing
-p.facet_grid | Create faceted plots for data exploration
-p.format | Render python string templates using input data
-p.hist | Plot histograms
-p.linspace | Generate a linearly spaced series of numbers
-p.lomb_scargle | Generate Lomb-Scarge spectrogram of input time series
-p.merge | Merge two data files by specifying join keys
-p.parallel | Read shell commands from stdin and run them in parallel
-p.plot | Create xy plot visualizations
-p.rand | Generate random numbers
-p.regplot | Quickly plot linear regression of data to a polynomial
-p.regress | Perform (multi-variate) linear regression with R-like patsy syntax
-p.sig_edit | Remove outliers using iterative sigma-editing
+Tool          |Install Group   |Purpose
+---           |---             |---
+p.config      |standard library|Set default Pandashells configuration options
+p.crypt       |standard library|Encrypt/decrypt files using open-ssl
+p.format      |standard library|Render python string templates using input data
+p.parallel    |standard library|Read shell commands from stdin and run them in parallel
+p.df          |pandas          |Pandas dataframe manipulation of text files
+p.example_data|pandas          |Create sample csv files for training/testing
+p.linspace    |pandas          |Generate a linearly spaced series of numbers
+p.merge       |pandas          |Merge two data files by specifying join keys
+p.rand        |pandas          |Generate random numbers
+p.regress     |pandas          |Perform (multi-variate) linear regression with R-like patsy syntax
+p.sig_edit    |pandas          |Remove outliers using iterative sigma-editing
+p.cdf         |full            |Plot emperical distribution function
+p.facet_grid  |full            |Create faceted plots for data exploration
+p.hist        |full            |Plot histograms
+p.lomb_scargle|full            |Generate Lomb-Scarge spectrogram of input time series
+p.plot        |full            |Create xy plot visualizations
+p.regplot     |full            |Quickly plot linear regression of data to a polynomial
 
 
 DataFrame Manipulations

@@ -3,16 +3,8 @@
 # standard library imports
 from collections import Counter
 
-from pandashells.lib import module_checker_lib
-
-# import required dependencies
-module_checker_lib.check_for_modules(['pandas', 'numpy'])
-
 import pandas as pd
 import numpy as np
-
-# disable the chained assignment warning because raises fale alarm
-pd.options.mode.chained_assignment = None
 
 
 # recursive edit a series
@@ -64,6 +56,9 @@ def sigma_edit_dataframe(sigma_thresh, columns, df, max_iter=20):
     :rtype: Pandas DataFrame
     :returns: A dataframe with ouliers set to NaN
     """
+    # disable the chained assignment warning because raises fale alarm
+    pd.options.mode.chained_assignment = None
+
     for col in columns:
         ensure_col_exists(df, col, 'df')
         ser = df[col]

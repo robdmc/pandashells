@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+
+from collections import Counter
 import sys
 import importlib
 from pandashells.lib import config_lib
@@ -12,16 +14,29 @@ HEADER += "installing them.\n\n"
 CMD_DICT = {
     'dateutil': 'pip install dateutil',
     'gatspy': 'pip install gatspy',
-    'matplotlib': 'conda install matplotlib',
+    'matplotlib': 'pip install matplotlib',
     'mpld3': 'pip install mpld3',
-    'numpy': 'conda install numpy',
-    'pandas': 'conda install pandas',
-    'pylab': 'conda install matplotlib',
+    'numpy': 'pip install numpy',
+    'pandas': 'pip install pandas',
+    'pylab': 'pip install matplotlib',
     'requests': 'pip install requests',
-    'scipy': 'conda install scipy',
-    'seaborn': 'conda install seaborn',
-    'statsmodels': 'conda install statsmodels',
+    'scipy': 'pip install scipy',
+    'seaborn': 'pip install seaborn',
+    'statsmodels': 'pip install statsmodels',
 }
+
+BACKEND_COUNTER = Counter()
+
+
+def set_backend():
+    if BACKEND_COUNTER['use_called'] == 0:
+        try:
+            import matplotlib
+            config = config_lib.get_config()
+            matplotlib.use(config['plot_backend'])
+            BACKEND_COUNTER.update({'use_called': 1})
+        except ImportError:
+            pass
 
 
 def check_for_modules(module_list):
@@ -35,13 +50,7 @@ def check_for_modules(module_list):
 
     # try using configured backend ignoring errors so they'll be caught later
     if set(module_list).intersection({'matplotlib', 'pylab', 'seaborn'}):
-        CONFIG = config_lib.get_config()
-        try:
-            import matplotlib
-            if matplotlib.get_backend() != CONFIG['plot_backend']:
-                matplotlib.use(CONFIG['plot_backend'])
-        except ImportError:
-            pass
+        set_backend()
 
     # initialize an error message
     msg = ''
@@ -56,5 +65,6 @@ def check_for_modules(module_list):
             msg += '-' * 60 + '\n'
             msg += "Missing module '{}'. To install use: \n".format(module)
             msg += "    {}\n\n".format(CMD_DICT[module])
-            sys.stdout.write(msg + '\n')
-            raise
+    if msg:
+        sys.stdout.write(msg + '\n')
+        sys.exit(1)

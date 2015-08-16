@@ -4,22 +4,22 @@
 import sys
 import argparse
 import textwrap
+import importlib
 
-from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
+from pandashells.lib import module_checker_lib, arg_lib
 
 # import required dependencies
-module_checker_lib.check_for_modules([
-    'pandas',
-    'matplotlib',
-    'statsmodels',
-    'seaborn',
-    'numpy',
-    'scipy'])
+module_checker_lib.check_for_modules(['pandas', 'statsmodels', 'scipy'])
 
-import matplotlib as mpl
-import pylab as pl
-import seaborn as sns
+
+from pandashells.lib import io_lib
+import scipy as scp  # NOQA
 import statsmodels.formula.api as sm
+
+
+# this silly function helps use side_effect in mocking tests
+def get_module(name):  # pragma nocover
+    return importlib.import_module(name)
 
 
 def main():
@@ -105,6 +105,12 @@ def main():
 
     # do plots if requested
     if args.plot:
+        module_checker_lib.check_for_modules(['matplotlib', 'seaborn'])
+        plot_lib = get_module('pandashells.lib.plot_lib')
+        mpl = get_module('matplotlib')
+        pl = get_module('pylab')
+        sns = get_module('seaborn')
+
         pl.subplot(211)
         pl.plot(df.fit_, df.resid_, '.', alpha=.5)
         pl.xlabel('Fit')

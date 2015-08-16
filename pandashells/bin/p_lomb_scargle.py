@@ -5,7 +5,10 @@ import argparse
 import textwrap
 import sys  # noqa
 
-from pandashells.lib import arg_lib, io_lib, lomb_scargle_lib
+from pandashells.lib import arg_lib, module_checker_lib
+module_checker_lib.check_for_modules(['pandas', 'gatspy'])
+
+from pandashells.lib import io_lib, lomb_scargle_lib
 
 
 def main():

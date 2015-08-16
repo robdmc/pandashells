@@ -7,7 +7,7 @@ from pandashells.lib import io_lib
 from mock import patch, MagicMock
 try:
     from StringIO import StringIO
-except ImportError:
+except ImportError:  # pragma nocover
     from io import StringIO
 
 

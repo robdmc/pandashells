@@ -4,7 +4,9 @@
 import argparse
 import textwrap
 
-from pandashells.lib import arg_lib, io_lib, outlier_lib
+from pandashells.lib import arg_lib, module_checker_lib
+module_checker_lib.check_for_modules(['pandas'])
+from pandashells.lib import io_lib, outlier_lib
 
 
 def main():
