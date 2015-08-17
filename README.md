@@ -4,7 +4,7 @@ Pandashells
 Introduction
 ---
 For decades, system administrators, dev-ops engineers and data analysts have been
-piping textual data between unix tools such as grep, awk, sed, etc.  Chaining these
+piping textual data between unix tools like grep, awk, sed, etc.  Chaining these
 tools together provides an extremely powerful workflow.
 
 The more recent emergence of the "data-scientist" has resulted in the increasing
@@ -52,20 +52,28 @@ Note that this command will also work if you are using the
 </strong></code></pre>
 
 ###Install with pip
-If you prefer to manage your own dependencies, you can pip install Pandashells using one
-of the following commands.  Note that, unlike the conda package manager, pip is not able
-to install system libraries. This can result in significant manual tinkering
-especially for the graphics backends required under the `[full]` installation option.
+Pandashells can be installed with pip, but a few words of caution are in order.  First,
+you should really use a recent version of pip so you can access wheels on pypi
+`pip install -U pip`.  Secondly, if your setup requires building from source rather
+than using wheels, you may run into problems with systems libraries being either out of
+date or missing.  If you encounter these problems, then a conda install is advised.
 
-* Install Pandashells but no requirements
+####Pandashells, no dependencies
+Use this option if you want to completely manage your own dependencies.
+(See requirements section below).
+
 <pre><code><strong> [~]$ pip install pandashells </strong></code></pre>
 
-* Install Pandashells along with requirements for all non-graphics pandas-based tools
-<pre><code><strong>[~]$ pip install pandashells[pandas] </strong></code></pre>
 
-* Perform a full installation.  May require manual installation of missing system libraries.
-<pre><code><strong> [~]$ pip install pandashells[full] </strong></code></pre>
+####Pandashells and all dependencies
+Use this option if you'd like pip to manage dependencies for you.  Make sure these three
+commands are run in exactly this order because `plotting` depends ond `pandas`, and
+`lomb_scargle` depends on `plotting`.
 
+<pre><code><strong>[~]$ pip install pandashells[pandas]
+[~]$ pip install pandashells[plotting]
+[~]$ pip install pandashells[lomb_scargle]
+</strong></code></pre>
 
 Requirements
 ----
@@ -73,9 +81,11 @@ Pandashells is both Python2 and Python3 compatible.  There are no default requir
 because some of the tools only require the standard library, and there's no sense installing
 unnecessary packages if you only want to use that subset of tools.  If a particular tool
 encounters a missing dependency, it will fail with an error message indicating the missing
-dependency.  Below is a list of all imports used across the Pandashells toolkit
+dependency.  Below is a list of all imports used across the Pandashells toolkit, and ordered
+according to install option.
 * `[pandas]` numpy, scipy, pandas, statsmodels
-* `[full]`   numpy, scipy, pandas, statsmodels matplotlib mpld3 seaborn gatspy
+* `[plotting]` matplotlib, mpld3, seaborn
+* `[lomb_scargle]` gatspy
 
 
 **Important:**  If you want to use pandashells without interactive visualizations
@@ -104,58 +114,63 @@ documentation.
 Tool Descriptions
 ---
 
-Tool          |Install Group   |Purpose
----           |---             |---
-p.config      |standard library|Set default Pandashells configuration options
-p.crypt       |standard library|Encrypt/decrypt files using open-ssl
-p.format      |standard library|Render python string templates using input data
-p.parallel    |standard library|Read shell commands from stdin and run them in parallel
-p.df          |pandas          |Pandas dataframe manipulation of text files
-p.example_data|pandas          |Create sample csv files for training/testing
-p.linspace    |pandas          |Generate a linearly spaced series of numbers
-p.merge       |pandas          |Merge two data files by specifying join keys
-p.rand        |pandas          |Generate random numbers
-p.regress     |pandas          |Perform (multi-variate) linear regression with R-like patsy syntax
-p.sig_edit    |pandas          |Remove outliers using iterative sigma-editing
-p.cdf         |full            |Plot emperical distribution function
-p.facet_grid  |full            |Create faceted plots for data exploration
-p.hist        |full            |Plot histograms
-p.lomb_scargle|full            |Generate Lomb-Scarge spectrogram of input time series
-p.plot        |full            |Create xy plot visualizations
-p.regplot     |full            |Quickly plot linear regression of data to a polynomial
+Tool          |pip install         |Purpose
+---           |---                                    |---
+p.config      |`pandashells`              |Set default Pandashells configuration options
+p.crypt       |`pandashells`              |Encrypt/decrypt files using open-ssl
+p.format      |`pandashells`              |Render python string templates using input data
+p.parallel    |`pandashells`              |Read shell commands from stdin and run them in parallel
+p.example_data|`pandashells`              |Create sample csv files for training/testing
+p.df          |`pandashells[pandas]`      |Pandas dataframe manipulation of text files
+p.linspace    |`pandashells[pandas]`      |Generate a linearly spaced series of numbers
+p.merge       |`pandashells[pandas]`      |Merge two data files by specifying join keys
+p.rand        |`pandashells[pandas]`      |Generate random numbers
+p.regress     |`pandashells[pandas]`      |Perform (multi-variate) linear regression with R-like patsy syntax
+p.sig_edit    |`pandashells[pandas]`      |Remove outliers using iterative sigma-editing
+p.cdf         |`pandashells[plotting]`    |Plot emperical distribution function
+p.facet_grid  |`pandashells[plotting]`    |Create faceted plots for data exploration
+p.hist        |`pandashells[plotting]`    |Plot histograms
+p.plot        |`pandashells[plotting]`    |Create xy plot visualizations
+p.regplot     |`pandashells[plotting]`    |Quickly plot linear regression of data to a polynomial
+p.lomb_scargle|`pandashells[lomb_scargle]`|Generate Lomb-Scarge spectrogram of input time series
 
 
 DataFrame Manipulations
 ----
 Pandashells allows you to specify multiple dataframe operations in a single command.
-Each operation assumes data is in a dataframe named df.  Operations
-performed on this dataframe will overwrite the df variable with
+Each operation assumes data is in a dataframe named `df`.  Operations
+performed on this dataframe will overwrite the `df` variable with
 the results of that operation.  Special consideration is taken for
-assignments such as df['a'] = df.b + 1.  These are understood
-to augment the input dataframe with a new column. By way of example,
-this command at the bash prompt:
+assignments such as `df['a'] = df.b + 1`.  These are understood
+to make column assignments on `df`. By way of example, this command at the bash prompt:
 
-   <pre><code> p.df 'df["c"] = 2 * df.b' 'df.groupby(by="a").c.count()' 'df.reset_index()' </code></pre>
+```bash
+p.df 'df["c"] = 2 * df.b' 'df.groupby(by="a").c.count()' 'df.reset_index()'
+```
 
 is equivalent to the following python snippet:
 
-<pre><code># this code in a python script 
+```python
+import pandas as pd
+df = pd.read_csv(sys.stdin)
 df["c"] = 2 * df.b
 df = df.groupby(by="a").c.count()
 df = df.reset_index()
-</code></pre>
+df.to_csv(sys.stdout, index=False)
+```
 
-Shown below are several examples of how to use the p.df tool.  You are encourage
-to copy/paste these commands to your bash prompt to see pandashells in action.
+Shown below are several examples of how to use the `p.df` tool.  You are encourage
+to copy/paste these commands to your bash prompt to see Pandashells in action.
 
 * Show a few rows of an example data set.
-<pre><code><strong>[~]$ p.example_data -d tips | head</strong>
-"total_bill","tip","sex","smoker","day","time","size"
-16.99,1.01,"Female","No","Sun","Dinner",2
-10.34,1.66,"Male","No","Sun","Dinner",3
-21.01,3.5,"Male","No","Sun","Dinner",3
-23.68,3.31,"Male","No","Sun","Dinner",2
-</code></pre>
+
+  <pre><code><strong>[~]$ p.example_data -d tips | head</strong>
+  "total_bill","tip","sex","smoker","day","time","size"
+  16.99,1.01,"Female","No","Sun","Dinner",2
+  10.34,1.66,"Male","No","Sun","Dinner",3
+  21.01,3.5,"Male","No","Sun","Dinner",3
+  23.68,3.31,"Male","No","Sun","Dinner",2
+  </code></pre>
 
 * Transorm the sample data from csv format to table format
   <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.head()' -o table</strong>
