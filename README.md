@@ -64,16 +64,14 @@ Use this option if you want to completely manage your own dependencies.
 
 <pre><code><strong> [~]$ pip install pandashells </strong></code></pre>
 
+####Pandashells console tools
+Use this option to install Pandashells and only the console tools dependencies. This
+will not install the graphics dependencies (matplotlib and friends)
+<pre><code><strong>[~]$ pip install pandashells[console]</strong></code></pre>
 
-####Pandashells and all dependencies
-Use this option if you'd like pip to manage dependencies for you.  Make sure these three
-commands are run in exactly this order because `plotting` depends ond `pandas`, and
-`lomb_scargle` depends on `plotting`.
-
-<pre><code><strong>[~]$ pip install pandashells[pandas]
-[~]$ pip install pandashells[plotting]
-[~]$ pip install pandashells[lomb_scargle]
-</strong></code></pre>
+####Pandashells full install
+Use this option to install Pandashells and all dependencies
+<pre><code><strong>[~]$ pip install pandashells[full]</strong></code></pre>
 
 Requirements
 ----
@@ -83,9 +81,8 @@ unnecessary packages if you only want to use that subset of tools.  If a particu
 encounters a missing dependency, it will fail with an error message indicating the missing
 dependency.  Below is a list of all imports used across the Pandashells toolkit, and ordered
 according to install option.
-* `[pandas]` numpy, scipy, pandas, statsmodels
-* `[plotting]` matplotlib, mpld3, seaborn
-* `[lomb_scargle]` gatspy
+* `[console]`  numpy, scipy, pandas, statsmodels, gatspy
+* `[plotting]` numpy, scipy, pandas, statsmodels, gatspy, matplotlib, mpld3, seaborn
 
 
 **Important:**  If you want to use pandashells without interactive visualizations

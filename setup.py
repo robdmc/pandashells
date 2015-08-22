@@ -38,9 +38,15 @@ setup(
     ],
     # If you add/remove a requirement, please also update full
     extras_require={
-        'pandas': ['numpy', 'pandas', 'scipy', 'patsy', 'statsmodels', 'scikit-learn'],
-        'plotting': ['matplotlib', 'jinja2', 'mpld3', 'seaborn', 'supersmoother', 'astroML'],
-        'lomb_scargle': ['gatspy']
+        'console': [
+            'numpy', 'pandas', 'scipy', 'patsy', 'statsmodels', 'scikit-learn',
+            'supersmoother', 'gatspy',
+        ],
+        'full': [
+            'numpy', 'pandas', 'scipy', 'patsy', 'statsmodels', 'scikit-learn',
+            'supersmoother', 'gatspy', 'matplotlib', 'jinja2', 'mpld3',
+            'seaborn',
+        ],
     },
     entry_points={
         'console_scripts': [
