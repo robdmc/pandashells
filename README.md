@@ -82,7 +82,7 @@ encounters a missing dependency, it will fail with an error message indicating t
 dependency.  Below is a list of all imports used across the Pandashells toolkit, and ordered
 according to install option.
 * `[console]`  numpy, scipy, pandas, statsmodels, gatspy, supersmoother
-* `[plotting]` numpy, scipy, pandas, statsmodels, gatspy, supersmoother, matplotlib, mpld3, seaborn
+* `[full]` numpy, scipy, pandas, statsmodels, gatspy, supersmoother, matplotlib, mpld3, seaborn
 
 
 **Important:**  If you want to use pandashells without interactive visualizations
