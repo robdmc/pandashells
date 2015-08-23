@@ -37,9 +37,8 @@ class MainTests(TestCase):
     @patch('pandashells.bin.p_regress.io_lib.df_from_input')
     @patch('pandashells.bin.p_regress.get_module')
     def test_cli_plots_osx(self, get_module_mock, df_from_input_mock):
-        backend_mock = MagicMock()
-        backend_mock.lower = MagicMock(return_value='macosx')
-        mpl_mock = MagicMock(get_backend=backend_mock)
+        backend_mock = MagicMock(lower=MagicMock(return_value='macosx'))
+        mpl_mock = MagicMock(get_backend=MagicMock(return_value=backend_mock))
         show_mock = MagicMock()
         plot_lib_mock = MagicMock(show=show_mock)
         get_module_mock.side_effect = [

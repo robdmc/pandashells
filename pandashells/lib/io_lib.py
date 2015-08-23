@@ -13,7 +13,7 @@ ENCODING = 'utf-8'
 
 
 def get_separator(args, config_dict):
-    sep_dict = {'csv': ',', 'table': r'\s+'}
+    sep_dict = {'csv': ',', 'table': r'\s+', 'tsv': r'\t'}
     input_type_set = set(args.input_options).intersection(set(sep_dict.keys()))
     if input_type_set:
         input_type = list(input_type_set)[0]
@@ -52,10 +52,14 @@ def df_from_input(args, in_file=None):
 
     # read the input data
     try:
-        df = pd.read_csv(in_file, sep=sep, header=header, names=names,
-                         encoding=ENCODING, low_memory=False)
+        # for some reason tsv doesn't allow for low_memory option
+        if sep == r'\t':
+            df = pd.read_csv(in_file, sep=sep, header=header, names=names,
+                             encoding=ENCODING, engine='python')
+        else:
+            df = pd.read_csv(in_file, sep=sep, header=header, names=names,
+                             encoding=ENCODING, low_memory=False)
     except ValueError:
-
         sys.stderr.write('\n{} received no input\n'.format(
             os.path.basename(sys.argv[0])))
         sys.exit(1)

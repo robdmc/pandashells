@@ -78,6 +78,14 @@ class IOLibTests(TestCase):
         self.assertEqual(pd_mock.read_csv.call_args_list[0][0][0], in_file)
 
     @patch('pandashells.lib.io_lib.pd')
+    def test_df_from_input_tsv(self, pd_mock):
+        pd_mock.read_csv = MagicMock(return_value=pd.DataFrame())
+        args = MagicMock(names=[], input_options=['tsv'])
+        in_file = MagicMock()
+        io_lib.df_from_input(args, in_file=in_file)
+        self.assertEqual(pd_mock.read_csv.call_args_list[0][0][0], in_file)
+
+    @patch('pandashells.lib.io_lib.pd')
     def test_df_from_input_no_input(self, pd_mock):
         def raiser(*args, **kwargs):
             raise ValueError()

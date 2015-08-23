@@ -29,7 +29,7 @@ def _io_in_adder(parser, config_dict, *args):
     if 'io_in' in in_arg_set:
         group = parser.add_argument_group('Input Options')
         # define the valid components
-        io_opt_list = ['csv', 'table', 'header', 'noheader']
+        io_opt_list = ['csv', 'tsv', 'table', 'header', 'noheader']
 
         # allow the option of supplying input column names
         msg = 'Overwrite input column names with this list'

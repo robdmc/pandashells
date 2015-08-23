@@ -36,7 +36,7 @@ def set_backend():
             config = config_lib.get_config()
             matplotlib.use(config['plot_backend'])
             BACKEND_COUNTER.update({'use_called': 1})
-        except ImportError:
+        except ImportError:  # pragma nocover
             pass
 
 
