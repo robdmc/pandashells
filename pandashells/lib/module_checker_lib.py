@@ -23,6 +23,7 @@ CMD_DICT = {
     'scipy': 'pip install scipy',
     'seaborn': 'pip install seaborn',
     'statsmodels': 'pip install statsmodels',
+    'supersmoother': 'pip install supersmoother',
 }
 
 BACKEND_COUNTER = Counter()

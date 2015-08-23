@@ -62,6 +62,7 @@ setup(
             'p.rand = pandashells.bin.p_rand:main',
             'p.regress = pandashells.bin.p_regress:main',
             'p.sig_edit = pandashells.bin.p_sig_edit:main',
+            'p.smooth = pandashells.bin.p_smooth:main',
 
             'p.cdf = pandashells.bin.p_cdf:main',
             'p.facet_grid = pandashells.bin.p_facet_grid:main',

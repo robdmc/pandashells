@@ -81,8 +81,8 @@ unnecessary packages if you only want to use that subset of tools.  If a particu
 encounters a missing dependency, it will fail with an error message indicating the missing
 dependency.  Below is a list of all imports used across the Pandashells toolkit, and ordered
 according to install option.
-* `[console]`  numpy, scipy, pandas, statsmodels, gatspy
-* `[plotting]` numpy, scipy, pandas, statsmodels, gatspy, matplotlib, mpld3, seaborn
+* `[console]`  numpy, scipy, pandas, statsmodels, gatspy, supersmoother
+* `[plotting]` numpy, scipy, pandas, statsmodels, gatspy, supersmoother, matplotlib, mpld3, seaborn
 
 
 **Important:**  If you want to use pandashells without interactive visualizations
@@ -111,25 +111,26 @@ documentation.
 Tool Descriptions
 ---
 
-Tool          |pip install         |Purpose
----           |---                                    |---
-p.config      |`pandashells`              |Set default Pandashells configuration options
-p.crypt       |`pandashells`              |Encrypt/decrypt files using open-ssl
-p.format      |`pandashells`              |Render python string templates using input data
-p.parallel    |`pandashells`              |Read shell commands from stdin and run them in parallel
-p.example_data|`pandashells`              |Create sample csv files for training/testing
-p.df          |`pandashells[pandas]`      |Pandas dataframe manipulation of text files
-p.linspace    |`pandashells[pandas]`      |Generate a linearly spaced series of numbers
-p.merge       |`pandashells[pandas]`      |Merge two data files by specifying join keys
-p.rand        |`pandashells[pandas]`      |Generate random numbers
-p.regress     |`pandashells[pandas]`      |Perform (multi-variate) linear regression with R-like patsy syntax
-p.sig_edit    |`pandashells[pandas]`      |Remove outliers using iterative sigma-editing
-p.cdf         |`pandashells[plotting]`    |Plot emperical distribution function
-p.facet_grid  |`pandashells[plotting]`    |Create faceted plots for data exploration
-p.hist        |`pandashells[plotting]`    |Plot histograms
-p.plot        |`pandashells[plotting]`    |Create xy plot visualizations
-p.regplot     |`pandashells[plotting]`    |Quickly plot linear regression of data to a polynomial
-p.lomb_scargle|`pandashells[lomb_scargle]`|Generate Lomb-Scarge spectrogram of input time series
+Tool          |pip install           |Purpose
+---           |---                   |---
+p.config      |`pandashells`         |Set default Pandashells configuration options
+p.crypt       |`pandashells`         |Encrypt/decrypt files using open-ssl
+p.format      |`pandashells`         |Render python string templates using input data
+p.parallel    |`pandashells`         |Read shell commands from stdin and run them in parallel
+p.example_data|`pandashells`         |Create sample csv files for training/testing
+p.df          |`pandashells[console]`|Pandas dataframe manipulation of text files
+p.linspace    |`pandashells[console]`|Generate a linearly spaced series of numbers
+p.lomb_scargle|`pandashells[console]`|Generate Lomb-Scarge spectrogram of input time series
+p.merge       |`pandashells[console]`|Merge two data files by specifying join keys
+p.rand        |`pandashells[console]`|Generate random numbers
+p.regress     |`pandashells[console]`|Perform (multi-variate) linear regression with R-like patsy syntax
+p.sig_edit    |`pandashells[console]`|Remove outliers using iterative sigma-editing
+p.smooth      |`pandashells[console]`|Smooth data
+p.cdf         |`pandashells[full]`   |Plot emperical distribution function
+p.facet_grid  |`pandashells[full]`   |Create faceted plots for data exploration
+p.hist        |`pandashells[full]`   |Plot histograms
+p.plot        |`pandashells[full]`   |Create xy plot visualizations
+p.regplot     |`pandashells[full]`   |Quickly plot linear regression of data to a polynomial
 
 
 DataFrame Manipulations
