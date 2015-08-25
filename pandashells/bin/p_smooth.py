@@ -13,7 +13,6 @@ from supersmoother import SuperSmoother
 from pandashells.lib import io_lib
 
 import numpy as np
-import pandas as pd
 
 
 # this silly function makes mock testing easier
@@ -31,7 +30,7 @@ def get_input_args():
         [1] Friedman, J. H. (1984) A variable span scatterplot smoother.
             Laboratory for Computational Statistics, Stanford University
             Technical Report No. 5.
-            pdf: http://www.slac.stanford.edu/cgi-wrap/getdoc/slac-pub-3477.pdf 
+            pdf: http://www.slac.stanford.edu/cgi-wrap/getdoc/slac-pub-3477.pdf
 
 
         -----------------------------------------------------------------------
@@ -40,10 +39,16 @@ def get_input_args():
            * Smooth sea level time series
                  p.example_data -d sealevel \\
                  | p.df 'df["smoothed"] = df.sealevel_mm' \\
-                 | p.smooth -y smoothed \\
+                 | p.smooth -x year -y smoothed \\
                  | p.plot -x year -y sealevel_mm smoothed \\
                    --legend best -s .  '-' --alpha .5 1
 
+           * Now pretend year doesn't exist and treat as equally spaced
+                 p.example_data -d sealevel \\
+                 | p.df 'df["smoothed"] = df.sealevel_mm' \\
+                 | p.smooth -y smoothed \\
+                 | p.plot -x year -y sealevel_mm smoothed \\
+                   --legend best -s .  '-' --alpha .5 1
         -----------------------------------------------------------------------
         """
     )
@@ -52,8 +57,7 @@ def get_input_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    #TODO: remove 'example' add_args from entire code base
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_in', 'io_out')
 
     # specify columns to histogram
     parser.add_argument(
@@ -83,12 +87,13 @@ def smooth(df, columns, x_col=None):
         df[col] = model.predict(x)
     return df
 
+
 def main():
     args = get_input_args()
     df = io_lib.df_from_input(args)
 
     # extract parameters from arg parser
-    x_col = args.x[0]
+    x_col = args.x[0] if args.x else None
     cols = args.y if args.y else [df.columns[0]]
     cols_to_check = cols + [x_col] if x_col else cols
     validate_args(args, cols_to_check, df)

@@ -47,4 +47,3 @@ class MainTests(TestCase):
         dfout = df_to_output_mock
         self.assertEqual(
             list(dfout.call_args_list[0][0][1].columns), ['x', 'y'])
-

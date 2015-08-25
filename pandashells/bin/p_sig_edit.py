@@ -34,7 +34,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_in', 'io_out')
 
     parser.add_argument("-t", "--sigma_thresh", help="Sigma threshold",
                         nargs=1, required=True, type=float)

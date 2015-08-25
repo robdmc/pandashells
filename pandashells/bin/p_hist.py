@@ -47,7 +47,7 @@ def get_input_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example', 'decorating')
+    arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating')
 
     # specify columns to histogram
     parser.add_argument(

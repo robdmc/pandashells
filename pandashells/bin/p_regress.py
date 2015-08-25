@@ -70,7 +70,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_in', 'io_out')
 
     # specify columns to histogram
     parser.add_argument("-m", "--model", type=str, nargs=1, required=True,

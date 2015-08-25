@@ -41,7 +41,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'xy_plotting', 'decorating', 'example')
+    arg_lib.add_args(parser, 'io_in', 'xy_plotting', 'decorating')
 
     parser.add_argument(
         "-a", "--alpha", help="Set opacity level(s)", nargs='+', default=[1.],

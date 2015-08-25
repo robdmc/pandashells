@@ -158,7 +158,7 @@ def main():
         '--beta', nargs=1, default=[2.], type=float,
         help='(Beta, Gamma)  (default: 2)')
 
-    arg_lib.add_args(parser, 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_out')
 
     # parse arguments
     args = parser.parse_args()

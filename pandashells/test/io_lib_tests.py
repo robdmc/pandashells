@@ -85,6 +85,39 @@ class IOLibTests(TestCase):
         io_lib.df_from_input(args, in_file=in_file)
         self.assertEqual(pd_mock.read_csv.call_args_list[0][0][0], in_file)
 
+    @patch('pandashells.lib.io_lib.json')
+    @patch('pandashells.lib.io_lib.open_file')
+    def test_df_from_input_json_bad(self, open_file, json):
+        open_file.return_value = MagicMock()
+        json.loads = MagicMock()
+        json.loads.side_effect = ValueError()
+        args = MagicMock(names=[], input_options=['json'])
+        in_file = MagicMock()
+        with self.assertRaises(SystemExit):
+            io_lib.df_from_input(args, in_file=in_file)
+
+    @patch('pandashells.lib.io_lib.json')
+    @patch('pandashells.lib.io_lib.open_file')
+    def test_df_from_input_json(self, open_file, json):
+        open_file.return_value = MagicMock()
+        json.loads = MagicMock(return_value=[{'a': 1}, {'a': 2}])
+        args = MagicMock(names=[], input_options=['json'])
+        in_file = MagicMock()
+        df = io_lib.df_from_input(args, in_file=in_file)
+        self.assertEqual(list(df.columns), ['a'])
+        self.assertEqual(list(df.a), [1, 2])
+
+    @patch('pandashells.lib.io_lib.json')
+    @patch('pandashells.lib.io_lib.open_file')
+    def test_df_from_input_json_names(self, open_file, json):
+        open_file.return_value = MagicMock()
+        json.loads = MagicMock(return_value=[{'a': 1}, {'a': 2}])
+        args = MagicMock(names=['a'], input_options=['json'])
+        in_file = MagicMock()
+        df = io_lib.df_from_input(args, in_file=in_file)
+        self.assertEqual(list(df.columns), ['a'])
+        self.assertEqual(list(df.a), [1, 2])
+
     @patch('pandashells.lib.io_lib.pd')
     def test_df_from_input_no_input(self, pd_mock):
         def raiser(*args, **kwargs):
@@ -130,6 +163,15 @@ class IOLibTests(TestCase):
         self.assertTrue('<th>a</th>' in html)
         self.assertTrue('<th>b</th>' in html)
         self.assertTrue('<td>1</td>' in html)
+
+    @patch('pandashells.lib.io_lib.sys')
+    def test_json_writer(self, sys_mock):
+        sys_mock.stdout = StringIO()
+        df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
+        io_lib.json_writer(df, header=True, index=False)
+        sys.stdout = sys.__stdout__
+        json = sys_mock.stdout.getvalue()
+        self.assertTrue('"a": 1,' in json)
 
     @patch('pandashells.lib.io_lib.get_nan_rep', MagicMock(return_value='nan'))
     @patch('pandashells.lib.io_lib.csv_writer')

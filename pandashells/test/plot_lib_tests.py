@@ -258,7 +258,7 @@ class PlotLibTests(TestCase):
                 })
             parser = argparse.ArgumentParser()
             arg_lib.add_args(
-                parser, 'io_in', 'xy_plotting', 'decorating', 'example')
+                parser, 'io_in', 'xy_plotting', 'decorating')
 
             parser.add_argument(
                 "-a", "--alpha", help="Set opacity", nargs=1, default=[1.],

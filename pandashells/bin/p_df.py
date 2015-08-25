@@ -177,6 +177,13 @@ def main():  # pragma: no cover
             * Print a csv file in nice tabular format
                 p.example_data -d tips | p.df -o table | head
 
+            * Print a csv file to json
+                p.example_data -d tips | head | p.df -o json
+
+            * Transform csv to json then to table
+                p.example_data -d tips | head | p.df -o json \\
+                | p.df -i json -o table
+
             * Select by row
                 p.example_data -d tips \\
                 | p.df 'df[df.sex=="Female"]' 'df[df.smoker=="Yes"]' -o table
@@ -205,7 +212,7 @@ def main():  # pragma: no cover
 
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating', 'example')
+    arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating')
     msg = (
         '(MUST come before any options) '
         '[statement ...] Statement(s) to execute. '

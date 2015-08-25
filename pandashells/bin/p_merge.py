@@ -58,7 +58,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_in', 'io_out')
 
     parser.add_argument('--how', choices=['left', 'right', 'inner', 'outer'],
                         dest='how', default=['inner'], nargs=1,

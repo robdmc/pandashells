@@ -35,7 +35,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_out')
 
     msg = 'start end npoints'
     parser.add_argument("numbers", help=msg, type=str, nargs=3, metavar='')
