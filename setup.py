@@ -19,7 +19,8 @@ setup(
     author_email="unlisted",
     description=("Command line data tools"),
     license="BSD",
-    keywords="pandas plot plotting data dataframe command line cli statistics stats",
+    keywords=("pandas plot plotting data dataframe command line cli "
+              "statistics stats"),
     url="https://github.com/robdmc/pandashells",
     packages=find_packages(),
     package_data={'pandashells': ['example_data/*.csv']},
