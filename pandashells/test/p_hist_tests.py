@@ -59,9 +59,12 @@ class MainTests(TestCase):
     @patch(
         'pandashells.bin.p_hist.sys.argv',
         'p.hist -c x -n 10'.split())
-    @patch('pandashells.bin.p_hist.plot_lib.show')
+    @patch('pandashells.bin.p_hist.get_imports')
     @patch('pandashells.bin.p_hist.io_lib.df_from_input')
-    def test_cli(self, df_from_input_mock, show_mock):
+    def test_cli(self, df_from_input_mock, get_imports_mock):
+        show_mock = MagicMock()
+        plot_lib_mock = MagicMock(show=show_mock)
+        get_imports_mock.return_value = plot_lib_mock
         df_in = pd.DataFrame({
             'x': range(1, 101)
         })

@@ -3,9 +3,9 @@
 import sys
 import os
 import csv
+import json
 
-from pandashells.lib import module_checker_lib, config_lib
-module_checker_lib.check_for_modules(['pandas', 'numpy'])
+from pandashells.lib import config_lib
 
 import numpy as np
 import pandas as pd
@@ -13,8 +13,13 @@ import pandas as pd
 ENCODING = 'utf-8'
 
 
+# silly function to aid in test mocking
+def open_file(in_file, *args, **kwargs):  # pragma no cover
+    return open(in_file, *args, **kwargs)
+
+
 def get_separator(args, config_dict):
-    sep_dict = {'csv': ',', 'table': r'\s+'}
+    sep_dict = {'csv': ',', 'table': r'\s+', 'tsv': r'\t'}
     input_type_set = set(args.input_options).intersection(set(sep_dict.keys()))
     if input_type_set:
         input_type = list(input_type_set)[0]
@@ -44,7 +49,26 @@ def get_nan_rep(args, config_dict):
     return np.NaN if na_rep.lower() == 'nan' else na_rep
 
 
-def df_from_input(args, in_file=None):
+def _df_from_input_json(args, in_file=None):
+    # set up proper state for reading input
+    in_file = sys.stdin if in_file is None else open_file(in_file)
+    tup = get_header_names(args)
+    names = tup[1]
+
+    try:
+        df = pd.DataFrame(json.loads(in_file.read()))
+    except ValueError:
+        sys.stderr.write('\n{} received no input\n'.format(
+            os.path.basename(sys.argv[0])))
+        sys.exit(1)
+
+    # limit to names if supplied
+    if names:
+        df = df[names]
+    return df
+
+
+def _df_from_input_csv(args, in_file=None):
     # set up proper state for reading input
     config_dict = config_lib.get_config()
     in_file = sys.stdin if in_file is None else in_file
@@ -53,10 +77,14 @@ def df_from_input(args, in_file=None):
 
     # read the input data
     try:
-        df = pd.read_csv(in_file, sep=sep, header=header, names=names,
-                         encoding=ENCODING, low_memory=False)
+        # for some reason tsv doesn't allow for low_memory option
+        if sep == r'\t':
+            df = pd.read_csv(in_file, sep=sep, header=header, names=names,
+                             encoding=ENCODING, engine='python')
+        else:
+            df = pd.read_csv(in_file, sep=sep, header=header, names=names,
+                             encoding=ENCODING, low_memory=False)
     except ValueError:
-
         sys.stderr.write('\n{} received no input\n'.format(
             os.path.basename(sys.argv[0])))
         sys.exit(1)
@@ -66,6 +94,13 @@ def df_from_input(args, in_file=None):
         names = ['c{}'.format(nn) for nn, cc in enumerate(df.columns)]
         df.columns = pd.Index(names)
     return df
+
+
+def df_from_input(args, in_file=None):
+    if 'json' in args.input_options:
+        return _df_from_input_json(args, in_file)
+    else:
+        return _df_from_input_csv(args, in_file)
 
 
 def csv_writer(df, header, index, na_rep):
@@ -88,6 +123,10 @@ def html_writer(df, header, index):
     sys.stdout.write(outString + '\n')
 
 
+def json_writer(df, *unused, **also_unused):
+    sys.stdout.write(json.dumps(df.to_dict('records')))
+
+
 def df_to_output(args, df):
     # set up write options
     config_dict = config_lib.get_config()
@@ -98,6 +137,7 @@ def df_to_output(args, df):
     valid_outputs = [
         'table',
         'csv',
+        'json',
         'html',
     ]
 
@@ -113,6 +153,7 @@ def df_to_output(args, df):
         'csv': csv_writer,
         'table': table_writer,
         'html': html_writer,
+        'json': json_writer,
     }
     na_rep = get_nan_rep(args, config_dict)
 

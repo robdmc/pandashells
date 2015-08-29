@@ -3,15 +3,21 @@
 # standard library imports
 import sys
 import argparse
+import importlib
 import textwrap
 
-from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
+from pandashells.lib import module_checker_lib, arg_lib
 
-# import required dependencies
-module_checker_lib.check_for_modules(['numpy', 'pandas', 'matplotlib'])
+module_checker_lib.check_for_modules(['pandas'])
+from pandashells.lib import io_lib
 
 import numpy as np
 import pandas as pd
+
+
+# this silly function makes mock testing easier
+def get_imports(name):  # pragma no cover
+    return importlib.import_module(name)
 
 
 def get_input_args():
@@ -41,7 +47,7 @@ def get_input_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example', 'decorating')
+    arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating')
 
     # specify columns to histogram
     parser.add_argument(
@@ -103,7 +109,6 @@ def main():
     cols = args.cols if args.cols else [df.columns[0]]
 
     validate_args(args, cols, df)
-    plot_lib.set_plot_styling(args)
 
     # no plotting if output requested
     if args.quiet:
@@ -115,6 +120,9 @@ def main():
 
     # otherwise do plotting
     else:
+        module_checker_lib.check_for_modules(['matplotlib'])
+        plot_lib = get_imports('pandashells.lib.plot_lib')
+        plot_lib.set_plot_styling(args)
         df.hist(cols, bins=nbins, range=range_tup,
                 alpha=alpha, sharex=sharex, sharey=sharey, layout=layout_tup,
                 normed=do_density)

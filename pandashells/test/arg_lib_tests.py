@@ -53,8 +53,8 @@ class ArgLibTests(TestCase):
         calls.append(call('--names', nargs='+', type=str,
                           dest='names', metavar="name", help=msg))
         default_for_input = ['csv', 'header']
-        io_opt_list = ['csv', 'table', 'header', 'noheader']
-        msg = "Must be one of ['csv', 'table', 'header', 'noheader']"
+        io_opt_list = ['csv', 'table', 'tsv', 'json', 'header', 'noheader']
+        msg = "Must be one of {}".format(io_opt_list)
         calls.append(call('-i', '--input_options', nargs='+',
                           type=str, dest='input_options', metavar='option',
                           default=default_for_input, choices=io_opt_list,
@@ -89,7 +89,7 @@ class ArgLibTests(TestCase):
         parser.add_argument_group = MagicMock(return_value=group)
 
         # create  expected call signature
-        io_opt_list = ['csv', 'table', 'html',
+        io_opt_list = ['csv', 'table', 'json', 'html',
                        'header', 'noheader', 'index', 'noindex']
         # define the current defaults
         default_for_output = ['csv', 'header', 'noindex']

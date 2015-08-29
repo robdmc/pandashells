@@ -4,7 +4,9 @@ import argparse
 import sys
 import textwrap
 
-from pandashells.lib import arg_lib, io_lib
+from pandashells.lib import arg_lib, module_checker_lib
+module_checker_lib.check_for_modules(['pandas'])
+from pandashells.lib import io_lib
 
 
 class OutStream(object):  # pragma no cover

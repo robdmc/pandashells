@@ -22,7 +22,7 @@ class MainTests(TestCase):
         main()
 
         add_args_mock.assert_called_with(
-            parser, 'io_in', 'xy_plotting', 'decorating', 'example')
+            parser, 'io_in', 'xy_plotting', 'decorating')
 
         df_from_input_mock.assert_called_with(args)
         set_plot_styling_mock.assert_called_with(args)

@@ -4,7 +4,7 @@ import sys
 import argparse
 import textwrap
 
-from pandashells.lib import parallel_lib, arg_lib
+from pandashells.lib import parallel_lib
 
 
 def main():
@@ -65,9 +65,6 @@ def main():
     parser.add_argument("-s", "--suppress",
                         choices=['stdout', 'stderr', 'both'], default=[None],
                         nargs=1, help=msg)
-
-    # add standard arg groups
-    arg_lib.add_args(parser, 'example')
 
     # parse arguments
     args = parser.parse_args()

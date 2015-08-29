@@ -6,11 +6,12 @@ import textwrap
 import re
 import sys  # NOQA just use this for patching in tests
 
-from pandashells.lib import module_checker_lib, arg_lib, io_lib, plot_lib
+from pandashells.lib import module_checker_lib, arg_lib
 
 # import required dependencies
 module_checker_lib.check_for_modules(
-    ['pandas', 'numpy', 'matplotlib', 'seaborn'])
+    ['pandas', 'matplotlib', 'seaborn'])
+from pandashells.lib import plot_lib, io_lib
 
 import numpy as np
 import matplotlib as mpl
@@ -74,7 +75,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example', 'decorating')
+    arg_lib.add_args(parser, 'io_in', 'io_out', 'decorating')
 
     msg = 'Column for dependent variable'
     parser.add_argument('-x', nargs=1, type=str, dest='x', metavar='col',

@@ -5,10 +5,10 @@ import argparse
 import textwrap
 import sys  # NOQA  importing sys so I can mock sys.argv in tests
 
-from pandashells.lib import module_checker_lib, arg_lib, io_lib
+from pandashells.lib import module_checker_lib, arg_lib
 
-# import required dependencies
-module_checker_lib.check_for_modules(['pandas', 'numpy'])
+module_checker_lib.check_for_modules(['pandas'])
+from pandashells.lib import io_lib
 
 import pandas as pd
 import numpy as np
@@ -158,7 +158,7 @@ def main():
         '--beta', nargs=1, default=[2.], type=float,
         help='(Beta, Gamma)  (default: 2)')
 
-    arg_lib.add_args(parser, 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_out')
 
     # parse arguments
     args = parser.parse_args()

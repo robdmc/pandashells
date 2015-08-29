@@ -5,10 +5,11 @@ import sys
 import argparse
 import textwrap
 
-from pandashells.lib import module_checker_lib, arg_lib, io_lib
+from pandashells.lib import module_checker_lib, arg_lib
 
 # import required dependencies
 module_checker_lib.check_for_modules(['pandas'])
+from pandashells.lib import io_lib
 
 import pandas as pd
 
@@ -57,7 +58,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_in', 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_in', 'io_out')
 
     parser.add_argument('--how', choices=['left', 'right', 'inner', 'outer'],
                         dest='how', default=['inner'], nargs=1,

@@ -8,7 +8,6 @@ def _check_for_recognized_args(*args):
     allowed_arg_set = set([
         'io_in',
         'io_out',
-        'example',
         'xy_plotting',
         'decorating',
     ])
@@ -29,7 +28,7 @@ def _io_in_adder(parser, config_dict, *args):
     if 'io_in' in in_arg_set:
         group = parser.add_argument_group('Input Options')
         # define the valid components
-        io_opt_list = ['csv', 'table', 'header', 'noheader']
+        io_opt_list = ['csv', 'table', 'tsv', 'json', 'header', 'noheader']
 
         # allow the option of supplying input column names
         msg = 'Overwrite input column names with this list'
@@ -57,7 +56,8 @@ def _io_out_adder(parser, config_dict, *args):
         group = parser.add_argument_group('Output Options')
         # define the valid components
         io_opt_list = [
-            'csv', 'table', 'html', 'header', 'noheader', 'index', 'noindex',
+            'csv', 'table', 'json', 'html', 'header',
+            'noheader', 'index', 'noindex',
         ]
 
         # define the current defaults

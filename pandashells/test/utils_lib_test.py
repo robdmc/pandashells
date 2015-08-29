@@ -12,4 +12,4 @@ class TimerTests(TestCase):
     def test_timer(self, write_mock):
         with Timer('test_timer'):
             time.sleep(.1)
-        self.assertTrue('test_timer' in write_mock.call_args_list[0][0][0])
+        self.assertTrue('test_timer' in write_mock.call_args_list[1][0][0])

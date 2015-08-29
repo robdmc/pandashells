@@ -71,8 +71,6 @@ def lomb_scargle(df, time_col, val_col, interp_exponent=0, freq_order=False):
     # do imports here to avoid loading plot libraries when this
     # module is loaded in __init__.py
     # which then doesn't allow for doing matplotlib.use() later
-    from pandashells.lib import module_checker_lib
-    module_checker_lib.check_for_modules(['gatspy', 'pandas', 'numpy'])
     import gatspy
 
     # only care about timestamped values

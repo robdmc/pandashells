@@ -9,7 +9,7 @@ from unittest import TestCase
 import pandas as pd
 try:
     from StringIO import StringIO
-except ImportError:
+except ImportError:  # pragma nocover
     from io import StringIO
 
 from pandashells.bin.p_df import (

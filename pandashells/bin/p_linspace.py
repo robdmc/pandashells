@@ -5,10 +5,11 @@ import sys  # NOQA import sys to allow for mocking sys.argv in tests
 import argparse
 import textwrap
 
-from pandashells.lib import module_checker_lib, arg_lib, io_lib
+from pandashells.lib import module_checker_lib, arg_lib
 
-# import required dependencies
-module_checker_lib.check_for_modules(['numpy', 'pandas'])
+module_checker_lib.check_for_modules(['pandas'])
+
+from pandashells.lib import io_lib
 
 import numpy as np
 import pandas as pd
@@ -34,7 +35,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter, description=msg)
 
-    arg_lib.add_args(parser, 'io_out', 'example')
+    arg_lib.add_args(parser, 'io_out')
 
     msg = 'start end npoints'
     parser.add_argument("numbers", help=msg, type=str, nargs=3, metavar='')

@@ -36,5 +36,5 @@ class ModuleCheckerTests(TestCase):
         """
         check_for_modules() correctly identifies missing modules
         """
-        with self.assertRaises(ImportError):
+        with self.assertRaises(SystemExit):
             check_for_modules(['fakemodule1', 'fakemodule2'])

@@ -34,13 +34,19 @@ class MainTests(TestCase):
     @patch(
         'pandashells.bin.p_regress.sys.argv',
         'p.regress -m y~x --plot'.split())
-    @patch('pandashells.bin.p_regress.plot_lib.show')
     @patch('pandashells.bin.p_regress.io_lib.df_from_input')
-    @patch('pandashells.bin.p_regress.mpl.get_backend')
-    @patch('pandashells.bin.p_regress.pl.gcf')
-    def test_cli_plots_osx(
-            self, gcf_mock, backend_mock, df_from_input_mock, show_mock):
-        backend_mock.lower = MagicMock(return_value='macosx')
+    @patch('pandashells.bin.p_regress.get_module')
+    def test_cli_plots_osx(self, get_module_mock, df_from_input_mock):
+        backend_mock = MagicMock(lower=MagicMock(return_value='macosx'))
+        mpl_mock = MagicMock(get_backend=MagicMock(return_value=backend_mock))
+        show_mock = MagicMock()
+        plot_lib_mock = MagicMock(show=show_mock)
+        get_module_mock.side_effect = [
+            plot_lib_mock,
+            mpl_mock,
+            MagicMock(return_value=MagicMock()),
+            MagicMock(return_value=MagicMock()),
+        ]
         df_in = pd.DataFrame({
             'x': range(1, 101),
             'y': range(1, 101),
@@ -54,11 +60,20 @@ class MainTests(TestCase):
     @patch(
         'pandashells.bin.p_regress.sys.argv',
         'p.regress -m y~x --plot'.split())
-    @patch('pandashells.bin.p_regress.plot_lib.show')
     @patch('pandashells.bin.p_regress.io_lib.df_from_input')
-    @patch('pandashells.bin.p_regress.mpl.get_backend')
-    def test_cli_plots_tkagg(self, backend_mock, df_from_input_mock, show_mock):
-        backend_mock.return_value = 'macosx'
+    @patch('pandashells.bin.p_regress.get_module')
+    def test_cli_plots_tkagg(self, get_module_mock, df_from_input_mock):
+        backend_mock = MagicMock()
+        backend_mock.lower = MagicMock(return_value='tkagg')
+        mpl_mock = MagicMock(get_backend=backend_mock)
+        show_mock = MagicMock()
+        plot_lib_mock = MagicMock(show=show_mock)
+        get_module_mock.side_effect = [
+            plot_lib_mock,
+            mpl_mock,
+            MagicMock(return_value=MagicMock()),
+            MagicMock(return_value=MagicMock()),
+        ]
         df_in = pd.DataFrame({
             'x': range(1, 101),
             'y': range(1, 101),
