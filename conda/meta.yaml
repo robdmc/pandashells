@@ -1,11 +1,11 @@
 package:
   name: pandashells
-  version: "0.1.4"
+  version: "0.1.5"
 
 source:
-  fn: pandashells-0.1.4.tar.gz
-  url: https://pypi.python.org/packages/source/p/pandashells/pandashells-0.1.4.tar.gz
-  md5: 761f198e6da8874791629333beae0adb
+  fn: pandashells-0.1.5.tar.gz
+  url: https://pypi.python.org/packages/source/p/pandashells/pandashells-0.1.5.tar.gz
+  md5: 22c122815161c8f9b7673b591a1c237d
 #  patches:
    # List any patch files here
    # - fix.patch
@@ -21,23 +21,24 @@ build:
     #
     # Would create an entry point called pandashells that calls pandashells.main()
 
-    - p.cdf = pandashells.bin.p_cdf:main
     - p.config = pandashells.bin.p_config:main
     - p.crypt = pandashells.bin.p_crypt:main
-    - p.df = pandashells.bin.p_df:main
-    - p.facet_grid = pandashells.bin.p_facet_grid:main
     - p.format = pandashells.bin.p_format:main
-    - p.hist = pandashells.bin.p_hist:main
-    - p.linspace = pandashells.bin.p_linspace:main
-    - p.lomb_scargle = pandashells.bin.p_lomb_scargle:main
-    - p.merge = pandashells.bin.p_merge:main
     - p.parallel = pandashells.bin.p_parallel:main
-    - p.plot = pandashells.bin.p_plot:main
-    - p.rand = pandashells.bin.p_rand:main
-    - p.regplot = pandashells.bin.p_regplot:main
-    - p.regress = pandashells.bin.p_regress:main
+    - p.df = pandashells.bin.p_df:main
     - p.example_data = pandashells.bin.p_example_data:main
+    - p.linspace = pandashells.bin.p_linspace:main
+    - p.merge = pandashells.bin.p_merge:main
+    - p.rand = pandashells.bin.p_rand:main
+    - p.regress = pandashells.bin.p_regress:main
     - p.sig_edit = pandashells.bin.p_sig_edit:main
+    - p.smooth = pandashells.bin.p_smooth:main
+    - p.cdf = pandashells.bin.p_cdf:main
+    - p.facet_grid = pandashells.bin.p_facet_grid:main
+    - p.hist = pandashells.bin.p_hist:main
+    - p.plot = pandashells.bin.p_plot:main
+    - p.regplot = pandashells.bin.p_regplot:main
+    - p.lomb_scargle = pandashells.bin.p_lomb_scargle:main
 
   # If this is a new build for the same version, increment the build
   # number. If you do not include this key, it defaults to 0.
