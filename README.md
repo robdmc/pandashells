@@ -170,7 +170,7 @@ to copy/paste these commands to your bash prompt to see Pandashells in action.
   23.68,3.31,"Male","No","Sun","Dinner",2
   </code></pre>
 
-* Transorm the sample data from csv format to table format
+* Transform the sample data from csv format to table format
   <pre><code><strong>[~]$ p.example_data -d tips | p.df 'df.head()' -o table</strong>
   total_bill   tip     sex smoker  day    time  size
        16.99  1.01  Female     No  Sun  Dinner     2
