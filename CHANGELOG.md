@@ -3,7 +3,7 @@
 Initial public release:
 
 
-## 0.1.5 (2015-XX-XX)
+## 0.1.5 (8/29/2015)
 
 Improved installation procedures:
 ```bash
