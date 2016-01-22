@@ -72,7 +72,7 @@ def Timer(name='', silent=False, pretty=False):
     # print csv compatible text for further pandashells processing/plotting
     print 'nn,seconds'
     for nn, timer in results:
-        print nn,timer.seconds
+        print '{},{}'.format(nn,timer.seconds)
     """
     stream = OutStream()
     result = TimerResult(name, starting=datetime.datetime.now())
