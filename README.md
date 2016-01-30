@@ -360,6 +360,7 @@ examples.
 
 Code
 ```python
+import time
 from pandashells import Timer
 with Timer('entire script'):
     for nn in range(3):
@@ -383,6 +384,7 @@ __time__,0.310102,entire script
 
 Code
 ```python
+import time
 from pandashells import Timer
 
 # initialize a list to hold results
