@@ -396,8 +396,8 @@ for nn in range(3):
     # add results
     results.append((nn, timer))
 
-    # print csv compatible text for further pandashells processing/plotting
-    print 'nn,seconds'
-    for nn, timer in results:
-        print '{},{}'.format(nn,timer.seconds)
-   ```
+# print csv compatible text for further pandashells processing/plotting
+print 'nn,seconds'
+for nn, timer in results:
+    print '{},{}'.format(nn,timer.seconds)
+```
