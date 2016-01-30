@@ -18,7 +18,7 @@ Bug fixes
   - Fixed tsv bug
 
 
-## 0.1.6 (1/25/2016)
+## 0.1.7 (1/30/2016)
 
 The Pandas and matplotlib api's are evolving.  Pandashells
 was throwing a bunch of deprication warnings and not all tests
