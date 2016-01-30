@@ -8,7 +8,7 @@ Here is a checklist
     python setup.py sdist upload -r pypi
 - run conda skeleton in a temp directory somewhere to make pandashells yaml
     conda skeleton pypi pandashells
-- run vimdiff with yaml in this directory and do appropriate updates to yaml in this directory
+- run vimdiff with yaml in this directory and do appropriate updates to yaml in this directory (should only need to change version and hash info)
 - run the following
     conda create -n builder python=2.7
     . activate builder

@@ -1,11 +1,11 @@
 package:
   name: pandashells
-  version: "0.1.6"
+  version: "0.1.7"
 
 source:
-  fn: pandashells-0.1.6.tar.gz
-  url: https://pypi.python.org/packages/source/p/pandashells/pandashells-0.1.6.tar.gz
-  md5: a063a7bf447952fcb5b8f47b153069ba
+  fn: pandashells-0.1.7.tar.gz
+  url: https://pypi.python.org/packages/source/p/pandashells/pandashells-0.1.7.tar.gz
+  md5: 981983f3d9eb3090ea0456ac10a7ade6
 #  patches:
    # List any patch files here
    # - fix.patch
