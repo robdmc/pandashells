@@ -14,7 +14,7 @@ the spectral decomposition of non-uniformly sampled time series.
 
 setup(
     name="pandashells",
-    version="0.1.6",  # TODO: manualy maintaining version in init.  Fix this.
+    version="0.1.7",  # TODO: manualy maintaining version in init.  Fix this.
     author="Rob deCarvalho",
     author_email="unlisted",
     description=("Command line data tools"),

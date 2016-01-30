@@ -17,5 +17,5 @@ try:
 except ImportError:  # pragma no cover
     pass
 
-__version__ = '0.1.6'  # TODO: Should need to manualy specify version here
+__version__ = '0.1.7'  # TODO: Should need to manualy specify version here
 
