@@ -358,43 +358,43 @@ examples.
 
 ###Profiling different parts of your code
 
-  Code
-  ```python
-      from pandashells import Timer
-      with Timer('entire script'):
-          for nn in range(3):
-              with Timer('loop {}'.format(nn + 1)):
-                  time.sleep(.1 * nn)
-      # Will generate the following output on stdout
-      #     col1: a string that is easily found with grep
-      #     col2: the time in seconds (or in hh:mm:ss if pretty=True)
-      #     col3: the value passed to the 'name' argument of Timer
-   ```
+Code
+```python
+from pandashells import Timer
+with Timer('entire script'):
+    for nn in range(3):
+        with Timer('loop {}'.format(nn + 1)):
+            time.sleep(.1 * nn)
+# Will generate the following output on stdout
+#     col1: a string that is easily found with grep
+#     col2: the time in seconds (or in hh:mm:ss if pretty=True)
+#     col3: the value passed to the 'name' argument of Timer
+ ```
 
-   Output
-   ```
-      __time__,2.6e-05,loop 1
-      __time__,0.105134,loop 2
-      __time__,0.204489,loop 3
-      __time__,0.310102,entire script
-   ```
+  Output
+```
+__time__,2.6e-05,loop 1
+__time__,0.105134,loop 2
+__time__,0.204489,loop 3
+__time__,0.310102,entire script
+```
 
 ###Profiling how code scales (measuring "big-O")
 
-  Code
-  ```python
-    from pandashells import Timer
+Code
+```python
+from pandashells import Timer
 
-    # initialize a list to hold results
-    results = []
+# initialize a list to hold results
+results = []
 
-    # run a piece of code with different values of the var you want to scale
-    for nn in range(3):
-        # time each iteration
-        with Timer('loop {}'.format(nn + 1), silent=True) as timer:
-            time.sleep(.1 * nn)
-        # add results
-        results.append((nn, timer))
+# run a piece of code with different values of the var you want to scale
+for nn in range(3):
+    # time each iteration
+    with Timer('loop {}'.format(nn + 1), silent=True) as timer:
+        time.sleep(.1 * nn)
+    # add results
+    results.append((nn, timer))
 
     # print csv compatible text for further pandashells processing/plotting
     print 'nn,seconds'
