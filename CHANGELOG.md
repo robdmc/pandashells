@@ -23,7 +23,7 @@ Bug fixes
 The Pandas and matplotlib api's are evolving.  Pandashells
 was throwing a bunch of deprication warnings and not all tests
 were passing with the latest versions of these libraries.  This
-is basically a maintenance release to accomadate these changes.
+is basically a maintenance release to accomodate these changes.
 Below are the highlights.
 
 * Current versions are: pandas==0.17.1, matplotlib 1.5.1
