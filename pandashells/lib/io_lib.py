@@ -114,17 +114,21 @@ def table_writer(df, header, index, na_rep):
         df.to_string(header=header, index=index, na_rep=na_rep) + '\n')
 
 
-def html_writer(df, header, index):
-    outString = "<style> table.dataframe "
+def html_writer(df, header, index, na_rep):
+    outString = "<style>th,td "
+    outString += "{padding-top:5px; padding-right:20px; "
+    outString += "padding-left:5px; padding-bottom:1px;} "
+    outString += "</style> "
+    outString += "<style> table.dataframe "
     outString += "{border-width:1px; border-style:solid; "
     outString += "border-collapse:collapse; border-color: "
     outString += "LightGray;} </style>"
-    outString += df.to_html(header=header, index=index)
+    outString += df.to_html(header=header, index=index, na_rep=na_rep)
     sys.stdout.write(outString + '\n')
 
 
 def json_writer(df, *unused, **also_unused):
-    sys.stdout.write(json.dumps(df.to_dict('records')))
+    sys.stdout.write(df.to_json(orient='records'))
 
 
 def df_to_output(args, df):

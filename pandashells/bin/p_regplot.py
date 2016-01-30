@@ -5,6 +5,8 @@ import argparse
 import textwrap
 import re
 import sys  # NOQA just use this for patching in tests
+import warnings
+warnings.filterwarnings('ignore')
 
 from pandashells.lib import module_checker_lib, arg_lib
 

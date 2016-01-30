@@ -4,6 +4,7 @@
 import argparse
 from importlib import import_module
 import textwrap
+import warnings
 import os  # noqa
 import re  # noqa
 import sys  # noqa
@@ -27,6 +28,7 @@ def needs_plots(command_list):
 
 
 def get_modules_and_shortcuts(command_list):
+    warnings.filterwarnings('ignore')
     names_shortcuts = [
         ('datetime', 'datetime'),
         ('numpy', 'np'),
@@ -47,6 +49,7 @@ def get_modules_and_shortcuts(command_list):
 
     # make sure required modules are installed
     module_checker_lib.check_for_modules([m for (m, s) in out])
+    warnings.resetwarnings()
 
     return out
 

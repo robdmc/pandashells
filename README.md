@@ -347,3 +347,57 @@ Further examples of each tool can be seen by calling it with the -h switch.
 You are encouraged to fully explore these examples. They highlight how Pandashells
 can be used to significantly improve your efficiency.
 
+
+Simple Profiling Utility
+----
+In addition to command-line tools, Pandashells exposes a useful profiling tool
+that can be imported into your python code.  The tools is just a simple context
+manager that sends timing information to stdout.  The csv-like format of this
+output makes it easy to pipe through Pandashells pipelines.  Here are a couple
+examples.
+
+###Profiling different parts of your code
+
+  Code
+  ```python
+      from pandashells import Timer
+      with Timer('entire script'):
+          for nn in range(3):
+              with Timer('loop {}'.format(nn + 1)):
+                  time.sleep(.1 * nn)
+      # Will generate the following output on stdout
+      #     col1: a string that is easily found with grep
+      #     col2: the time in seconds (or in hh:mm:ss if pretty=True)
+      #     col3: the value passed to the 'name' argument of Timer
+   ```
+
+   Output
+   ```
+      __time__,2.6e-05,loop 1
+      __time__,0.105134,loop 2
+      __time__,0.204489,loop 3
+      __time__,0.310102,entire script
+   ```
+
+###Profiling how code scales (measuring "big-O")
+
+  Code
+  ```python
+    from pandashells import Timer
+
+    # initialize a list to hold results
+    results = []
+
+    # run a piece of code with different values of the var you want to scale
+    for nn in range(3):
+        # time each iteration
+        with Timer('loop {}'.format(nn + 1), silent=True) as timer:
+            time.sleep(.1 * nn)
+        # add results
+        results.append((nn, timer))
+
+    # print csv compatible text for further pandashells processing/plotting
+    print 'nn,seconds'
+    for nn, timer in results:
+        print '{},{}'.format(nn,timer.seconds)
+   ```

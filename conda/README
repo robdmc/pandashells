@@ -7,8 +7,11 @@ Here is a checklist
 - upload the new version to pypi
     python setup.py sdist upload -r pypi
 - run conda skeleton in a temp directory somewhere to make pandashells yaml
-- run vimdiff with yaml in this directory and do appropriate updates
+    conda skeleton pypi pandashells
+- run vimdiff with yaml in this directory and do appropriate updates to yaml in this directory
 - run the following
+    conda create -n builder python=2.7
+    . activate builder
     make clean
     make upload
 

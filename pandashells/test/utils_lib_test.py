@@ -2,9 +2,18 @@
 
 from unittest import TestCase
 
+import datetime
 import time
-from pandashells.lib.utils_lib import Timer
+from pandashells.lib.utils_lib import Timer, TimerResult
 from mock import patch
+
+
+class TimerResultTests(TestCase):
+    def test_repr(self):
+        starting = datetime.datetime(2000, 1, 1)
+        ending = datetime.datetime(2000, 1, 2)
+        res = TimerResult('label', starting, ending, 1)
+        self.assertEqual(res.__repr__(), '__time__,1,label')
 
 
 class TimerTests(TestCase):

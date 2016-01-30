@@ -157,7 +157,7 @@ class IOLibTests(TestCase):
     def test_html_writer(self, sys_mock):
         sys_mock.stdout = StringIO()
         df = pd.DataFrame([[1, 2], [3, 4]], columns=['a', 'b'], index=[0, 1])
-        io_lib.html_writer(df, header=True, index=False)
+        io_lib.html_writer(df, header=True, index=False, na_rep='nan')
         sys.stdout = sys.__stdout__
         html = sys_mock.stdout.getvalue()
         self.assertTrue('<th>a</th>' in html)
@@ -171,7 +171,7 @@ class IOLibTests(TestCase):
         io_lib.json_writer(df, header=True, index=False)
         sys.stdout = sys.__stdout__
         json = sys_mock.stdout.getvalue()
-        self.assertTrue('"a": 1,' in json)
+        self.assertTrue('"a":1,' in json)
 
     @patch('pandashells.lib.io_lib.get_nan_rep', MagicMock(return_value='nan'))
     @patch('pandashells.lib.io_lib.csv_writer')

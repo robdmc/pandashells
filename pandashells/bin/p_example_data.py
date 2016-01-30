@@ -65,6 +65,12 @@ def main():
         except IOError:
             pass
 
+    # weird warning on python3 is fixed by closing stdout
+    try:
+        sys.stdout.close()
+    except IOError:
+        pass
+
 
 if __name__ == '__main__':  # pragma: no cover
     main()
