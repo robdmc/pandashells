@@ -8,7 +8,13 @@ class OutStream(object):  # pragma no cover
     This class exisist for easing testing of sys.stdout and doesn't
     need to be tested itself
     """
+    header_text = '__time__,time,tag'
+    header_needs_printing = True
+
     def write(self, *args, **kwargs):
+        if self.__class__.header_needs_printing:
+            sys.stdout.write('{}\n'.format(self.__class__.header_text))
+            self.__class__.header_needs_printing = False
         sys.stdout.write(*args, **kwargs)
 
 
@@ -27,7 +33,7 @@ class TimerResult(object):
 
 
 @contextlib.contextmanager
-def Timer(name='', silent=False, pretty=False):
+def Timer(name='', silent=False, pretty=False, header=True):
     """
     A context manager for timing sections of code.
     :type name: str
@@ -76,6 +82,8 @@ def Timer(name='', silent=False, pretty=False):
     for nn, timer in results:
         print '{},{}'.format(nn,timer.seconds)
     """
+    if not header:
+        OutStream.header_needs_printing = False
     stream = OutStream()
     result = TimerResult(name, starting=datetime.datetime.now())
     yield result
