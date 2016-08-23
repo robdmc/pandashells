@@ -1,4 +1,6 @@
-<span style="color: red;"> Note. There is a bug in Pandas 18.1 that quotes all floating point numbers in CSV output. See <a href="https://github.com/pydata/pandas/commit/d814f433940031029f1ddf0d9abdecdf4ad31dac">this link</a>.  Pandashells will quote all floating point numbers on output with this version of Pandas. As of 8/23/16, the master of branch of Pandas on github has this problem fixed.  You can build the latest master until the next Pandas release to mitigate this problem if you wish./span>
+* * * * * * * * *
+Note. There is a bug in Pandas 18.1 that quotes all floating point numbers in CSV output. See <a href="https://github.com/pydata/pandas/commit/d814f433940031029f1ddf0d9abdecdf4ad31dac">this link</a>.  Pandashells will quote all floating point numbers on output with this version of Pandas. As of 8/23/16, the master of branch of Pandas on github has this problem fixed.  You can build the latest master until the next Pandas release to mitigate this problem if you wish.
+* * * * * * * * *
 
 Pandashells                           
 ===
