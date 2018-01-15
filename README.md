@@ -410,3 +410,4 @@ Projects by [robdmc](https://www.linkedin.com/in/robdecarvalho).
 * [Pandashells](https://github.com/robdmc/pandashells) Pandas at the bash command line
 * [Consecution](https://github.com/robdmc/consecution) Pipeline abstraction for Python
 * [Behold](https://github.com/robdmc/behold) Helping debug large Python projects
+* [Crontabs] (https://github.com/robdmc/crontabs) Simple scheduling library for Python scripts
