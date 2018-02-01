@@ -59,7 +59,7 @@ you should really use a recent version of pip so you can access wheels on pypi
 than using wheels, you may run into problems with systems libraries being either out of
 date or missing.  If you encounter these problems, then a conda install is advised.
 
-####Pandashells, no dependencies
+#### Pandashells, no dependencies
 Use this option if you want to completely manage your own dependencies.
 (See requirements section below).
 
