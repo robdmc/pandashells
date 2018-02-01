@@ -65,7 +65,7 @@ Use this option if you want to completely manage your own dependencies.
 
 <pre><code><strong> [~]$ pip install pandashells </strong></code></pre>
 
-####P andashells console tools
+#### Pandashells console tools
 Use this option to install Pandashells and only the console tools dependencies. This
 will not install the graphics dependencies (matplotlib and friends)
 <pre><code><strong>[~]$ pip install pandashells[console]</strong></code></pre>
