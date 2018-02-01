@@ -42,7 +42,7 @@ allow those familiar with the python data stack to be immediately productive.
 Installation
 ----
 
-###Install with conda
+### Install with conda
 Pandashells is a pure-python package, but depends heavily on other packages which are not.
 By far the fastest and most painless way to get started with Pandashells is to install the
 <a href="http://conda.pydata.org/docs/install/quick.html">Miniconda</a> package manager,
@@ -52,7 +52,7 @@ Note that this command will also work if you are using the
 <pre><code><strong>[~]$ conda install -c https://conda.anaconda.org/robdmc pandashells 
 </strong></code></pre>
 
-###Install with pip
+### Install with pip
 Pandashells can be installed with pip, but a few words of caution are in order.  First,
 you should really use a recent version of pip so you can access wheels on pypi
 `pip install -U pip`.  Secondly, if your setup requires building from source rather
@@ -65,12 +65,12 @@ Use this option if you want to completely manage your own dependencies.
 
 <pre><code><strong> [~]$ pip install pandashells </strong></code></pre>
 
-####Pandashells console tools
+####P andashells console tools
 Use this option to install Pandashells and only the console tools dependencies. This
 will not install the graphics dependencies (matplotlib and friends)
 <pre><code><strong>[~]$ pip install pandashells[console]</strong></code></pre>
 
-####Pandashells full install
+#### Pandashells full install
 Use this option to install Pandashells and all dependencies
 <pre><code><strong>[~]$ pip install pandashells[full]</strong></code></pre>
 
