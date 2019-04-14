@@ -78,8 +78,8 @@ class PlotLibTests(TestCase):
         """
         args = MagicMock(savefig='', xlim=[], ylim=[])
         plot_lib.set_limits(args)
-        self.assertEqual(pl.gca().get_xlim(), (0.0, 9.0))
-        self.assertEqual(pl.gca().get_ylim(), (0.0, 9.0))
+        self.assertEqual(pl.gca().get_xlim(), (-0.45, 9.45))
+        self.assertEqual(pl.gca().get_ylim(), (-0.45, 9.45))
 
     def test_set_plot_limits(self):
         """set_limits() properly sets limits
