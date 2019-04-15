@@ -54,6 +54,11 @@ def main():
         '-v', '--verbose', action='store_true', default=False, dest='verbose',
         help=msg)
 
+    msg = 'Use legacy md5 digest'
+    parser.add_argument(
+        '-m', '--md5', action='store_true', default=False, dest='md5',
+        help=msg)
+
     #  parse arguments
     args = parser.parse_args()
 
@@ -67,13 +72,23 @@ def main():
     password_string = "-k '{}'".format(
         args.password[0]) if args.password else ''
 
-    #  create a dycryption command if requested
+    # set the proper decrypt digest string
+    if args.md5:
+        digest_str = '-md md5'
+    else:
+        digest_str = '-pbkdf2'
+
+    # create a decryption command if requested
     if args.decrypt:
-        cmd = "cat {} | openssl enc -d -aes-256-cbc {} > {}".format(
-            args.in_file[0], password_string, args.outFile[0])
+        cmd = "cat {} | openssl enc -d -aes-256-cbc {} {} > {}".format(
+            args.in_file[0],
+            password_string,
+            digest_str,
+            args.outFile[0]
+        )
     #  otherwise just encrypt
     else:
-        cmd = "cat {} | openssl enc -aes-256-cbc -salt {} > {}".format(
+        cmd = "cat {} | openssl enc -aes-256-cbc -pbkdf2 -salt {} > {}".format(
             args.in_file[0], password_string, args.outFile[0])
 
     # print verbose if requested

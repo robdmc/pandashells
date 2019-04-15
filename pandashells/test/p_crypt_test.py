@@ -17,7 +17,7 @@ class MainTests(TestCase):
         isfile_mock.return_value = True
         main()
         system_mock.assert_called_with(
-            'cat my_in | openssl enc -aes-256-cbc -salt  > my_out')
+            'cat my_in | openssl enc -aes-256-cbc -pbkdf2 -salt  > my_out')
 
     @patch(
         'pandashells.bin.p_crypt.sys.argv',
@@ -31,7 +31,7 @@ class MainTests(TestCase):
         isfile_mock.return_value = True
         main()
         system_mock.assert_called_with(
-            'cat my_in | openssl enc -aes-256-cbc -salt  > my_out')
+            'cat my_in | openssl enc -aes-256-cbc -pbkdf2 -salt  > my_out')
         self.assertTrue(stdout_mock.write.called)
 
     @patch(
@@ -43,7 +43,7 @@ class MainTests(TestCase):
         isfile_mock.return_value = True
         main()
         system_mock.assert_called_with(
-            "cat my_in | openssl enc -aes-256-cbc -salt -k 'xx' > my_out")
+            "cat my_in | openssl enc -aes-256-cbc -pbkdf2 -salt -k 'xx' > my_out")
 
     @patch(
         'pandashells.bin.p_crypt.sys.argv',
@@ -66,4 +66,4 @@ class MainTests(TestCase):
         isfile_mock.return_value = True
         main()
         system_mock.assert_called_with(
-            'cat my_in | openssl enc -d -aes-256-cbc  > my_out')
+            'cat my_in | openssl enc -d -aes-256-cbc  -pbkdf2 > my_out')
