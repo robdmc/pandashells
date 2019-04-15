@@ -83,7 +83,7 @@ def framify(cmd, df):
     else:
         try:
             return pd.DataFrame(df)
-        except pd.core.common.PandasError:
+        except ValueError:
             msg = (
                 '\n\nResult of command: \n'
                 '\'{cmd}\' \n'
