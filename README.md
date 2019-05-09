@@ -47,7 +47,8 @@ Pandashells can be installed with pip, but a few words of caution are in order. 
 you should really use a recent version of pip so you can access wheels on pypi
 `pip install -U pip`.  Secondly, if your setup requires building from source rather
 than using wheels, you may run into problems with systems libraries being either out of
-date or missing.  If you encounter these problems, then a conda install is advised.
+date or missing.  If you encounter these problems, you may want to use conda to install those
+dependencies.
 
 #### Pandashells, no dependencies
 Use this option if you want to completely manage your own dependencies.
