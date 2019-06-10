@@ -1,11 +1,10 @@
 import base64
-import bytes
+import sys
 
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from getpass import getpass
 
 
 class Crypt:
@@ -34,34 +33,22 @@ class Crypt:
         key = base64.urlsafe_b64encode(self.kdf.derive(password))
         return Fernet(key)
 
-    def encrypt(self, message_string, password_string):
+    def encrypt(self, message, password_string):
         """
         Encrypt a string
         """
-        message = message_string.encode(encoding=self.ENCODING)
+        if isinstance(message, str):
+            message = message.encode(encoding=self.ENCODING)
         return self.get_fernet(password_string).encrypt(message)
-
-        password = password_string.encode(encoding=self.ENCODING)
-        message = message_string.encode(encoding=self.ENCODING)
-        key = base64.urlsafe_b64encode(self.kdf.derive(password))
-        f = Fernet(key)
-        token = f.encrypt(message)
-        return token.hex()
 
     def decrypt(self, encrypted, password_string):
         """
         Decrypt a message
         """
-        token = bytes.fromhex(encrypted)
         try:
-            message = self.get_fernet(
-                password_string
-            ).decrypt(
-                token
-            ).decode(
-                encoding=self.ENCODING
-            )
+            out = self.get_fernet(password_string).decrypt(encrypted)
         except InvalidToken:
-            message = None
+            print('\n\nBad password\n', file=sys.stderr)
+            sys.exit(1)
 
-        return message
+        return out

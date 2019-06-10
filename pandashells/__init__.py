@@ -17,5 +17,10 @@ try:
 except ImportError:  # pragma no cover
     pass
 
+try:
+    from pandashells.lib.crypt_lib import Crypt
+except ImportError:  # pragma no cover
+    raise
+
 __version__ = '0.1.9'
 

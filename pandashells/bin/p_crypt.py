@@ -1,18 +1,21 @@
 #! /usr/bin/env python
 
 import argparse
+import getpass
 import textwrap
 import os
 import sys
+
+from pandashells import Crypt
 
 
 def main():
     msg = textwrap.dedent(
         """
-        Encrypts and decrypts files using openssl.  Openssl provides command-
-        line tools that are capable of encrypting and decrypting files.  This
-        tool provides a thin wrapper around that capability by hardcoding
-        the encyrption to be aes256-cbc.
+        Encrypts and ecrypts files using the cryptography library for Python.
+
+        See:
+            https://cryptography.io/en/latest/fernet
 
         -----------------------------------------------------------------------
         Examples:
@@ -37,8 +40,8 @@ def main():
         help="The input file name")
 
     parser.add_argument(
-        '-o', '--outFile', nargs=1, type=str, required=True, dest='outFile',
-        metavar='outFileName', help="The output file name")
+        '-o', '--out_file', nargs=1, type=str, required=True, dest='out_file',
+        metavar='out_file_name', help="The output file name")
 
     parser.add_argument(
         '--password', nargs=1, type=str, dest='password',
@@ -49,14 +52,9 @@ def main():
         '-d', '--decrypt', action='store_true', default=False, dest='decrypt',
         help=msg)
 
-    msg = 'Echo encryption command to stdout'
+    msg = 'Save encrypted file to hex instead of binary'
     parser.add_argument(
-        '-v', '--verbose', action='store_true', default=False, dest='verbose',
-        help=msg)
-
-    msg = 'Use legacy md5 digest'
-    parser.add_argument(
-        '-m', '--md5', action='store_true', default=False, dest='md5',
+        '--binary', action='store_true', default=False, dest='binary',
         help=msg)
 
     #  parse arguments
@@ -68,34 +66,28 @@ def main():
             "\n\nCan't find input file: {}\n\n".format(args.in_file[0]))
         sys.exit(1)
 
-    # populate a password string
-    password_string = "-k '{}'".format(
-        args.password[0]) if args.password else ''
-
-    # set the proper decrypt digest string
-    if args.md5:
-        digest_str = '-md md5'
+    if args.password is None:
+        password = getpass.getpass('Password: ')
     else:
-        digest_str = '-pbkdf2'
+        password = args.password[0]
 
-    # create a decryption command if requested
+    with open(args.in_file[0], 'rb') as f:
+        in_value = f.read()
+
     if args.decrypt:
-        cmd = "cat {} | openssl enc -d -aes-256-cbc {} {} > {}".format(
-            args.in_file[0],
-            password_string,
-            digest_str,
-            args.outFile[0]
-        )
-    #  otherwise just encrypt
+        out_value = Crypt().decrypt(in_value, password)
     else:
-        cmd = "cat {} | openssl enc -aes-256-cbc -pbkdf2 -salt {} > {}".format(
-            args.in_file[0], password_string, args.outFile[0])
+        out_value = Crypt().encrypt(in_value, password)
 
-    # print verbose if requested
-    if args.verbose:
-        sys.stdout.write('\n\nExecuting:\n{}\n\n'.format(cmd))
-    #  run the proper openssl command
-    os.system(cmd)
+    with open(args.out_file[0], 'wb') as f:
+        f.write(out_value)
+
+
+"""
+TODO: I want to add the options of piping from stdin and to stdout
+Maybe make that the only option with no input and output files
+"""
+
 
 if __name__ == '__main__':  # pragma: no cover
     main()
