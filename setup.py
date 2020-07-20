@@ -37,7 +37,7 @@ setup(
     name="pandashells",
     version=version(os.path.join(file_dir, 'pandashells', '__init__.py')),
     author="Rob deCarvalho",
-    author_email="unlisted",
+    author_email="unlisted@unlisted.net",
     description=("Command line data tools"),
     license="BSD",
     keywords=("pandas plot plotting data dataframe command line cli "
