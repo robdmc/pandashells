@@ -16,3 +16,6 @@ try:
     from pandashells.lib.utils_lib import Timer
 except ImportError:  # pragma no cover
     pass
+
+__version__ = '0.1.9'
+

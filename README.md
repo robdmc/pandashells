@@ -1,3 +1,4 @@
+
 Pandashells                           
 ===
 
@@ -41,35 +42,26 @@ allow those familiar with the python data stack to be immediately productive.
 Installation
 ----
 
-###Install with conda (recommended)
-Pandashells is a pure-python package, but depends heavily on other packages which are not.
-By far the fastest and most painless way to get started with Pandashells is to install the
-<a href="http://conda.pydata.org/docs/install/quick.html">Miniconda</a> package manager,
-and then simply run the following command to obtain a full Pandashells install.
-Note that this command will also work if you are using the 
-<a href="https://store.continuum.io/cshop/anaconda/">Anaconda Python Distribution</a>.
-<pre><code><strong>[~]$ conda install -c https://conda.anaconda.org/robdmc pandashells 
-</strong></code></pre>
-
-###Install with pip
+### Install with pip
 Pandashells can be installed with pip, but a few words of caution are in order.  First,
 you should really use a recent version of pip so you can access wheels on pypi
 `pip install -U pip`.  Secondly, if your setup requires building from source rather
 than using wheels, you may run into problems with systems libraries being either out of
-date or missing.  If you encounter these problems, then a conda install is advised.
+date or missing.  If you encounter these problems, you may want to use conda to install those
+dependencies.
 
-####Pandashells, no dependencies
+#### Pandashells, no dependencies
 Use this option if you want to completely manage your own dependencies.
 (See requirements section below).
 
 <pre><code><strong> [~]$ pip install pandashells </strong></code></pre>
 
-####Pandashells console tools
+#### Pandashells console tools
 Use this option to install Pandashells and only the console tools dependencies. This
 will not install the graphics dependencies (matplotlib and friends)
 <pre><code><strong>[~]$ pip install pandashells[console]</strong></code></pre>
 
-####Pandashells full install
+#### Pandashells full install
 Use this option to install Pandashells and all dependencies
 <pre><code><strong>[~]$ pip install pandashells[full]</strong></code></pre>
 
@@ -347,3 +339,67 @@ Further examples of each tool can be seen by calling it with the -h switch.
 You are encouraged to fully explore these examples. They highlight how Pandashells
 can be used to significantly improve your efficiency.
 
+
+Simple Profiling Utility
+----
+In addition to command-line tools, Pandashells exposes a useful profiling tool
+that can be imported into your python code.  The tools is just a simple context
+manager that sends timing information to stdout.  The csv-like format of this
+output makes it easy to pipe through Pandashells pipelines.  Here are a couple
+examples.
+
+###Profiling different parts of your code
+
+Code
+```python
+import time
+from pandashells import Timer
+with Timer('entire script'):
+    for nn in range(3):
+        with Timer('loop {}'.format(nn + 1)):
+            time.sleep(.1 * nn)
+# Will generate the following output on stdout
+#     col1: a string that is easily found with grep
+#     col2: the time in seconds (or in hh:mm:ss if pretty=True)
+#     col3: the value passed to the 'name' argument of Timer
+ ```
+
+  Output
+```
+__time__,2.6e-05,loop 1
+__time__,0.105134,loop 2
+__time__,0.204489,loop 3
+__time__,0.310102,entire script
+```
+
+###Profiling how code scales (measuring "big-O")
+
+Code
+```python
+import time
+from pandashells import Timer
+
+# initialize a list to hold results
+results = []
+
+# run a piece of code with different values of the var you want to scale
+for nn in range(3):
+    # time each iteration
+    with Timer('loop {}'.format(nn + 1), silent=True) as timer:
+        time.sleep(.1 * nn)
+    # add results
+    results.append((nn, timer))
+
+# print csv compatible text for further pandashells processing/plotting
+print 'nn,seconds'
+for nn, timer in results:
+    print '{},{}'.format(nn,timer.seconds)
+```
+
+___
+Projects by [robdmc](https://www.linkedin.com/in/robdecarvalho).
+* [Pandashells](https://github.com/robdmc/pandashells) Pandas at the bash command line
+* [Consecution](https://github.com/robdmc/consecution) Pipeline abstraction for Python
+* [Behold](https://github.com/robdmc/behold) Helping debug large Python projects
+* [Crontabs](https://github.com/robdmc/crontabs) Simple scheduling library for Python scripts
+* [Switchenv](https://github.com/robdmc/switchenv) Manager for bash environments
