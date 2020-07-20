@@ -15,7 +15,7 @@ def show(args):
     # if figure saving requested
     if hasattr(args, 'savefig') and args.savefig:
         # save html if requested
-        rex_html = re.compile('.*?\.html$')
+        rex_html = re.compile(r'.*?\.html$')
         if rex_html.match(args.savefig[0]):
             fig = pl.gcf()
             html = mpld3.fig_to_html(fig)
