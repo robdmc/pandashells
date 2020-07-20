@@ -77,7 +77,7 @@ def lomb_scargle(df, time_col, val_col, interp_exponent=0, freq_order=False):
     df = df[[time_col, val_col]].dropna()
 
     # standardize column names, remove mean from values, and sort by time
-    df = df.rename(columns={time_col: 't', val_col: 'y'}).sort_index(by=['t'])
+    df = df.rename(columns={time_col: 't', val_col: 'y'}).sort_values(by=['t'])
     df['y'] = df['y'] - df.y.mean()
 
     #  compute total energy in the time series
@@ -111,5 +111,5 @@ def lomb_scargle(df, time_col, val_col, interp_exponent=0, freq_order=False):
 
     # order by period if desired
     if not freq_order:
-        df = df.sort_index(by='period')
+        df = df.sort_values(by='period')
     return df

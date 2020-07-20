@@ -19,7 +19,7 @@ import pylab as pl
 import seaborn as sns
 
 sns.set_context('talk')
-CC = mpl.rcParams['axes.color_cycle']
+CC = mpl.rcParams['axes.prop_cycle'].by_key()['color']
 
 
 def make_label(coeffs, savefig):
