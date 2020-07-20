@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 from collections import Counter
+import warnings
 import sys
 import importlib
 from pandashells.lib import config_lib
@@ -30,14 +31,17 @@ BACKEND_COUNTER = Counter()
 
 
 def set_backend():
-    if BACKEND_COUNTER['use_called'] == 0:
-        try:
-            import matplotlib
-            config = config_lib.get_config()
-            matplotlib.use(config['plot_backend'])
-            BACKEND_COUNTER.update({'use_called': 1})
-        except ImportError:  # pragma nocover
-            pass
+    with warnings.catch_warnings():
+        if BACKEND_COUNTER['use_called'] == 0:
+            try:
+                warnings.filterwarnings('ignore')
+                import matplotlib
+                config = config_lib.get_config()
+                matplotlib.use(config['plot_backend'])
+                BACKEND_COUNTER.update({'use_called': 1})
+                warnings.resetwarnings()
+            except ImportError:  # pragma nocover
+                pass
 
 
 def check_for_modules(module_list):

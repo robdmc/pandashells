@@ -2,6 +2,8 @@
 import os
 import tempfile
 import shutil
+import warnings
+warnings.filterwarnings("ignore")
 from unittest import TestCase
 from pandashells.lib import plot_lib, arg_lib
 import argparse
@@ -10,6 +12,7 @@ import matplotlib as mpl
 import pylab as pl
 import pandas as pd
 from dateutil.parser import parse
+warnings.resetwarnings()
 
 
 class PlotLibTests(TestCase):
@@ -59,14 +62,11 @@ class PlotLibTests(TestCase):
             plot_theme=['darkgrid'],
             plot_palette=['muted'],
         )
-        mpl.rcParams['axes.color_cycle'] = ['m', 'c']
         mpl.rcParams['axes.labelsize'] = 1
         mpl.rcParams['axes.titlesize'] = 1
         rc_pre = dict(mpl.rcParams)
         plot_lib.set_plot_styling(args)
         rc_post = dict(mpl.rcParams)
-        self.assertNotEqual(
-            rc_pre['axes.color_cycle'], rc_post['axes.color_cycle'])
         self.assertNotEqual(
             rc_pre['axes.labelsize'], rc_post['axes.labelsize'])
 
@@ -78,8 +78,8 @@ class PlotLibTests(TestCase):
         """
         args = MagicMock(savefig='', xlim=[], ylim=[])
         plot_lib.set_limits(args)
-        self.assertEqual(pl.gca().get_xlim(), (0.0, 9.0))
-        self.assertEqual(pl.gca().get_ylim(), (0.0, 9.0))
+        self.assertEqual(pl.gca().get_xlim(), (-0.45, 9.45))
+        self.assertEqual(pl.gca().get_ylim(), (-0.45, 9.45))
 
     def test_set_plot_limits(self):
         """set_limits() properly sets limits

@@ -1,11 +1,11 @@
 package:
   name: pandashells
-  version: "0.1.5"
+  version: "0.1.8"
 
 source:
-  fn: pandashells-0.1.5.tar.gz
-  url: https://pypi.python.org/packages/source/p/pandashells/pandashells-0.1.5.tar.gz
-  md5: 22c122815161c8f9b7673b591a1c237d
+  fn: pandashells-0.1.8.tar.gz
+  url: https://pypi.python.org/packages/source/p/pandashells/pandashells-0.1.8.tar.gz
+  md5: 65bfbb578c967d34d9e91d2dca6e3c56
 #  patches:
    # List any patch files here
    # - fix.patch
@@ -43,6 +43,7 @@ build:
   # If this is a new build for the same version, increment the build
   # number. If you do not include this key, it defaults to 0.
   # number: 1
+
 requirements:
   build:
     - python

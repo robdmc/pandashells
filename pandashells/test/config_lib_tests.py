@@ -37,7 +37,8 @@ class GetConfigTests(TestCase):
         """
         expected_dict = {'name': 'John'}
         config_lib.set_config(expected_dict)
-        saved_dict = json.loads(open(config_lib.CONFIG_FILE_NAME).read())
+        with open(config_lib.CONFIG_FILE_NAME) as jsonfile:
+            saved_dict = json.loads(jsonfile.read())
         self.assertEqual(expected_dict, saved_dict)
 
     def test_get_config_non_existent_file(self):

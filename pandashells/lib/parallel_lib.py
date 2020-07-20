@@ -101,6 +101,11 @@ def worker(
             p.wait()
             q.task_done()
 
+        if p.stdout:
+            p.stdout.close()
+        if p.stderr:
+            p.stderr.close()
+
 
 def get_number_of_jobs(njobs=None, assume_hyperthread=None):
     # determine the number of cores
