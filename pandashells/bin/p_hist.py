@@ -125,10 +125,11 @@ def main():
         plot_lib.set_plot_styling(args)
         df.hist(cols, bins=nbins, range=range_tup,
                 alpha=alpha, sharex=sharex, sharey=sharey, layout=layout_tup,
-                normed=do_density)
+                density=do_density)
 
         plot_lib.refine_plot(args)
         plot_lib.show(args)
+
 
 if __name__ == '__main__':  # pragma: no cover
     main()

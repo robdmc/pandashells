@@ -127,7 +127,7 @@ def main():
         'col': args.col[0] if args.col else None,
         'hue': args.hue[0] if args.hue else None,
         'aspect': args.aspect[0],
-        'size': args.size[0],
+        'height': args.size[0],
         'sharex': args.sharex,
         'sharey': args.sharey,
         'xlim': args.xlim if args.xlim else None,
