@@ -348,7 +348,7 @@ manager that sends timing information to stdout.  The csv-like format of this
 output makes it easy to pipe through Pandashells pipelines.  Here are a couple
 examples.
 
-###Profiling different parts of your code
+### Profiling different parts of your code
 
 Code
 ```python
@@ -372,7 +372,7 @@ __time__,0.204489,loop 3
 __time__,0.310102,entire script
 ```
 
-###Profiling how code scales (measuring "big-O")
+### Profiling how code scales (measuring "big-O")
 
 Code
 ```python
