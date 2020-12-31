@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import re
 import sys
 import warnings
@@ -9,6 +10,17 @@ import matplotlib as mpl
 import pylab as pl
 import seaborn as sns
 import mpld3
+
+
+def running_in_container():
+    container = False
+    cgroup = '/proc/self/cgroup'
+    if os.path.isfile(cgroup):
+        with open(cgroup) as buff:
+            container = bool(
+                [line for line in buff.readlines() if 'docker' in line]
+            )
+    return container
 
 
 def show(args):
@@ -28,11 +40,20 @@ def show(args):
     else:
         if mpl.rcParams.get('backend') == 'WebAgg':
             from matplotlib.backends.backend_webagg import WebAggApplication
-            mpl.rcParams['webagg.address'] = '0.0.0.0'
+            in_container = running_in_container()
+            if in_container:
+                mpl.rcParams['webagg.address'] = '0.0.0.0'
+
             WebAggApplication.initialize()
+
+            if in_container:
+                display_address = '127.0.0.1'
+            else:
+                display_address = WebAggApplication.address
+
             print(
                 '\nServing UI on: http://{address}:{port}'.format(
-                    address='127.0.0.1',
+                    address=display_address,
                     port=WebAggApplication.port,
                 ),
                 file=sys.stderr
