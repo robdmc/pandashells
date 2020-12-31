@@ -26,6 +26,17 @@ def show(args):
         pl.savefig(args.savefig[0])
     # otherwise show to screen
     else:
+        if mpl.rcParams.get('backend') == 'WebAgg':
+            from matplotlib.backends.backend_webagg import WebAggApplication
+            mpl.rcParams['webagg.address'] = '0.0.0.0'
+            WebAggApplication.initialize()
+            print(
+                '\nServing UI on: http://{address}:{port}'.format(
+                    address='127.0.0.1',
+                    port=WebAggApplication.port,
+                ),
+                file=sys.stderr
+            )
         pl.show()
 
 
@@ -37,9 +48,10 @@ def set_plot_styling(args):
             palette=args.plot_palette[0])
 
     # modify seaborn slightly to look good in interactive backends
-    if 'white' not in args.plot_theme[0]:
-        mpl.rcParams['figure.facecolor'] = 'white'
-        mpl.rcParams['figure.edgecolor'] = 'white'
+    if mpl.rcParams.get('backend') != 'WebAgg':
+        if 'white' not in args.plot_theme[0]:
+            mpl.rcParams['figure.facecolor'] = 'white'
+            mpl.rcParams['figure.edgecolor'] = 'white'
 
 
 def set_limits(args):
