@@ -249,7 +249,7 @@ All visualizations are automatically configured to show an interactive plot usin
 backend (default is TkAgg, but can be configured with the p.config tool).  
 
 As of version 0.2.0 pandashells supports the WebAgg backend for matplotlib. This enables
-viewing interactive plots to be shown in a browser.  To run with this options, run
+interactive plots to be shown in a browser.  To run with this options, run
 
 ```bash
 p.config --plot_backend WebAgg
