@@ -248,6 +248,15 @@ Pandashells provides a number of visualization tools to help you quickly explore
 All visualizations are automatically configured to show an interactive plot using the configured
 backend (default is TkAgg, but can be configured with the p.config tool).  
 
+As of version 0.2.0 pandashells supports the WebAgg backend for matplotlib. This enables
+viewing interactive plots to be shown in a browser.  To run with this options, run
+
+```bash
+p.config --plot_backend WebAgg
+```
+
+Note that WebAgg requires that Tornado be installed.  This installation is left up to the user.
+
 The visualizations can also be saved to image files (e.g. .png) or rendered to html.  The html
 generated can either be opened directly in the browser to show an interactive plot (using mpld3),
 or can be embedded in an existing html file.  The examples below show Pandashells-created png images
