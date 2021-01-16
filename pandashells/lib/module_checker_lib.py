@@ -19,6 +19,7 @@ CMD_DICT = {
     'mpld3': 'pip install mpld3',
     'numpy': 'pip install numpy',
     'pandas': 'pip install pandas',
+    'pandasgui': 'pip install pandasgui',
     'pylab': 'pip install matplotlib',
     'requests': 'pip install requests',
     'scipy': 'pip install scipy',

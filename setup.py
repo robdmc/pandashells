@@ -79,6 +79,7 @@ setup(
 
             'p.df = pandashells.bin.p_df:main',
             'p.example_data = pandashells.bin.p_example_data:main',
+            'p.gui = pandashells.bin.p_gui:main',
             'p.linspace = pandashells.bin.p_linspace:main',
             'p.merge = pandashells.bin.p_merge:main',
             'p.rand = pandashells.bin.p_rand:main',

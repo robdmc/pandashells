@@ -108,6 +108,7 @@ Tool          |pip install           |Purpose
 p.config      |`pandashells`         |Set default Pandashells configuration options
 p.crypt       |`pandashells`         |Encrypt/decrypt files using open-ssl
 p.format      |`pandashells`         |Render python string templates using input data
+p.gui         |`pandashells`         |Open dataframe in pandasgui interactive environment
 p.parallel    |`pandashells`         |Read shell commands from stdin and run them in parallel
 p.example_data|`pandashells`         |Create sample csv files for training/testing
 p.df          |`pandashells[console]`|Pandas dataframe manipulation of text files
