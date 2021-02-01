@@ -38,7 +38,7 @@ opens up a bash API into the python data stack with command syntax
 closely mirroring the underlying libraries on which it is built.  This should
 allow those familiar with the python data stack to be immediately productive.
 
-I would also like to call your attention to a related tool by Paul Swanson: [visidata](https://www.visidata.org/docs/).  
+I would also like to call your attention to a related tool by Saul Pwanson: [visidata](https://www.visidata.org/docs/).  
 Visidata is an interactive terminal-based app that excels at loading/transforming/summarizing tabular data
 from the command line.
 
